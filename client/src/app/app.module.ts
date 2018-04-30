@@ -22,6 +22,12 @@ import { ClosedBlogComponent } from './components/blog/closed-blog/closed-blog.c
 import { DeleteBlogComponent } from './components/blog/delete-blog/delete-blog.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import { ClosedLicenceComponent } from './components/licence/closed-licence/closed-licence.component';
+import { LicenceComponent } from './components/licence/licence.component';
+import { EditLicenceComponent } from './components/licence/edit-licence/edit-licence.component';
+import { DeleteLicenceComponent } from './components/licence/delete-licence/delete-licence.component';
+import { LicenceService } from './services/licence.service';
+
 
 @NgModule({
   declarations: [
@@ -37,6 +43,10 @@ import { FileUploadModule } from 'ng2-file-upload';
     DeleteBlogComponent,
     PublicProfileComponent,
     ClosedBlogComponent,
+    LicenceComponent,
+    EditLicenceComponent,
+    DeleteLicenceComponent,
+    ClosedLicenceComponent,
     
   ],
   imports: [
@@ -48,7 +58,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     FlashMessagesModule,
     FileUploadModule
   ],
-  providers: [AuthService, AuthGuard, NotAuthGuard, BlogService],
+  providers: [AuthService, AuthGuard, NotAuthGuard, BlogService, LicenceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

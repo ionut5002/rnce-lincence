@@ -1,0 +1,192 @@
+
+<h1 *ngIf="foundLicence" class="page-header">Close/Open Licence</h1>
+<h1 *ngIf="!foundLicence" class="page-header">Closed Licences</h1>
+
+<!-- Custom Success/Error Message -->
+<div class="row show-hide-message" *ngIf="message">
+  <div [ngClass]="messageClass">
+    {{ message }}
+  </div>
+</div>
+
+<!-- Modal Confirmation Window -->
+<div class="col-md-6" *ngIf="foundLicence">
+  <!-- Model Outer Layer -->
+  <div class="modal-content">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <!-- Close Button -->
+      <button type="button" name="button" class="close" data-dismiss="modal">&times;</button>
+      <!-- Modal Title -->
+      <h4 class="modal-title">Confirm</h4>
+    </div>
+
+    <!-- Modal Body -->
+    <div *ngIf="licence.close" class="modal-body">
+      <p>Are you sure you would like to open this Licence?</p>
+    </div>
+    <div *ngIf="!licence.close" class="modal-body">
+      <p>Are you sure you would like to close this Licence?</p>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <!-- Yes Button -->
+      <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="closedLicence()">Yes</button>
+      <!-- No Button -->
+      <a routerLink="/licence"><button [disabled]="processing" type="button" name="button" class="btn btn-danger">No</button></a>
+    </div>
+  </div>
+
+  <br />
+
+  <!-- Panel -->
+  <div class="panel panel-primary">
+    <!-- Panel Heading -->
+    <div class="panel-heading">
+      <!-- Panel Title -->
+      <h3 class="panel-title">{{ licence.title }}</h3>
+    </div>
+
+    <!-- Panel Body -->
+    <div class="panel-body">
+      {{ licence.body }}
+    </div>
+
+    <!-- Panel Footer -->
+    <div class="panel-footer">
+      <strong>Posted by: </strong> {{ licence.createdBy }}
+      <br />
+      <strong>Date: </strong> {{ licence.createdAt | date:'MMM dd, yyyy' }}
+    </div>
+  </div>
+
+</div>
+
+
+<button *ngIf="!foundLicence" [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
+<br />
+<br />
+<div *ngIf="!foundLicence">
+  <!-- Panel Outer Layer -->
+  <div  *ngFor="let licence of licencePosts">
+<div class="panel panel-primary" *ngIf="licence.close && (role === 'TMP' || licence.createdBy === username) ">
+    <!-- Panel Title -->
+    <div class="panel-heading">
+      <h3 class="panel-title">{{ licence.title }} {{ licence.LicenceNo }}</h3>
+    </div>
+
+    <!-- Panel Body -->
+    
+    <div class="panel-body">
+      <div class="col-md-6">
+      <ul class="list-unstyled">
+        <li><strong>Client: </strong> {{licence.Client}}</li>
+        <li><strong>Address: </strong> {{licence.Address}}</li>
+        <li><strong>Licence Required: </strong> {{licence.LicenceRequired}}</li>
+        <li><strong>StartDate:</strong> {{licence.StartDate}}</li>
+        <li><strong>SpeedOfRoad:</strong> {{licence.SpeedOfRoad}}</li>
+        <li><strong>RoadWidth:</strong> {{licence.RoadWidth}} m</li>
+        <li><strong>CarriagewayType:</strong> {{licence.CarriagewayType}}</li>
+        <li><strong>RoadLevel:</strong> {{licence.RoadLevel}}</li>
+        <li><strong>Volume:</strong> {{licence.Volume}} (3 min count)</li>
+        <li><strong>WorksType:</strong> {{licence.WorksType}}</li>
+        <li><strong>WorksHours:</strong> {{licence.WorksHours}}</li>
+        <li><strong>LocationOnRoad:</strong> {{licence.LocationOnRoad}}</li>
+        <li><strong>Type Of Traffic Control Required:</strong> {{licence.TypeOfTrafficCR}}</li>
+        <li><strong>Description:</strong> {{ licence.body }} </li>
+        <li><a *ngIf="licence.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ licence.LocationMap }}" target="_blank">See on Map by Coordonates</a>
+            <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ licence.Address }}" target="_blank">See on Map by Address</a></li>
+      </ul>
+    </div>
+    <div class="col-md-6" *ngFor="let ph of licence.path">
+      <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" alt="" width="200" height="100"></a>
+      {{ph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+    </div></div>
+
+    <!-- Panel Footer Start -->
+    <div class="panel-footer">
+      <strong>Posted by: </strong>{{ licence.createdBy }}
+      <br />
+      <strong>Date: </strong>{{ licence.createdAt | date:'dd MMM yyyy hh:mm a' }}
+      <br />
+     <!--  <div *ngIf="username === licence.createdBy">
+        <strong>Likes: </strong>{{ licence.likes }}
+        <br />
+        <strong>Dislikes: </strong>{{ licence.dislikes }}
+      </div> -->
+
+      <!-- Edit Button -->
+      <a [routerLink]="['/edit-licence/', licence._id]" *ngIf="username === licence.createdBy"><button type="button" name="button" class="btn btn-sm btn-info">Edit</button></a>
+      <!-- Delete Button -->
+      <a [routerLink]="['/delete-licence/', licence._id]" *ngIf="username === licence.createdBy"><button type="button" name="button" class="btn btn-sm btn-danger">Delete</button></a>
+      <!-- Close Button -->
+      <a [routerLink]="['/closed-licence/', licence._id]" *ngIf="username === licence.createdBy && !licence.close"><button type="button" name="button" class="btn btn-sm btn-danger">Close</button></a>
+      <a [routerLink]="['/closed-licence/', licence._id]" *ngIf="username === licence.createdBy &&  licence.close"><button type="button" name="button" class="btn btn-sm btn-success">Reopen</button></a>
+
+      <!-- Likes Dropdown  -->
+      <!-- <div class="dropdown"> -->
+        <!-- Like Button -->
+        <!-- <button [disabled]="licence.likedBy.indexOf(username) > -1" type="button" name="button" class="btn btn-sm btn-success" *ngIf="username !== licence.createdBy" (click)="likeLicence(licence._id)"><span class="glyphicon glyphicon-thumbs-up">&nbsp;</span>Likes: {{ licence.likes }}</button>
+        --> <!-- Dropdown Menu Items -->
+       <!--  <div class="dropdown-content">
+          <a [routerLink]="['/user/', liker]" *ngFor="let liker of licence.likedBy">{{ liker }}</a>
+        </div>
+      </div> -->
+
+      <!-- Dislikes Dropdown  -->
+      <!-- <div class="dropdown"> -->
+        <!-- Dislike Button -->
+<!--         <button [disabled]="licence.dislikedBy.indexOf(username) > -1" type="button" name="button" class="btn btn-sm btn-warning" *ngIf="username !== licence.createdBy" (click)="dislikeLicence(licence._id)"><span class="glyphicon glyphicon-thumbs-down">&nbsp;</span>Dislikes: {{ licence.dislikes }}</button>
+         --><!-- Dropdown Menu Items -->
+        <!-- <div class="dropdown-content">
+          <a [routerLink]="['/user/', disliker]" *ngFor="let disliker of licence.dislikedBy">{{ disliker }}</a>
+        </div>
+      </div> -->
+
+    </div>
+    <!-- Panel Footer End -->
+
+    <!-- Post Comment Box: Start -->
+    <ul class="list-group">
+      <li class="list-group-item">
+        <!-- Post Comment Button -->
+        <!-- <button type="button" name="button" class="btn btn-sm btn-danger" (click)="draftComment(licence._id)" [disabled]="newComment.indexOf(licence._id) > -1">Post Comment</button> -->
+        
+
+        <!-- Show Comments -->
+        <li *ngIf="enabledComments.indexOf(licence._id) === -1 && licence.comments.length > 0" class="list-group-item">
+          <button  class="btn btn-sm btn-info" (click)="expand(licence._id)">
+            Show comments&nbsp;&nbsp;
+            <div class="glyphicon glyphicon-comment"></div>
+          </button>
+        </li>
+
+        <!-- Hide Comments -->
+        <li *ngIf="enabledComments.indexOf(licence._id) > -1" class="list-group-item">
+          <button class="btn btn-sm btn-info" (click)="collapse(licence._id)">
+            Hide Comments&nbsp;&nbsp;
+            <div class="glyphicon glyphicon-comment"></div>
+          </button>
+        </li>
+
+        <!-- Comment -->
+        <div *ngIf="enabledComments.indexOf(licence._id) > -1">
+          <li *ngFor="let comment of licence.comments" class="list-group-item">
+            <strong>{{ comment.commentator }}:</strong>
+            <br /> {{ comment.comment }} 
+            <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  role="button" target="_blank">Download</a></li></ul>
+            <strong>Created at:{{comment.createdTime | date:'dd MMM yyyy hh:mm a'}}</strong>
+          </li>
+          
+        </div>
+      </ul>
+    <!-- Post Comment Box: End -->
+    </div>
+  </div>
+  <br />
+  <br />
+  
+  <!-- Panel Outer Layer -->
+</div>
+<!-- Panel End --> 

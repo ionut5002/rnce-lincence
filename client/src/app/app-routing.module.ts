@@ -12,6 +12,10 @@ import { DeleteBlogComponent } from './components/blog/delete-blog/delete-blog.c
 import { AuthGuard } from './guards/auth.guard';
 import { NotAuthGuard } from './guards/notAuth.guard';
 import { ClosedBlogComponent } from './components/blog/closed-blog/closed-blog.component';
+import { ClosedLicenceComponent } from './components/licence/closed-licence/closed-licence.component';
+import { LicenceComponent } from './components/licence/licence.component';
+import { EditLicenceComponent } from './components/licence/edit-licence/edit-licence.component';
+import { DeleteLicenceComponent } from './components/licence/delete-licence/delete-licence.component';
 
 
 // Our Array of Angular 2 Routes
@@ -63,6 +67,31 @@ const appRoutes: Routes = [
   {
     path: 'delete-blog/:id',
     component: DeleteBlogComponent, // Delete Blog Route
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'licence',
+    component: LicenceComponent, // Licence Route,
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'closed-licence/:id',
+    component: ClosedLicenceComponent, // Licence Route,
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'closed-licence',
+    component: ClosedLicenceComponent, // Licence Route,
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'edit-licence/:id',
+    component: EditLicenceComponent, // Edit Licence Route
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'delete-licence/:id',
+    component: DeleteLicenceComponent, // Delete Licence Route
     canActivate: [AuthGuard] // User must be logged in to view this route
   },
   {
