@@ -16,6 +16,9 @@ import { ClosedLicenceComponent } from './components/licence/closed-licence/clos
 import { LicenceComponent } from './components/licence/licence.component';
 import { EditLicenceComponent } from './components/licence/edit-licence/edit-licence.component';
 import { DeleteLicenceComponent } from './components/licence/delete-licence/delete-licence.component';
+import { UploadLicenceComponent } from './components/licence/upload-licence/upload-licence.component';
+import { BookingComponent } from './components/licence/booking/booking.component';
+import { PostWorksComponent } from './components/licence/post-works/post-works.component';
 
 
 // Our Array of Angular 2 Routes
@@ -82,6 +85,21 @@ const appRoutes: Routes = [
   {
     path: 'closed-licence',
     component: ClosedLicenceComponent, // Licence Route,
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'upload-licence/:id',
+    component: UploadLicenceComponent, // Licence Route,
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'post-works/:id',
+    component: PostWorksComponent, // Licence Route,
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'book-works/:id',
+    component: BookingComponent, // Licence Route,
     canActivate: [AuthGuard] // User must be logged in to view this route
   },
   {

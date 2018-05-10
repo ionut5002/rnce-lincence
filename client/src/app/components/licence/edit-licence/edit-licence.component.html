@@ -16,11 +16,7 @@
     <!-- Title Input -->
     <input [disabled]="processing" type="text" name="title" placeholder="*Licence Title" class="form-control" [(ngModel)]="licence.title" #title="ngModel" />
   </div>
-  <div class="form-group col-md-3">
-    <label for="LicenceNo">LicenceNo</label>
-    <!-- LicenceNo Input -->
-    <input [disabled]="processing" type="text" name="LicenceNo" placeholder="*LicenceNo" class="form-control" [(ngModel)]="licence.LicenceNo" #LicenceNo="ngModel" />
-  </div></div>
+  </div>
   <div class="row">
   <div class="form-group col-md-9">
     <label for="Client">Client</label>
@@ -38,110 +34,44 @@
           <!-- Client Input -->
           <input [disabled]="processing" type="text" name="Address" placeholder="*Address" class="form-control" [(ngModel)]="licence.Address" #Address="ngModel" />
         </div>
-        <div class="form-group col-md-5">
-            <label for="LocationMap">Coordonates on Map</label>
-            <!-- LocationMap Input -->
-            <input type="text" name="LocationMap" class="form-control" #LocationMap="ngModel"  [(ngModel)]="licence.LocationMap"></div>
+        
   </div>
   <div class="row">
-  <div class="form-group col-md-6">
-    <label for="SpeedOfRoad">Speed Of Road</label>
-      <!-- SpeedOfRoad Input -->
-        <select [disabled]="processing" class="form-control" name="SpeedOfRoad" [(ngModel)]="licence.SpeedOfRoad" #SpeedOfRoad="ngModel">
-          <option >30Km/h</option>
-          <option>40Km/h</option>
-          <option>50Km/h</option>
-          <option class="selected">60Km/h</option>
-          <option>80Km/h</option>
-          <option>100Km/h</option>
-          <option>120Km/h</option>
-        </select>
-  </div>
-
-  <div class="form-group col-md-6">
-      <label for="LicenceRequired">Licence Required</label>
+  
+    <div class="form-group col-md-6">
+      <label for="LicenceType">Licence Type</label>
         <!-- SpeedOfRoad Input -->
-          <select [disabled]="processing" class="form-control" name="LicenceRequired" [(ngModel)]="licence.LicenceRequired" #LicenceRequired="ngModel">
-            <option >Yes</option>
-            <option>No</option>
+          <select [disabled]="processing" class="form-control" name="LicenceType" [(ngModel)]="licence.LicenceType" #LicenceType="ngModel">
+            <option >T2</option>
+            <option>T3</option>
+            <option>T4</option>
+          </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="TMType">Licence Required</label>
+        <!-- SpeedOfRoad Input -->
+          <select [disabled]="processing" class="form-control" name="TMType" [(ngModel)]="licence.TMType" #TMType="ngModel">
+            <option >Specific</option>
+            <option>Generic</option>
           </select>
     </div>
 </div>
   <div class="row">
   <div class="form-group col-md-6">
-    <label for="RoadWidth">Road Width(in meters)</label>
-    <!-- RoadWidth Input -->
-    <input [disabled]="processing" type="text" name="RoadWidth" placeholder="*Road Width" class="form-control" [(ngModel)]="licence.RoadWidth" #RoadWidth="ngModel" />
+    <label for="WorkWidth">Work Width(in meters)</label>
+    <!-- WorkWidth Input -->
+    <input [disabled]="processing" type="text" name="WorkWidth" placeholder="*Road Width" class="form-control" [(ngModel)]="licence.WorkWidth" #WorkWidth="ngModel" />
   </div>
 
   <div class="form-group col-md-6">
-    <label for="CarriagewayType">Carriageway Type</label>
-      <!-- CarriagewayType Input -->
-        <select [disabled]="processing" class="form-control" name="CarriagewayType" [(ngModel)]="licence.CarriagewayType" #CarriagewayType="ngModel">
-          <option >Single</option>
-          <option>Dual</option>
-        </select>
-  </div></div>
-  <div class="row">
-  <div class="form-group col-md-6">
-    <label for="RoadLevel">Road Level</label>
-    <!-- RoadLevel Input -->
-    <select [disabled]="processing" class="form-control" name="RoadLevel" [(ngModel)]="licence.RoadLevel" #RoadLevel="ngModel">
-          <option >1&amp;2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5&amp;6</option> 
-        </select>
+    <label for="WorkLength">Work Length(in meters)</label>
+    <!-- WorkLength Input -->
+    <input [disabled]="processing" type="text" name="WorkLength" placeholder="*Road Width" class="form-control" [(ngModel)]="licence.WorkLength" #WorkLength="ngModel" />
   </div>
 
-  <div class="form-group col-md-6">
-    <label for="Volume">Volume(3 min count) </label>
-    <!-- Volume Input -->
-    <input [disabled]="processing" type="text" name="Volume" placeholder="*Volume" class="form-control" [(ngModel)]="licence.Volume" #Volume="ngModel" />
-  </div></div>
-  <div class="row">
-  <div class="form-group col-md-6">
-    <label for="WorksType">Works Type</label>
-    <!-- WorksType Input -->
-    <select [disabled]="processing" class="form-control" name="WorksType" [(ngModel)]="licence.WorksType" #WorksType="ngModel">
-          <option selected>A</option>
-          <option>B</option>
-          <option>C</option>
-        </select>
   </div>
-
-  <div class="form-group col-md-6">
-    <label for="WorksHours">Works Hours</label>
-    <!-- WorksType Input -->
-        <select [disabled]="processing" class="form-control" name="WorksHours" [(ngModel)]="licence.WorksHours" #WorksHours="ngModel">
-          <option selected>24Hrs</option>
-          <option>Day</option>
-          <option>Night</option>
-          <option>Short</option>  
-        </select>
-  </div></div>
-  <div class="row">
-  <div class="form-group col-md-6">
-    <label for="LocationOnRoad">Location On Road</label>
-    <!-- WorksType Input -->
-        <select [disabled]="processing" class="form-control" name="LocationOnRoad" [(ngModel)]="licence.LocationOnRoad" #LocationOnRoad="ngModel">
-          <option selected>Path</option>
-          <option>H/S</option>
-          <option>Bus Lane</option>
-          <option>Lane</option> 
-        </select>
-  </div>
-
-  <div class="form-group col-md-6">
-    <label for="TypeOfTrafficCR">Type Of Traffic Control Required</label>
-    <!-- TypeOfTrafficCR Input -->
-    <select [disabled]="processing" class="form-control" name="TypeOfTrafficCR" [(ngModel)]="licence.TypeOfTrafficCR" #TypeOfTrafficCR="ngModel">
-          <option selected>Road Closed</option>
-          <option>Lane Closed</option>
-          <option>Traffic Lights</option>
-          <option>Stop&amp;Go</option>
-          </select>
-  </div></div>
+  
+  
 
   <!-- Body Field -->
   <div class="form-group">
@@ -156,10 +86,8 @@
   <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
   <!-- Save Changes Button -->
   <button [disabled]="processing ||
-   (!title.dirty && !body.dirty && !LicenceNo.dirty && !Client.dirty && !StartDate.dirty && !SpeedOfRoad.dirty 
-   && !RoadWidth.dirty && !CarriagewayType.dirty && !RoadLevel.dirty && !Volume.dirty && !WorksType.dirty 
-   && !WorksHours.dirty && !LocationOnRoad.dirty && !TypeOfTrafficCR.dirty && !Address.dirty 
-   && !LicenceRequired.dirty && !LocationMap.dirty )" 
+   (!title.dirty && !body.dirty && !LicenceType.dirty && !Client.dirty && !StartDate.dirty && !WorkLength.dirty 
+   && !WorkWidth.dirty && !Address.dirty && !TMType.dirty)" 
    type="submit" name="save" class="btn btn-info">Save Changes</button>
 
 </form>

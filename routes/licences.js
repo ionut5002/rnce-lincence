@@ -40,23 +40,18 @@ module.exports = (router) => {
           const licence = new Licence({
             title: req.body.title, // Title field
             body: req.body.body,// Body field
-            path: req.body.path,
-            JobNo: req.body.JobNo,
-            createdBy: req.body.createdBy,
-            Client:req.body.Client,
+            WorkWidth: req.body.WorkWidth,
+            WorkLength:req.body.WorkLength,
             StartDate:req.body.StartDate,
-            SpeedOfRoad:req.body.SpeedOfRoad,
-            RoadWidth:req.body.RoadWidth,
-            CarriagewayType:req.body.CarriagewayType,
-            RoadLevel:req.body.RoadLevel,
-            Volume:req.body.Volume,
-            WorksType:req.body.WorksType,
-            WorksHours:req.body.WorksHours,
-            LocationOnRoad:req.body.LocationOnRoad,
-            TypeOfTrafficCR:req.body.TypeOfTrafficCR,
-            Address: req.body.Address,
-            LocationMap: req.body.LocationMap,
-            LicenceRequired:req.body.LicenceRequired
+            Client:req.body.Client,
+            Address:req.body.Address,
+            LicenceType:req.body.LicenceType,
+            TMType:req.body.TMType,
+            path: req.body.path,
+            createdBy: req.body.createdBy,
+            
+            
+            
           });
           // Save licence into database
           licence.save((err) => {
@@ -79,7 +74,7 @@ module.exports = (router) => {
                 res.json({ success: false, message: err }); // Return general error message
               }
             } else {
-              res.json({ success: true, message: 'Job saved!', licence }); // Return success message
+              res.json({ success: true, message: 'Licence saved!', licence }); // Return success message
             }
           });
         }
@@ -99,7 +94,7 @@ module.exports = (router) => {
       } else {
         // Check if licences were found in database
         if (!licences) {
-          res.json({ success: false, message: 'No Jobs found.' }); // Return error of no licences found
+          res.json({ success: false, message: 'No Licences found.' }); // Return error of no licences found
         } else {
           res.json({ success: true, licences: licences }); // Return success and licences array
         }
@@ -113,17 +108,17 @@ module.exports = (router) => {
   router.get('/singleLicence/:id', (req, res) => {
     // Check if id is present in parameters
     if (!req.params.id) {
-      res.json({ success: false, message: 'No Job ID was provided.' }); // Return error message
+      res.json({ success: false, message: 'No Licence ID was provided.' }); // Return error message
     } else {
       // Check if the licence id is found in database
       Licence.findOne({ _id: req.params.id }, (err, licence) => {
         // Check if the id is a valid ID
         if (err) {
-          res.json({ success: false, message: 'Not a valid Job id' }); // Return error message
+          res.json({ success: false, message: 'Not a valid Licence id' }); // Return error message
         } else {
           // Check if licence was found by id
           if (!licence) {
-            res.json({ success: false, message: 'Job not found.' }); // Return error message
+            res.json({ success: false, message: 'Licence not found.' }); // Return error message
           } else {
             // Find the current user that is logged in
             User.findOne({ _id: req.decoded.userId }, (err, user) => {
@@ -157,7 +152,7 @@ module.exports = (router) => {
   router.put('/updateLicence', (req, res) => {
     // Check if id was provided
     if (!req.body._id) {
-      res.json({ success: false, message: 'No Job id provided' }); // Return error message
+      res.json({ success: false, message: 'No Licence id provided' }); // Return error message
     } else {
       // Check if id exists in database
       Licence.findOne({ _id: req.body._id }, (err, licence) => {
@@ -167,7 +162,7 @@ module.exports = (router) => {
         } else {
           // Check if id was found in the database
           if (!licence) {
-            res.json({ success: false, message: 'Job id was not found.' }); // Return error message
+            res.json({ success: false, message: 'Licence id was not found.' }); // Return error message
           } else {
             // Check who user is that is requesting licence update
             User.findOne({ _id: req.decoded.userId }, (err, user) => {
@@ -183,23 +178,15 @@ module.exports = (router) => {
                   if (user.username !== licence.createdBy) {
                     res.json({ success: false, message: 'You are not authorized to edit this licence post.' }); // Return error message
                   } else {
-                    licence.title = req.body.title;
-                    licence.JobNo = req.body.JobNo; // Save latest licence title
-                    licence.body = req.body.body;
-                    licence.Client = req.body.Client;
-                    licence.StartDate = req.body.StartDate;
-                    licence.SpeedOfRoad = req.body.SpeedOfRoad;
-                    licence.RoadWidth = req.body.RoadWidth;
-                    licence.CarriagewayType = req.body.CarriagewayType;
-                    licence.RoadLevel = req.body.RoadLevel;
-                    licence.Volume = req.body.Volume;
-                    licence.WorksType = req.body.WorksType;
-                    licence.WorksHours = req.body.WorksHours;
-                    licence.LocationOnRoad = req.body.LocationOnRoad;
-                    licence.TypeOfTrafficCR = req.body.TypeOfTrafficCR;
-                    licence.Address = req.body.Address;
-                    licence.LocationMap = req.body.LocationMap;
-                    licence.LicenceRequired = req.body.LicenceRequired;
+                    licence.title = req.body.title, // Title field
+                    licence.body = req.body.body,// Body field
+                    licence.WorkWidth = req.body.WorkWidth,
+                    licence.WorkLength = req.body.WorkLength,
+                    licence.StartDate = req.body.StartDate,
+                    licence.Client = req.body.Client,
+                    licence.Address = req.body.Address,
+                    licence.LicenceType = req.body.LicenceType,
+                    licence.TMType = req.body.TMType
                     licence.save((err) => {
                       if (err) {
                         if (err.errors) {
@@ -208,7 +195,7 @@ module.exports = (router) => {
                           res.json({ success: false, message: err }); // Return error message
                         }
                       } else {
-                        res.json({ success: true, message: 'Job Updated!' }); // Return success message
+                        res.json({ success: true, message: 'Licence Updated!' }); // Return success message
                       }
                     });
                   }
@@ -237,7 +224,7 @@ module.exports = (router) => {
         } else {
           // Check if licence was found in database
           if (!licence) {
-            res.json({ success: false, messasge: 'Job was not found' }); // Return error message
+            res.json({ success: false, messasge: 'Licence was not found' }); // Return error message
           } else {
             // Get info on user who is attempting to delete post
             User.findOne({ _id: req.decoded.userId }, (err, user) => {
@@ -258,7 +245,7 @@ module.exports = (router) => {
                       if (err) {
                         res.json({ success: false, message: err }); // Return error message
                       } else {
-                        res.json({ success: true, message: 'Job deleted!' }); // Return success message
+                        res.json({ success: true, message: 'Licence deleted!' }); // Return success message
                       }
                     });
                   }
@@ -286,7 +273,7 @@ module.exports = (router) => {
         } else {
           // Check if licence was found in database
           if (!licence) {
-            res.json({ success: false, messasge: 'Job was not found' }); // Return error message
+            res.json({ success: false, messasge: 'Licence was not found' }); // Return error message
           } else {
             // Get info on user who is attempting to delete post
             User.findOne({ _id: req.decoded.userId }, (err, user) => {
@@ -308,7 +295,7 @@ module.exports = (router) => {
                       if (err) {
                         res.json({ success: false, message: err }); // Return error message
                       } else {
-                        res.json({ success: true, message: 'Job Closed!' }); // Return success message
+                        res.json({ success: true, message: 'Licence Closed!' }); // Return success message
                       }
                     });
                     }else{
@@ -317,11 +304,280 @@ module.exports = (router) => {
                       if (err) {
                         res.json({ success: false, message: err }); // Return error message
                       } else {
-                        res.json({ success: true, message: 'Job Reopened!' }); // Return success message
+                        res.json({ success: true, message: 'Licence Reopened!' }); // Return success message
                       }
                     });
 
                     }
+                  }
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+  /* ===============================================================
+     upload BLOG POST
+  =============================================================== */
+  router.put('/uploadLicence/', (req, res) => {
+    // Check if ID was provided in parameters
+    if (!req.body.id) {
+      res.json({ success: false, message: 'No id provided' }); // Return error message
+    } else {
+      // Check if id is found in database
+      Licence.findOne({ _id: req.body.id }, (err, licence) => {
+        // Check if error was found
+        if (err) {
+          res.json({ success: false, message: 'Invalid id' }); // Return error message
+        } else {
+          // Check if licence was found in database
+          if (!licence) {
+            res.json({ success: false, messasge: 'Licence was not found' }); // Return error message
+          } else {
+            // Get info on user who is attempting to delete post
+            User.findOne({ _id: req.decoded.userId }, (err, user) => {
+              // Check if error was found
+              if (err) {
+                res.json({ success: false, message: err }); // Return error message
+              } else {
+                // Check if user's id was found in database
+                if (!user) {
+                  res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
+                } else {
+                  // Check if user attempting to delete licence is the same user who originally posted the licence
+                  if (user.role !== 'TMP') {
+                    res.json({ success: false, message: 'You are not authorized to delete this licence post' }); // Return error message
+                  } else {
+                    licence.phase3=true;
+                    licence.phase2=false;
+                    licence.LicencePath=req.body.LicencePath
+                    licence.save((err) => {
+                      if (err) {
+                        res.json({ success: false, message: err }); // Return error message
+                      } else {
+                        res.json({ success: true, message: 'Licence Uploaded!' }); // Return success message
+                      }
+                    });
+                    
+                  }
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+  /* ===============================================================
+     post works  POST
+  =============================================================== */
+  router.put('/post-works/', (req, res) => {
+    // Check if ID was provided in parameters
+    if (!req.body.id) {
+      res.json({ success: false, message: 'No id provided' }); // Return error message
+    } else {
+      // Check if id is found in database
+      Licence.findOne({ _id: req.body.id }, (err, licence) => {
+        // Check if error was found
+        if (err) {
+          res.json({ success: false, message: 'Invalid id' }); // Return error message
+        } else {
+          // Check if licence was found in database
+          if (!licence) {
+            res.json({ success: false, messasge: 'Licence was not found' }); // Return error message
+          } else {
+            // Get info on user who is attempting to delete post
+            User.findOne({ _id: req.decoded.userId }, (err, user) => {
+              // Check if error was found
+              if (err) {
+                res.json({ success: false, message: err }); // Return error message
+              } else {
+                // Check if user's id was found in database
+                if (!user) {
+                  res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
+                } else {
+                  // Check if user attempting to delete licence is the same user who originally posted the licence
+                  if (user.username !== licence.createdBy) {
+                    res.json({ success: false, message: 'You are not authorized to delete this licence post' }); // Return error message
+                  } else {
+                    licence.phase5=true;
+                    licence.phase4=false;
+                    licence.pathPost=req.body.pathPost
+                    licence.save((err) => {
+                      if (err) {
+                        res.json({ success: false, message: err }); // Return error message
+                      } else {
+                        res.json({ success: true, message: 'Post Work Photos Uploaded!' }); // Return success message
+                      }
+                    });
+                    
+                  }
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+  /* ===============================================================
+     Applyingfor BLOG POST
+  =============================================================== */
+  
+  router.put('/ApplyingForLicence/', (req, res) => {
+    // Check if ID was provided in parameters
+    if (!req.body.id) {
+      res.json({ success: false, message: 'No id provided' }); // Return error message
+    } else {
+      // Check if id is found in database
+      Licence.findOne({ _id: req.body.id }, (err, licence) => {
+        // Check if error was found
+        if (err) {
+          res.json({ success: false, message: 'Invalid id' }); // Return error message
+        } else {
+          // Check if licence was found in database
+          if (!licence) {
+            res.json({ success: false, messasge: 'Licence was not found' }); // Return error message
+          } else {
+            // Get info on user who is attempting to delete post
+            User.findOne({ _id: req.decoded.userId }, (err, user) => {
+              // Check if error was found
+              if (err) {
+                res.json({ success: false, message: err }); // Return error message
+              } else {
+                // Check if user's id was found in database
+                if (!user) {
+                  res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
+                } else {
+                  // Check if user attempting to delete licence is the same user who originally posted the licence
+                  if (user.role !== 'TMP') {
+                    res.json({ success: false, message: 'You are not authorized to apply for this licence' }); // Return error message
+                  } else {
+                    licence.phase2=true;
+                    licence.phase1=false;
+                    
+                    
+                    licence.save((err) => {
+                      if (err) {
+                        res.json({ success: false, message: err }); // Return error message
+                      } else {
+                        res.json({ success: true, message: 'Applying for licence !' }); // Return success message
+                      }
+                    });
+                    
+                  }
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+  /* ===============================================================
+     Complete Works  POST
+  =============================================================== */
+  
+  router.put('/CompleteWorks/', (req, res) => {
+    // Check if ID was provided in parameters
+    if (!req.body.id) {
+      res.json({ success: false, message: 'No id provided' }); // Return error message
+    } else {
+      // Check if id is found in database
+      Licence.findOne({ _id: req.body.id }, (err, licence) => {
+        // Check if error was found
+        if (err) {
+          res.json({ success: false, message: 'Invalid id' }); // Return error message
+        } else {
+          // Check if licence was found in database
+          if (!licence) {
+            res.json({ success: false, messasge: 'Licence was not found' }); // Return error message
+          } else {
+            // Get info on user who is attempting to delete post
+            User.findOne({ _id: req.decoded.userId }, (err, user) => {
+              // Check if error was found
+              if (err) {
+                res.json({ success: false, message: err }); // Return error message
+              } else {
+                // Check if user's id was found in database
+                if (!user) {
+                  res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
+                } else {
+                  // Check if user attempting to delete licence is the same user who originally posted the licence
+                  if (user.username !== licence.createdBy) {
+                    res.json({ success: false, message: 'You are not authorized to apply for this licence' }); // Return error message
+                  } else {
+                    licence.phase6=true;
+                    licence.phase5=false;
+                    
+                    
+                    licence.save((err) => {
+                      if (err) {
+                        res.json({ success: false, message: err }); // Return error message
+                      } else {
+                        res.json({ success: true, message: 'Works  Complete!' }); // Return success message
+                      }
+                    });
+                    
+                  }
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+    /* ===============================================================
+     LIKE BLOG POST
+  =============================================================== */
+
+  router.put('/book-works', (req, res) => {
+    // Check if id was provided
+    if (!req.body._id) {
+      res.json({ success: false, message: 'No Licence id provided' }); // Return error message
+    } else {
+      // Check if id exists in database
+      Licence.findOne({ _id: req.body._id }, (err, licence) => {
+        // Check if id is a valid ID
+        if (err) {
+          res.json({ success: false, message: 'Not a valid licence id' }); // Return error message
+        } else {
+          // Check if id was found in the database
+          if (!licence) {
+            res.json({ success: false, message: 'Licence id was not found.' }); // Return error message
+          } else {
+            // Check who user is that is requesting licence update
+            User.findOne({ _id: req.decoded.userId }, (err, user) => {
+              // Check if error was found
+              if (err) {
+                res.json({ success: false, message: err }); // Return error message
+              } else {
+                // Check if user was found in the database
+                if (!user) {
+                  res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
+                } else {
+                  // Check if user logged in the the one requesting to update licence post
+                  if (user.username !== licence.createdBy) {
+                    res.json({ success: false, message: 'You are not authorized to edit this licence post.' }); // Return error message
+                  } else {
+                    licence.WorksStartDate = req.body.WorksStartDate, // Title field
+                    licence.WorksEndDate = req.body.WorksEndDate,
+                    licence.phase3=false;
+                    licence.phase4=true;
+                    licence.save((err) => {
+                      if (err) {
+                        if (err.errors) {
+                          res.json({ success: false, message: 'Please ensure form is filled out properly' });
+                        } else {
+                          res.json({ success: false, message: err }); // Return error message
+                        }
+                      } else {
+                        res.json({ success: true, message: 'Works Booked!' }); // Return success message
+                      }
+                    });
                   }
                 }
               }
@@ -486,7 +742,7 @@ module.exports = (router) => {
   /* ===============================================================
      COMMENT ON BLOG POST
   =============================================================== */
-  router.post('/comment', (req, res) => {
+  router.post('/comments', (req, res) => {
     // Check if comment was provided in request body
     if (!req.body.comment) {
       res.json({ success: false, message: 'No comment provided' }); // Return error message
@@ -499,11 +755,11 @@ module.exports = (router) => {
         Licence.findOne({ _id: req.body.id }, (err, licence) => {
           // Check if error was found
           if (err) {
-            res.json({ success: false, message: 'Invalid Job id' }); // Return error message
+            res.json({ success: false, message: 'Invalid Licence id' }); // Return error message
           } else {
             // Check if id matched the id of any licence post in the database
             if (!licence) {
-              res.json({ success: false, message: 'Job not found.' }); // Return error message
+              res.json({ success: false, message: 'Licence not found.' }); // Return error message
             } else {
               // Grab data of user that is logged in
               User.findOne({ _id: req.decoded.userId }, (err, user) => {
@@ -546,7 +802,7 @@ module.exports = (router) => {
 
   router.post("/notifications", (req, res) => {
         if (!req.body.createdBy) {
-          res.json({ success: false, message: 'Job creator is required.' }); // Return error
+          res.json({ success: false, message: 'Licence creator is required.' }); // Return error
         } else {
           // Create the notification object for insertion into database
           const notification = new Notification({

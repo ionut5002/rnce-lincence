@@ -57,16 +57,40 @@ export class LicenceService {
   }
    // Function to close a licence
    closeLicence(id) {
-     console.log(id)
+     
      const closedata= {id:id}
      // Create headers
     return this.http.put(this.domain + 'licences/closeLicence/', closedata, this.options).map(res => res.json());
   }
+  uploadLicence(uploadData) {
+     
+    const closedata= uploadData
+    // Create headers
+   return this.http.put(this.domain + 'licences/uploadLicence/', closedata, this.options).map(res => res.json());
+ }
+ uploadPostWorks(uploadData) {
+     
+  const closedata= uploadData
+  // Create headers
+ return this.http.put(this.domain + 'licences/post-works/', closedata, this.options).map(res => res.json());
+}
+ ApplyingForLicence(id) {
+  const blogData = { id: id };
+  return this.http.put(this.domain + 'licences/ApplyingForLicence', blogData, this.options).map(res => res.json());
+}
+CompleteWorks(id) {
+  const blogData = { id: id };
+  return this.http.put(this.domain + 'licences/CompleteWorks', blogData, this.options).map(res => res.json());
+}
 
   // Function to edit/update licence post
   editLicence(licence) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.put(this.domain + 'licences/updateLicence/', licence, this.options).map(res => res.json());
+  }
+  bookWorks(licence) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.put(this.domain + 'licences/book-works/', licence, this.options).map(res => res.json());
   }
 
   // Function to delete a licence
@@ -100,7 +124,7 @@ export class LicenceService {
       
     }
     
-    return this.http.post(this.domain + 'licences/comment', licenceData, this.options).map(res => res.json());
+    return this.http.post(this.domain + 'licences/comments', licenceData, this.options).map(res => res.json());
 
   }
   newNotification(notification) {

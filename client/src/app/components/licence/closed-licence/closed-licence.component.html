@@ -83,17 +83,11 @@
       <ul class="list-unstyled">
         <li><strong>Client: </strong> {{licence.Client}}</li>
         <li><strong>Address: </strong> {{licence.Address}}</li>
-        <li><strong>Licence Required: </strong> {{licence.LicenceRequired}}</li>
+        <li><strong>Licence Type: </strong> {{licence.LicenceType}}</li>
         <li><strong>StartDate:</strong> {{licence.StartDate}}</li>
-        <li><strong>SpeedOfRoad:</strong> {{licence.SpeedOfRoad}}</li>
-        <li><strong>RoadWidth:</strong> {{licence.RoadWidth}} m</li>
-        <li><strong>CarriagewayType:</strong> {{licence.CarriagewayType}}</li>
-        <li><strong>RoadLevel:</strong> {{licence.RoadLevel}}</li>
-        <li><strong>Volume:</strong> {{licence.Volume}} (3 min count)</li>
-        <li><strong>WorksType:</strong> {{licence.WorksType}}</li>
-        <li><strong>WorksHours:</strong> {{licence.WorksHours}}</li>
-        <li><strong>LocationOnRoad:</strong> {{licence.LocationOnRoad}}</li>
-        <li><strong>Type Of Traffic Control Required:</strong> {{licence.TypeOfTrafficCR}}</li>
+        <li><strong>WorkLength:</strong> {{licence.WorkLength}} m</li>
+        <li><strong>WorkWidth:</strong> {{licence.WorkWidth}} m</li>
+        <li><strong>TMType:</strong> {{licence.TMType}}</li>
         <li><strong>Description:</strong> {{ licence.body }} </li>
         <li><a *ngIf="licence.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ licence.LocationMap }}" target="_blank">See on Map by Coordonates</a>
             <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ licence.Address }}" target="_blank">See on Map by Address</a></li>

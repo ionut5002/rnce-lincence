@@ -26,8 +26,9 @@
     </tr>
     </div></div>
   </div>
-  <a [routerLink]="['/closed-blog/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Jobs</button></a>
+  
   </div>
+  <a *ngIf="!newPost" [routerLink]="['/closed-blog/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Jobs</button></a>
 <br />
 <br />
 

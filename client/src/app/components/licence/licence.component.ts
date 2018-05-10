@@ -15,6 +15,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 
 export class LicenceComponent implements OnInit {
   
+  licenceCr;
   messageClass;
   message;
   newPost = false;
@@ -64,12 +65,6 @@ export class LicenceComponent implements OnInit {
         Validators.minLength(5),
         this.alphaNumericValidation
       ])],
-      JobNo: ['', Validators.compose([
-        Validators.required,
-        Validators.maxLength(5),
-        Validators.minLength(5),
-        this.NumericValidation2
-      ])],
       // Body field
       body: ['', Validators.compose([
         Validators.required,
@@ -84,32 +79,27 @@ export class LicenceComponent implements OnInit {
         this.alphaNumericValidation
       ])],
       StartDate : [],
-      SpeedOfRoad: [],
-      RoadWidth: ['', Validators.compose([
+      WorkWidth: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(4),
         Validators.minLength(1),
         this.NumericValidation
       ])],
-      CarriagewayType: [],
-      RoadLevel: [],
-      Volume : ['',Validators.compose([
+      WorkLength: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(4),
         Validators.minLength(1),
         this.NumericValidation
       ])],
-      WorksType : [],
-      WorksHours : [],
-      LocationOnRoad : [],
-      TypeOfTrafficCR : [],
       Address: ['',Validators.compose([
         Validators.required,
         Validators.maxLength(200),
         Validators.minLength(10),
       ])],
-      LocationMap:[],
-      LicenceRequired:['',Validators.compose([
+      LicenceType:['',Validators.compose([
+        Validators.required
+      ])],
+      TMType:['',Validators.compose([
         Validators.required
       ])]
     })
@@ -142,41 +132,29 @@ export class LicenceComponent implements OnInit {
   enableFormNewLicenceForm() {
     this.form.get('title').enable(); // Enable title field
     this.form.get('body').enable();
-    this.form.get('JobNo').enable();
     this.form.get('Client').enable();
     this.form.get('StartDate').enable();
-    this.form.get('SpeedOfRoad').enable();
-    this.form.get('RoadWidth').enable();
-    this.form.get('CarriagewayType').enable();
-    this.form.get('RoadLevel').enable();
-    this.form.get('Volume').enable();
-    this.form.get('WorksType').enable();
-    this.form.get('WorksHours').enable();
-    this.form.get('LocationOnRoad').enable();
-    this.form.get('TypeOfTrafficCR').enable();
+    this.form.get('TMType').enable();
     this.form.get('Address').enable();
-    this.form.get('LicenceRequired').enable();
+    this.form.get('WorkWidth').enable();
+    this.form.get('WorkLength').enable();
+    this.form.get('LicenceType').enable();
+    
+    
     
   }
 
   // Disable new Licence form
   disableFormNewLicenceForm() {
-    this.form.get('title').disable(); // Disable title field
+    this.form.get('title').disable(); // Enable title field
     this.form.get('body').disable();
-    this.form.get('JobNo').disable();
     this.form.get('Client').disable();
     this.form.get('StartDate').disable();
-    this.form.get('SpeedOfRoad').disable();
-    this.form.get('RoadWidth').disable();
-    this.form.get('CarriagewayType').disable();
-    this.form.get('RoadLevel').disable();
-    this.form.get('Volume').disable();
-    this.form.get('WorksType').disable();
-    this.form.get('WorksHours').disable();
-    this.form.get('LocationOnRoad').disable();
-    this.form.get('TypeOfTrafficCR').disable();
+    this.form.get('TMType').disable();
     this.form.get('Address').disable();
-    this.form.get('LicenceRequired').disable();
+    this.form.get('WorkWidth').disable();
+    this.form.get('WorkLength').disable();
+    this.form.get('LicenceType').disable();
      // Disable body field
   }
 
@@ -233,7 +211,7 @@ export class LicenceComponent implements OnInit {
     this.licenceService.getSingleLicence(id).subscribe(data =>{
       this.licenceT = data.licence.title;
       this.licenceC = data.licence.createdBy;
-      this.licenceJ = data.licence.JobNo;
+      this.licenceJ = data.licence.LicenceType;
       this.licenceService.getSingleUser(this.licenceC).subscribe(data=>{
         if (!data.success) {
           this.messageClass = 'alert alert-danger'; // Return error class
@@ -272,25 +250,18 @@ export class LicenceComponent implements OnInit {
     // Create Licence object from form fields
     const licence = {
       title: this.form.get('title').value,
-      JobNo: this.form.get('JobNo').value, // Title field
       body: this.form.get('body').value,
       Client:this.form.get('Client').value,
       StartDate:this.form.get('StartDate').value,
-      SpeedOfRoad:this.form.get('SpeedOfRoad').value,
-      RoadWidth:this.form.get('RoadWidth').value,
-      CarriagewayType:this.form.get('CarriagewayType').value,
-      RoadLevel:this.form.get('RoadLevel').value,
-      Volume:this.form.get('Volume').value,
-      WorksType:this.form.get('WorksType').value,
-      WorksHours:this.form.get('WorksHours').value,
-      LocationOnRoad:this.form.get('LocationOnRoad').value,
-      TypeOfTrafficCR:this.form.get('TypeOfTrafficCR').value,
       Address:this.form.get('Address').value,
-      LocationMap:this.LocationMap,
-      LicenceRequired:this.form.get('LicenceRequired').value,
+      LicenceType:this.form.get('LicenceType').value,
+      WorkWidth:this.form.get('WorkWidth').value,
+      WorkLength:this.form.get('WorkLength').value,
+      TMType: this.form.get('TMType').value,
       path:this.upl,
       createdBy: this.username // CreatedBy field
     }
+  
 
     // Function to save licence into database
     this.licenceService.newLicence(licence).subscribe(data => {
@@ -508,25 +479,27 @@ getAllUsers() {
       if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email)){
       this.emailList.push(this.allusers[i].email)}
       }
-      /* console.log(this.emailList.toString()) */
+      console.log(this.emailList.toString())
   }
 
   
   newEmailNote(){
-    
+    if(this.emailList==[]){
     const newEmail = {
       to: this.emailList.toString(), // Title field
-      html:'<h2>New Job</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Job No: ' +'<strong>' + this.form.get('JobNo').value+'</strong>'+'</strong><br />' +'Client: ' +'<strong>' + this.form.get('Client').value+'</strong>', // CreatedBy field
+      html:'<h2>New Licence</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Licence Type: ' +'<strong>' + this.form.get('LicenceType').value+'</strong>'+'</strong><br />' +'Start Date: ' +'<strong>' + this.form.get('StartDate').value+'</strong>', // CreatedBy field
     }
     
     this.licenceService.newEmailNot(newEmail).subscribe(data => {
       // Check if licence was saved to database or not
       
-    });
+    });}else {
+      console.log('no emails to send to')
+    }
   }
 
   CommEmailNote(){
-    
+    if(this.emailList==[]){
     const newEmail = {
       to: this.emailList.toString(),// Title field
       html:'<h2>New Changes on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
@@ -535,9 +508,74 @@ getAllUsers() {
     this.licenceService.newEmailNot(newEmail).subscribe(data => {
       // Check if licence was saved to database or not
       
-    });
+    });}
+  }
+  ApplyingEmailNote(){
+    if(this.emailList==[]){
+    const newEmail = {
+      to: this.emailList.toString(),// Title field
+      html:'<h2>Applying Process started on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
+    }
+    
+    this.licenceService.newEmailNot(newEmail).subscribe(data => {
+      // Check if licence was saved to database or not
+      
+    });}
+  }
+  CompleteEmailNote(){
+    if(this.emailList==[]){
+    const newEmail = {
+      to: this.emailList.toString(),// Title field
+      html:'<h2>Works completed on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
+    }
+    
+    this.licenceService.newEmailNot(newEmail).subscribe(data => {
+      // Check if licence was saved to database or not
+      
+    });}
   }
 
+  ApplyingForLicence(id) {
+    this.licenceT='';
+    this.licenceJ='';
+    this.licenceService.getSingleLicence(id).subscribe(data =>{
+      this.licenceT = data.licence.title;
+      this.licenceJ = data.licence.LicenceType;
+      this.licenceCr = data.licence.createdBy;
+      this.licenceService.getSingleUser(this.licenceCr).subscribe(data=>{
+        if (!data.success) {
+          this.messageClass = 'alert alert-danger'; // Return error class
+          this.message = data.message; // Return error message
+        } else {
+          this.messageClass = 'alert alert-success'; // Return success class
+          this.message = data.message; // Return success message
+        this.creatorEmail=data.user.email;
+        this.getEmailListComm()
+        this.ApplyingEmailNote();
+        }
+      })
+    
+      
+    })
+    // Service to like a licence post
+    this.licenceService.ApplyingForLicence(id).subscribe(data => {
+      this.getAllLicences(); // Refresh licences after like
+    });
+  }
+  CompleteWorks(id) {
+    this.licenceT='';
+    this.licenceJ='';
+    this.licenceService.getSingleLicence(id).subscribe(data =>{
+      this.licenceT = data.licence.title;
+      this.licenceJ = data.licence.LicenceType;
+      this.getEmailListComm()
+      this.CompleteEmailNote();
+    })
+    // Service to like a licence post
+    this.licenceService.CompleteWorks(id).subscribe(data => {
+      this.getAllLicences(); // Refresh licences after like
+    });
+  }
   ngOnInit() {
     // Get profile username on page load
     this.authService.getProfile().subscribe(profile => {

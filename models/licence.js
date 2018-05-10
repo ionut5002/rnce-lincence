@@ -61,41 +61,7 @@ let bodyLengthChecker = (body) => {
   }
 };
 
- //JobNo length checker
-let JobNoLengthChecker = (JobNo) => {
-  // Check if JobNo exists
-  if (!JobNo) {
-    return false; // Return error
-  } else {
-    // Check length of JobNo
-    if (JobNo.length < 5 || JobNo.length > 5) {
-      return false; // Return error if does not meet length requirement
-    } else {
-      return true; // Return as valid JobNo
-    }
-  }
-};
-let NumericCheckerJobNo = (JobNo) => {
-  // Check if title exists
-  if (!JobNo) {
-    return false; // Return error
-  } else {
-    // Regular expression to test for a valid title
-    const regExp = new RegExp(/^[0-9]+$/);
-    return regExp.test(JobNo); // Return regular expression test results (true or false)
-  }
-};
 
-const JobNoValidators =[
-  {
-    validator: JobNoLengthChecker,
-    message: 'JobNo must be only 5 characters.'
-  },
-  {
-    validator: NumericCheckerJobNo,
-    message: 'JobNo must be numeric.'
-  }
-]
 
 //Client Checkers
 let ClientLengthChecker = (Client) => {
@@ -132,79 +98,78 @@ const ClientValidators =[
     message: 'Clien must be alphanumeric.'
   }
 ]
-//RoadWidth checkers
-let RoadWidthLengthChecker = (RoadWidth) => {
-  // Check if RoadWidth exists
-  if (!RoadWidth) {
+//WorkWidth checkers
+let WorkWidthLengthChecker = (WorkWidth) => {
+  // Check if WorkWidth exists
+  if (!WorkWidth) {
     return false; // Return error
   } else {
-    // Check length of RoadWidth
-    if (RoadWidth.length < 1 || RoadWidth.length > 4) {
+    // Check length of WorkWidth
+    if (WorkWidth.length < 1 || WorkWidth.length > 4) {
       return false; // Return error if does not meet length requirement
     } else {
-      return true; // Return as valid RoadWidth
+      return true; // Return as valid WorkWidth
     }
   }
 };
-let NumericCheckerRoadWidth = (RoadWidth) => {
+let NumericCheckerWorkWidth = (WorkWidth) => {
   // Check if title exists
-  if (!RoadWidth) {
+  if (!WorkWidth) {
     return false; // Return error
   } else {
     // Regular expression to test for a valid title
     const regExp = new RegExp(/^\d*\.?\d*$/);
-    return regExp.test(RoadWidth); // Return regular expression test results (true or false)
+    return regExp.test(WorkWidth); // Return regular expression test results (true or false)
   }
 };
 
-const RoadWidthValidators =[
+const WorkWidthValidators =[
   {
-    validator: RoadWidthLengthChecker,
+    validator: WorkWidthLengthChecker,
     message: 'Client must be more than 1 characters but no more than 4'
   },
   {
-    validator: NumericCheckerRoadWidth,
-    message: 'RoadWidth must be numeric.'
+    validator: NumericCheckerWorkWidth,
+    message: 'WorkWidth must be numeric.'
   }
 ]
-
-//Volume checkers
-
-let VolumeLengthChecker = (Volume) => {
-  // Check if Volume exists
-  if (!Volume) {
+//WorkLength checkers
+let WorkLengthLengthChecker = (WorkLength) => {
+  // Check if WorkLength exists
+  if (!WorkLength) {
     return false; // Return error
   } else {
-    // Check length of Volume
-    if (Volume.length < 1 || Volume.length > 4) {
+    // Check length of WorkLength
+    if (WorkLength.length < 1 || WorkLength.length > 4) {
       return false; // Return error if does not meet length requirement
     } else {
-      return true; // Return as valid Volume
+      return true; // Return as valid WorkLength
     }
   }
 };
-
-let NumericCheckerVolume = (Volume) => {
-  // Check if Volume exists
-  if (!Volume) {
+let NumericCheckerWorkLength = (WorkLength) => {
+  // Check if title exists
+  if (!WorkLength) {
     return false; // Return error
   } else {
-    // Regular expression to test for a valid Volume
+    // Regular expression to test for a valid title
     const regExp = new RegExp(/^\d*\.?\d*$/);
-    return regExp.test(Volume); // Return regular expression test results (true or false)
+    return regExp.test(WorkLength); // Return regular expression test results (true or false)
   }
 };
 
-const VolumeValidators =[
+const WorkLengthValidators =[
   {
-    validator: VolumeLengthChecker,
-    message: 'Volume must be more than 3 characters but no more than 25.'
+    validator: WorkLengthLengthChecker,
+    message: 'Client must be more than 1 characters but no more than 4'
   },
   {
-    validator: NumericCheckerVolume,
-    message: 'Volume must be numeric.'
+    validator: NumericCheckerWorkLength,
+    message: 'WorkLength must be numeric.'
   }
 ]
+
+
 
 let AddressLengthChecker = (Address) => {
   // Check if Address exists
@@ -264,29 +229,30 @@ const commentValidators = [
 const licenceSchema = new Schema({
   title: { type: String, required: true, validate: titleValidators },
   body: { type: String, required: true, validate: bodyValidators },
-  JobNo: { type: String, required: true, validate:JobNoValidators},
-  Client: {type:String, required: true, validate:ClientValidators},
+  WorkWidth:{type:String, required: true, validate:WorkWidthValidators},
+  WorkLength:{type:String, required: true, validate:WorkLengthValidators},
   StartDate:{type:String, required: true},
-  SpeedOfRoad:{type:String, required: true},
-  RoadWidth:{type:String, required: true, validate:RoadWidthValidators},
-  CarriagewayType:{type:String,required: true},
-  RoadLevel:{type:String,required: true},
-  Volume:{type:String,required:true, validate:VolumeValidators},
-  WorksType:{type:String,required:true},
-  WorksHours:{type:String,required:true},
-  LocationOnRoad:{type:String,required:true},
-  TypeOfTrafficCR:{type:String,required:true},
+  Client: {type:String, required: true, validate:ClientValidators},
   Address:{type:String,required:true, validate:AddressValidators},
-  LocationMap:{type:String},
-  LicenceRequired:{type:String, required:true},
-  close: {type:Boolean, default:false},
   path:{type:Array},
+  LicenceType:{type:String, required:true},
+  TMType:{type:String,required: true},
+
+  WorksStartDate:{type:String, default:''},
+  WorksEndDate:{type:String, default:''},
+  LicencePath:{type:Array},
+
+  pathPost:{type:Array},
+  close: {type:Boolean, default:false},
+  phase1: {type:Boolean, default:true},
+  phase2: {type:Boolean, default:false},
+  phase3: {type:Boolean, default:false},
+  phase4: {type:Boolean, default:false},
+  phase5: {type:Boolean, default:false},
+  phase6: {type:Boolean, default:false},
+
   createdBy: { type: String },
   createdAt: { type: Date, default: Date.now },
-  likes: { type: Number, default: 0 },
-  likedBy: { type: Array },
-  dislikes: { type: Number, default: 0 },
-  dislikedBy: { type: Array },
   comments: [{
     comment: { type: String, validate: commentValidators },
     commentator: { type: String },

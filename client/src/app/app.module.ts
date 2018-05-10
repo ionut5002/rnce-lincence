@@ -27,6 +27,9 @@ import { LicenceComponent } from './components/licence/licence.component';
 import { EditLicenceComponent } from './components/licence/edit-licence/edit-licence.component';
 import { DeleteLicenceComponent } from './components/licence/delete-licence/delete-licence.component';
 import { LicenceService } from './services/licence.service';
+import { UploadLicenceComponent } from './components/licence/upload-licence/upload-licence.component';
+import { BookingComponent } from './components/licence/booking/booking.component';
+import { PostWorksComponent } from './components/licence/post-works/post-works.component';
 
 
 @NgModule({
@@ -47,6 +50,9 @@ import { LicenceService } from './services/licence.service';
     EditLicenceComponent,
     DeleteLicenceComponent,
     ClosedLicenceComponent,
+    UploadLicenceComponent,
+    BookingComponent,
+    PostWorksComponent,
     
   ],
   imports: [

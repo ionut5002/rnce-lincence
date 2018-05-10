@@ -26,8 +26,9 @@
     </tr>
     </div></div>
   </div>
-  <a [routerLink]="['/closed-licence/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Licences</button></a>
+  
   </div>
+  <a *ngIf="!newPost" [routerLink]="['/closed-licence/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Licences</button></a>
 <br />
 <br />
 
@@ -48,19 +49,7 @@
       </ul>
     </div>
   </div>
-  <div class="form-group col-md-3">
-    <label for="LicenceNo">LicenceNo</label>
-    <div [ngClass]="{'has-success': form.controls.LicenceNo.valid, 'has-error': form.controls.LicenceNo.dirty && form.controls.LicenceNo.errors}">
-  <!-- Licence Input -->
-  <input type="text" name="LicenceNo" class="form-control" placeholder="*Licence Number" autocomplete="off" formControlName="LicenceNo" />
-  <!-- Validation -->
-  <ul class="help-block">
-    <li *ngIf="form.controls.LicenceNo.dirty && form.controls.LicenceNo.errors?.required">This field is required.</li>
-    <li *ngIf="(form.controls.LicenceNo.dirty && form.controls.LicenceNo.errors?.minlength) || (form.controls.LicenceNo.dirty && form.controls.LicenceNo.errors?.maxlength)">Only 5 Digits</li>
-    <li *ngIf="form.controls.LicenceNo.dirty && form.controls.LicenceNo.errors?.NumericValidation2">Must be a number</li>
-  </ul>
-</div>
-</div></div>
+  </div>
 <div class="row">
 <div class="form-group col-md-9">
   <label for="Client">Client</label>
@@ -94,122 +83,57 @@
   </ul>
   </div>
   </div>
-  <div class="form-group col-md-3"><a class="btn btn-success" (click)="getGeolocation()">Get my Location</a><div *ngIf="this.location">Latitude:{{location.latitude}} Longitude:{{location.longitude}}</div></div>
+  
 </div>
 <div class="row">
-<div class="form-group col-md-6">
-  <label for="SpeedOfRoad">Speed Of Road</label>
-    <!-- SpeedOfRoad Input -->
-      <select class="form-control" name="SpeedOfRoad" formControlName="SpeedOfRoad">
-        <option >30Km/h</option>
-        <option>40Km/h</option>
-        <option>50Km/h</option>
-        <option class="selected">60Km/h</option>
-        <option>80Km/h</option>
-        <option>100Km/h</option>
-        <option>120Km/h</option>
-      </select>
-</div>
+
 
 <div class="form-group col-md-6">
-  <label for="LicenceRequired">Licence Required</label>
-    <!-- LicenceRequired Input -->
-      <select class="form-control" name="LicenceRequired" formControlName="LicenceRequired">
-        <option >Yes</option>
-        <option>No</option>
+  <label for="LicenceType">Licence Type</label>
+    <!-- LicenceType Input -->
+      <select class="form-control" name="LicenceType" formControlName="LicenceType">
+        <option >T2</option>
+        <option>T3</option>
+        <option>T4</option>
+      </select>
+</div>
+<div class="form-group col-md-6">
+  <label for="TMType">Traffic Management Plan Type</label>
+    <!-- TMType Input -->
+      <select class="form-control" name="TMType" formControlName="TMType">
+        <option >Specific</option>
+        <option>Generic</option>
       </select>
 </div></div>
 <div class="row">
 <div class="form-group col-md-6">
-  <label for="RoadWidth">Road Width(in meters)</label>
-  <div [ngClass]="{'has-success': form.controls.RoadWidth.valid, 'has-error': form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors}">
+  <label for="WorkLength">Work Length(in meters)</label>
+  <div [ngClass]="{'has-success': form.controls.WorkLength.valid, 'has-error': form.controls.WorkLength.dirty && form.controls.WorkLength.errors}">
 <!-- Road Width Input -->
-<input type="text" name="RoadWidth" class="form-control" placeholder="*RoadWidth" autocomplete="off" formControlName="RoadWidth" />
+<input type="text" name="WorkLength" class="form-control" placeholder="*WorkLength" autocomplete="off" formControlName="WorkLength" />
 <!-- Validation -->
 <ul class="help-block">
-  <li *ngIf="form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.required">This field is required.</li>
-  <li *ngIf="(form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.minlength) || (form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.maxlength)">Max length: 4, Min length: 1</li>
-  <li *ngIf="form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.NumericValidation">Must be a number</li>
+  <li *ngIf="form.controls.WorkLength.dirty && form.controls.WorkLength.errors?.required">This field is required.</li>
+  <li *ngIf="(form.controls.WorkLength.dirty && form.controls.WorkLength.errors?.minlength) || (form.controls.WorkLength.dirty && form.controls.WorkLength.errors?.maxlength)">Max length: 4, Min length: 1</li>
+  <li *ngIf="form.controls.WorkLength.dirty && form.controls.WorkLength.errors?.NumericValidation">Must be a number</li>
 </ul>
 </div>
 </div>
 
 <div class="form-group col-md-6">
-  <label for="CarriagewayType">Carriageway Type</label>
-    <!-- CarriagewayType Input -->
-      <select class="form-control" name="CarriagewayType" formControlName="CarriagewayType">
-        <option >Single</option>
-        <option>Dual</option>
-      </select>
-</div></div>
-<div class="row">
-<div class="form-group col-md-6">
-  <label for="RoadLevel">Road Level</label>
-  <!-- RoadLevel Input -->
-      <select class="form-control" name="RoadLevel" formControlName="RoadLevel">
-        <option >1&amp;2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5&amp;6</option> 
-      </select>
-</div>
-
-<div class="form-group col-md-6">
-  <label for="Volume">Volume(3 min count)</label>
-  <div [ngClass]="{'has-success': form.controls.Volume.valid, 'has-error': form.controls.Volume.dirty && form.controls.Volume.errors}">
-<!-- Volume Input -->
-<input type="text" name="Volume" class="form-control" placeholder="*Volume" autocomplete="off" formControlName="Volume" />
+  <label for="WorkWidth">Work Width(in meters)</label>
+  <div [ngClass]="{'has-success': form.controls.WorkWidth.valid, 'has-error': form.controls.WorkWidth.dirty && form.controls.WorkWidth.errors}">
+<!-- Road Width Input -->
+<input type="text" name="WorkWidth" class="form-control" placeholder="*WorkWidth" autocomplete="off" formControlName="WorkWidth" />
 <!-- Validation -->
 <ul class="help-block">
-  <li *ngIf="form.controls.Volume.dirty && form.controls.Volume.errors?.required">This field is required.</li>
-  <li *ngIf="(form.controls.Volume.dirty && form.controls.Volume.errors?.minlength) || (form.controls.Volume.dirty && form.controls.Volume.errors?.maxlength)">Max length: 4, Min length: 1</li>
-  <li *ngIf="form.controls.Volume.dirty && form.controls.Volume.errors?.NumericValidation">Must be a number</li>
+  <li *ngIf="form.controls.WorkWidth.dirty && form.controls.WorkWidth.errors?.required">This field is required.</li>
+  <li *ngIf="(form.controls.WorkWidth.dirty && form.controls.WorkWidth.errors?.minlength) || (form.controls.WorkWidth.dirty && form.controls.WorkWidth.errors?.maxlength)">Max length: 4, Min length: 1</li>
+  <li *ngIf="form.controls.WorkWidth.dirty && form.controls.WorkWidth.errors?.NumericValidation">Must be a number</li>
 </ul>
 </div>
 </div></div>
-<div class="row">
-<div class="form-group col-md-6">
-  <label for="WorksType">Works Type</label>
-  <!-- WorksType Input -->
-      <select class="form-control" name="WorksType" formControlName="WorksType">
-        <option selected>A</option>
-        <option>B</option>
-        <option>C</option>
-      </select>
-</div>
 
-<div class="form-group col-md-6">
-  <label for="WorksHours">Works Hours</label>
-  <!-- WorksType Input -->
-      <select class="form-control" name="WorksHours" formControlName="WorksHours" >
-        <option selected>24Hrs</option>
-        <option>Day</option>
-        <option>Night</option>
-        <option>Short</option>  
-      </select>
-</div></div>
-<div class="row">
-<div class="form-group col-md-6">
-  <label for="LocationOnRoad">Location On Road</label>
-  <!-- WorksType Input -->
-      <select class="form-control" name="LocationOnRoad" formControlName="LocationOnRoad">
-        <option selected>Path</option>
-        <option>H/S</option>
-        <option>Bus Lane</option>
-        <option>Lane</option> 
-      </select>
-</div>
-
-<div class="form-group col-md-6">
-  <label for="TypeOfTrafficCR">Type Of Traffic Control Required</label>
-  <!-- TypeOfTrafficCR Input -->
-      <select class="form-control" name="TypeOfTrafficCR" formControlName="TypeOfTrafficCR">
-        <option selected>Road Closed</option>
-        <option>Lane Closed</option>
-        <option>Traffic Lights</option>
-        <option>Stop&amp;Go</option>
-        </select>
-</div></div>
 
   <!-- Body Input -->
   <div class="form-group ">
@@ -256,7 +180,7 @@
 <div class="panel panel-primary" *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username) ">
     <!-- Panel Title -->
     <div class="panel-heading">
-      <h3 class="panel-title">{{ licence.title }} {{ licence.LicenceNo }}</h3>
+      <h3 class="panel-title">{{ licence.title }}</h3>
     </div>
 
     <!-- Panel Body -->
@@ -266,27 +190,41 @@
       <ul class="list-unstyled">
         <li><strong>Client: </strong> {{licence.Client}}</li>
         <li><strong>Address: </strong> {{licence.Address}}</li>
-        <li><strong>Licence Required: </strong> {{licence.LicenceRequired}}</li>
+        <li><strong>Licence Type: </strong> {{licence.LicenceType}}</li>
         <li><strong>StartDate:</strong> {{licence.StartDate}}</li>
-        <li><strong>SpeedOfRoad:</strong> {{licence.SpeedOfRoad}}</li>
-        <li><strong>RoadWidth:</strong> {{licence.RoadWidth}} m</li>
-        <li><strong>CarriagewayType:</strong> {{licence.CarriagewayType}}</li>
-        <li><strong>RoadLevel:</strong> {{licence.RoadLevel}}</li>
-        <li><strong>Volume:</strong> {{licence.Volume}} (3 min count)</li>
-        <li><strong>WorksType:</strong> {{licence.WorksType}}</li>
-        <li><strong>WorksHours:</strong> {{licence.WorksHours}}</li>
-        <li><strong>LocationOnRoad:</strong> {{licence.LocationOnRoad}}</li>
-        <li><strong>Type Of Traffic Control Required:</strong> {{licence.TypeOfTrafficCR}}</li>
+        <li><strong>WorkLength:</strong> {{licence.WorkLength}} m</li>
+        <li><strong>WorkWidth:</strong> {{licence.WorkWidth}} m</li>
+        <li><strong>TMType:</strong> {{licence.TMType}}</li>
         <li><strong>Description:</strong> {{ licence.body }} </li>
         <li><a *ngIf="licence.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ licence.LocationMap }}" target="_blank">See on Map by Coordonates</a>
             <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ licence.Address }}" target="_blank">See on Map by Address</a></li>
       </ul>
-    </div>
-    <div class="col-md-6" *ngFor="let ph of licence.path">
+    </div><div class="col-md-6">
+      <h3>Pre works photos</h3>
+    <div *ngFor="let ph of licence.path">
       <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" alt="" width="200" height="100"></a>
       {{ph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
-    </div></div>
+    </div></div></div>
+    <div class="row">
+    <div class="col-md-6" >
+        <h3>Licence Valid</h3>
+      <div *ngFor="let lph of licence.LicencePath">
+        <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" alt="" width="200" height="100"></a>
+        {{lph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+      </div></div>
 
+      <div class="col-md-6" >
+          <h3>Post works photos</h3>
+        <div *ngFor="let pph of licence.pathPost">
+          <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" alt="" width="200" height="100"></a>
+          {{pph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+        </div></div></div>
+      
+      <button [disabled]="!licence.phase1" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="ApplyingForLicence(licence._id)">Applying</button>    
+      <a [routerLink]="['/upload-licence/', licence._id]" *ngIf="role === 'TMP'"><button  [disabled]="!licence.phase2" type="button" name="button" class="btn btn-lg btn-success">Upload</button></a>
+      <a [routerLink]="['/book-works/', licence._id]" *ngIf="username === licence.createdBy"><button  [disabled]="!licence.phase3" type="button" name="button" class="btn btn-lg btn-success">Book Work Date</button></a>
+      <a [routerLink]="['/post-works/', licence._id]" *ngIf="username === licence.createdBy"><button  [disabled]="!licence.phase4" type="button" name="button" class="btn btn-lg btn-success">Post Works Photos</button></a>
+      <button [disabled]="!licence.phase5" *ngIf="username === licence.createdBy" type="button" name="button" class="btn btn-lg btn-success" (click)="CompleteWorks(licence._id)">Job Complete</button>    
     <!-- Panel Footer Start -->
     <div class="panel-footer">
       <strong>Posted by: </strong>{{ licence.createdBy }}
