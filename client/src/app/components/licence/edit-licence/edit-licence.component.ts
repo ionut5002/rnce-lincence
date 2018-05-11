@@ -92,7 +92,7 @@ export class EditLicenceComponent implements OnInit {
         
     }
     newEmailNote(){
-      if(this.emailList==[]){
+      
       const newEmail = {
         to: this.emailList.toString(), // Title field
         html:'<h2>New Edit on Job</h2><br /> '+ ' Title: <strong>' + this.licence.title +'</strong><br />' +'Job No: ' +'<strong>' + this.licence.JobNo+'</strong>'+'</strong><br />' +'By: ' +'<strong>' + this.licence.createdBy+'</strong>', // CreatedBy field
@@ -101,7 +101,7 @@ export class EditLicenceComponent implements OnInit {
       this.licenceService.newEmailNot(newEmail).subscribe(data => {
         // Check if licence was saved to database or not
         
-      });}
+      });
     }
 
   ngOnInit() {

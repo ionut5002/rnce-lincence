@@ -49,3 +49,7 @@ td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
+
+.licencetype {
+    border: 1px solid black;
+}

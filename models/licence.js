@@ -224,7 +224,7 @@ const commentValidators = [
     message: 'Comments may not exceed 200 characters.'
   }
 ];
-
+const twoyears = 365*2*24*60*60*1000;
 // Licence Model Definition
 const licenceSchema = new Schema({
   title: { type: String, required: true, validate: titleValidators },
@@ -253,6 +253,7 @@ const licenceSchema = new Schema({
 
   createdBy: { type: String },
   createdAt: { type: Date, default: Date.now },
+  RefundDate: { type: Date, default: () => Date.now() + 410*2*24*60*60*1000},
   comments: [{
     comment: { type: String, validate: commentValidators },
     commentator: { type: String },

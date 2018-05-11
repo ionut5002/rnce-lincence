@@ -88,25 +88,51 @@
 <div class="row">
 
 
-<div class="form-group col-md-6">
-  <label for="LicenceType">Licence Type</label>
+<div class="form-group col-md-6 ">
+  <label for="LicenceType">Select Licence Type</label>
     <!-- LicenceType Input -->
-      <select class="form-control" name="LicenceType" formControlName="LicenceType">
+    
+		<div class="radio licencetype" [ngClass]="t2class" (click)="classt2()">
+		  <label>
+			<input type="radio" name="LicenceType" formControlName="LicenceType" value="T2">
+			<strong>T2</strong> - Excavation area limit(in meters): <strong>200m<sup>2</sup></strong><br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Valid Period: <strong>3 months</strong><br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Advance Notification Period(days): <strong>20</strong><br/>
+		  </label>
+		</div>
+		<div class="radio licencetype" [ngClass]="t3class" (click)="classt3()">
+		  <label>
+			<input type="radio"  name="LicenceType" formControlName="LicenceType" value="T3">
+			<strong>T3</strong> - Excavation area limit(in meters): <strong>5m<sup>2</sup></strong><br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Valid Period: <strong>3 months</strong><br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Advance Notification Period(days): <strong>20</strong><br/>
+		  </label>
+    </div>
+    <div class="radio licencetype" [ngClass]="t4class" (click)="classt4()">
+		  <label>
+			<input type="radio" name="LicenceType" formControlName="LicenceType" value="T4">
+			<strong>T4</strong> - Emergency Works <strong>Only</strong><br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Valid Period: <strong>48 hours</strong><br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Advance Notification Period(hours): <strong>24</strong><br/>
+		  </label>
+		</div>
+      <!-- <select class="form-control" name="LicenceType" formControlName="LicenceType">
         <option >T2</option>
         <option>T3</option>
         <option>T4</option>
-      </select>
+      </select> -->
 </div>
-<div class="form-group col-md-6">
-  <label for="TMType">Traffic Management Plan Type</label>
-    <!-- TMType Input -->
-      <select class="form-control" name="TMType" formControlName="TMType">
-        <option >Specific</option>
-        <option>Generic</option>
-      </select>
-</div></div>
-<div class="row">
-<div class="form-group col-md-6">
+
+<div class="col-md-6">
+    <div class="form-group col-md-12">
+        <label for="TMType">Traffic Management Plan Type</label>
+          <!-- TMType Input -->
+            <select class="form-control" name="TMType" formControlName="TMType">
+              <option >Specific</option>
+              <option>Generic</option>
+            </select>
+      </div>
+<div class="form-group col-md-12">
   <label for="WorkLength">Work Length(in meters)</label>
   <div [ngClass]="{'has-success': form.controls.WorkLength.valid, 'has-error': form.controls.WorkLength.dirty && form.controls.WorkLength.errors}">
 <!-- Road Width Input -->
@@ -120,7 +146,7 @@
 </div>
 </div>
 
-<div class="form-group col-md-6">
+<div class="form-group col-md-12">
   <label for="WorkWidth">Work Width(in meters)</label>
   <div [ngClass]="{'has-success': form.controls.WorkWidth.valid, 'has-error': form.controls.WorkWidth.dirty && form.controls.WorkWidth.errors}">
 <!-- Road Width Input -->
@@ -132,7 +158,7 @@
   <li *ngIf="form.controls.WorkWidth.dirty && form.controls.WorkWidth.errors?.NumericValidation">Must be a number</li>
 </ul>
 </div>
-</div></div>
+</div></div></div>
 
 
   <!-- Body Input -->
@@ -177,7 +203,7 @@
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
   <div  *ngFor="let licence of licencePosts">
-<div class="panel panel-primary" *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username) ">
+<div  [ngClass]="licence.LicenceType=='T4' ? 'panel panel-danger' : 'panel panel-primary'"  *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username) ">
     <!-- Panel Title -->
     <div class="panel-heading">
       <h3 class="panel-title">{{ licence.title }}</h3>
@@ -187,6 +213,12 @@
     
     <div class="panel-body">
       <div class="col-md-6">
+          <h4 *ngIf="licence.phase1" class='text-danger'>Status: Request for Licence</h4>
+        <h4 *ngIf="licence.phase2">Status: Applying for Licence</h4>
+        <h4 *ngIf="licence.phase3">Status: Licence Uploaded, working dates need to be Booked</h4>
+        <h4 *ngIf="licence.phase4">Status: Working Dates Booked waiting for Post Works Photos</h4>
+        <h4 *ngIf="licence.phase5">Status: Post Works Photos Uploaded, Please mark when job is finished</h4>
+        <h4 *ngIf="licence.phase6" class='text-success'>Status: Job Finished</h4>
       <ul class="list-unstyled">
         <li><strong>Client: </strong> {{licence.Client}}</li>
         <li><strong>Address: </strong> {{licence.Address}}</li>

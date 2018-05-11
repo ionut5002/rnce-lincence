@@ -16,6 +16,9 @@ import { forEach } from '@angular/router/src/utils/collection';
 export class LicenceComponent implements OnInit {
   
   licenceCr;
+  t2class = 'alert alert-info';
+  t3class = 'alert alert-info';
+  t4class = 'alert alert-info';
   messageClass;
   message;
   newPost = false;
@@ -479,12 +482,12 @@ getAllUsers() {
       if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email)){
       this.emailList.push(this.allusers[i].email)}
       }
-      console.log(this.emailList.toString())
+      
   }
 
   
   newEmailNote(){
-    if(this.emailList==[]){
+   
     const newEmail = {
       to: this.emailList.toString(), // Title field
       html:'<h2>New Licence</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Licence Type: ' +'<strong>' + this.form.get('LicenceType').value+'</strong>'+'</strong><br />' +'Start Date: ' +'<strong>' + this.form.get('StartDate').value+'</strong>', // CreatedBy field
@@ -493,13 +496,11 @@ getAllUsers() {
     this.licenceService.newEmailNot(newEmail).subscribe(data => {
       // Check if licence was saved to database or not
       
-    });}else {
-      console.log('no emails to send to')
-    }
+    });
   }
 
   CommEmailNote(){
-    if(this.emailList==[]){
+    
     const newEmail = {
       to: this.emailList.toString(),// Title field
       html:'<h2>New Changes on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
@@ -508,10 +509,10 @@ getAllUsers() {
     this.licenceService.newEmailNot(newEmail).subscribe(data => {
       // Check if licence was saved to database or not
       
-    });}
+    });
   }
   ApplyingEmailNote(){
-    if(this.emailList==[]){
+    
     const newEmail = {
       to: this.emailList.toString(),// Title field
       html:'<h2>Applying Process started on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
@@ -520,10 +521,10 @@ getAllUsers() {
     this.licenceService.newEmailNot(newEmail).subscribe(data => {
       // Check if licence was saved to database or not
       
-    });}
+    });
   }
   CompleteEmailNote(){
-    if(this.emailList==[]){
+    
     const newEmail = {
       to: this.emailList.toString(),// Title field
       html:'<h2>Works completed on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
@@ -532,7 +533,7 @@ getAllUsers() {
     this.licenceService.newEmailNot(newEmail).subscribe(data => {
       // Check if licence was saved to database or not
       
-    });}
+    });
   }
 
   ApplyingForLicence(id) {
@@ -575,6 +576,25 @@ getAllUsers() {
     this.licenceService.CompleteWorks(id).subscribe(data => {
       this.getAllLicences(); // Refresh licences after like
     });
+  }
+
+  classt2(){
+    this.t2class='alert alert-success';
+    this.t3class='alert alert-info';
+    this.t4class='alert alert-info';
+
+  }
+  classt3(){
+    this.t2class='alert alert-info';
+    this.t3class='alert alert-success';
+    this.t4class='alert alert-info';
+
+  }
+  classt4(){
+    this.t2class='alert alert-info';
+    this.t3class='alert alert-info';
+    this.t4class='alert alert-danger';
+
   }
   ngOnInit() {
     // Get profile username on page load

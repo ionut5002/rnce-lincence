@@ -102,7 +102,7 @@ export class BookingComponent implements OnInit {
       if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.licence.createdBy && this.allusers[i].email !== this.email)){
       this.emailList.push(this.allusers[i].email)}
       }
-      console.log(this.emailList.toString())
+      
   }
 
   getAllUsers() {
@@ -115,7 +115,7 @@ export class BookingComponent implements OnInit {
 
   WorkEmailNote(){
     this.getEmailListComm()
-    if(this.emailList==[]){
+    
     const newEmail = {
       to: this.emailList.toString(),// Title field
       html:'<h2>Works Dates Booked on </h2><br /> '+ ' Title: <strong>' +this.licence.title +'</strong><br />' +'Job No: ' +'<strong>' + this.licence.LicenceType+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
@@ -124,7 +124,7 @@ export class BookingComponent implements OnInit {
     this.licenceService.newEmailNot(newEmail).subscribe(data => {
       // Check if licence was saved to database or not
       
-    });}
+    });
   }
   
 
