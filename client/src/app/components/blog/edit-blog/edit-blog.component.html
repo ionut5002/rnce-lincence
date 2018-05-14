@@ -122,13 +122,15 @@
   </div></div>
   <div class="row">
   <div class="form-group col-md-6">
-    <label for="LocationOnRoad">Location On Road</label>
+    <label for="LocationOnRoad">Location On Road/Path/Verge</label>
     <!-- WorksType Input -->
         <select [disabled]="processing" class="form-control" name="LocationOnRoad" [(ngModel)]="blog.LocationOnRoad" #LocationOnRoad="ngModel">
           <option selected>Path</option>
           <option>H/S</option>
           <option>Bus Lane</option>
           <option>Lane</option> 
+          <option>Lane&amp;Path</option> 
+          <option>Bus Lane&amp;Path</option> 
         </select>
   </div>
 

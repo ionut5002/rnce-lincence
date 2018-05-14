@@ -218,7 +218,7 @@ export class RegisterComponent implements OnInit {
           _id: this.Notifications[i]._id,
           newUser: this.form.get('username').value
         }
-        this.blogService.editNotification(this.newUserSeen).subscribe(data =>{
+        this.blogService.editNotification(this.newUserSeen.toLowerCase()).subscribe(data =>{
           if(!data.success){
 
           }else {
