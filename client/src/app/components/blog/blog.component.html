@@ -323,6 +323,11 @@
         <li><strong>LocationOnRoad:</strong> {{blog.LocationOnRoad}}</li>
         <li><strong>Type Of Traffic Control Required:</strong> {{blog.TypeOfTrafficCR}}</li>
         <li><strong>Description:</strong> {{ blog.body }} </li>
+        <h4>Health and Safety</h4>
+        <li><strong>-Safety Folder Needed?:</strong> {{ blog.SafetyFolder }} </li>
+        <li><strong>-Prelim plan received and issued to GSEQ Dept
+          Af1 required/received from Client/PSDP? </strong> {{ blog.PSDP }} </li>
+        <li><strong>-Are RNCE PSCS on the work? </strong> {{ blog.PSCS }} </li>
         <li><a *ngIf="blog.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ blog.LocationMap }}" target="_blank">See on Map by Coordonates</a>
             <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ blog.Address }}" target="_blank">See on Map by Address</a></li>
       </ul>
