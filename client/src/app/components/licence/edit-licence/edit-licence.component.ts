@@ -86,7 +86,7 @@ export class EditLicenceComponent implements OnInit {
   
     getEmailList(){
       for(let i =0; i < this.allusers.length; i++){
-        if(this.allusers[i].role === "TMP"){
+        if((this.allusers[i].role === "TMP") || (this.allusers[i].role === "HS")){
         this.emailList.push(this.allusers[i].email)}
         }
         

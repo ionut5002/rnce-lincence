@@ -12,6 +12,7 @@ import { Http ,RequestOptions, Headers} from '@angular/http';
 })
 export class UploadLicenceComponent implements OnInit {
 
+  uploadready = false;
   creatorEmail: any;
   emailList;
   email;
@@ -45,7 +46,10 @@ export class UploadLicenceComponent implements OnInit {
     this.processing=true;
     const uploadData ={
       id: this.currentUrl.id,
-      LicencePath: this.upl
+      LicencePath: this.upl,
+      LvalidFrom: this.licence.LvalidFrom,
+      LvalidTo: this.licence.LvalidTo
+
     }
     // Function for DELETE request
     this.licenceService.uploadLicence(uploadData).subscribe(data => {
@@ -113,6 +117,7 @@ export class UploadLicenceComponent implements OnInit {
   fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>>fileInput.target.files;
   this.upl=[];
+  this.uploadready= true;
     for(let i =0; i < this.filesToUpload.length; i++){
       if(this.filesToUpload[i].type=='application/msword' || this.filesToUpload[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
   this.upl.push(this.filesToUpload[i]['name'])
@@ -123,7 +128,7 @@ export class UploadLicenceComponent implements OnInit {
     
     this.emailList=[]
     for(let i =0; i < this.allusers.length; i++){
-      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email)){
+      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email) || (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
       this.emailList.push(this.allusers[i].email)}
       }
 
@@ -175,7 +180,9 @@ export class UploadLicenceComponent implements OnInit {
             body: data.licence.body, // Set body
             createdBy: data.licence.createdBy, // Set created_by field
             createdAt: data.licence.createdAt,
-            close: data.licence.close // Set created_at field
+            close: data.licence.close,
+            LvalidFrom: data.licence.LvalidFrom,
+            LvalidTo: data.licence.LvalidTo// Set created_at field
           }
           this.licenceService.getSingleUser(this.licence.createdBy).subscribe(data=>{
             if (!data.success) {

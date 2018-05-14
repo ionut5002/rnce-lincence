@@ -203,7 +203,7 @@
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
   <div  *ngFor="let licence of licencePosts">
-<div  [ngClass]="licence.LicenceType=='T4' ? 'panel panel-danger' : 'panel panel-primary'"  *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username) ">
+<div  [ngClass]="licence.LicenceType=='T4' ? 'panel panel-danger' : 'panel panel-primary'"  *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">
       <h3 class="panel-title">{{ licence.title }}</h3>
@@ -223,14 +223,17 @@
         <li><strong>Client: </strong> {{licence.Client}}</li>
         <li><strong>Address: </strong> {{licence.Address}}</li>
         <li><strong>Licence Type: </strong> {{licence.LicenceType}}</li>
-        <li><strong>StartDate:</strong> {{licence.StartDate}}</li>
+        <li><strong>StartDate:</strong> {{licence.StartDate | date:'dd MMM yyyy '}}</li>
         <li><strong>WorkLength:</strong> {{licence.WorkLength}} m</li>
         <li><strong>WorkWidth:</strong> {{licence.WorkWidth}} m</li>
         <li><strong>TMType:</strong> {{licence.TMType}}</li>
         <li><strong>Description:</strong> {{ licence.body }} </li>
         <li><a *ngIf="licence.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ licence.LocationMap }}" target="_blank">See on Map by Coordonates</a>
             <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ licence.Address }}" target="_blank">See on Map by Address</a></li>
-      </ul>
+            <li *ngIf="licence.WorksStartDate"><strong>Works Starts:</strong> {{ licence.WorksStartDate | date:'dd MMM yyyy ' }} </li>
+            <li *ngIf="licence.WorksStartDate"><strong>Works Ends:</strong> {{ licence.WorksEndDate | date:'dd MMM yyyy ' }} </li>
+          </ul>
+      
     </div><div class="col-md-6">
       <h3>Pre works photos</h3>
     <div *ngFor="let ph of licence.path">
@@ -241,6 +244,7 @@
     <div class="col-md-6" >
         <h3>Licence Valid</h3>
       <div *ngFor="let lph of licence.LicencePath">
+          <strong>Valid From: </strong>{{ licence.LvalidFrom| date:'dd MMM yyyy ' }} <strong>Valid To: </strong>{{ licence.LvalidTo| date:'dd MMM yyyy ' }} <br />
         <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" alt="" width="200" height="100"></a>
         {{lph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
       </div></div>

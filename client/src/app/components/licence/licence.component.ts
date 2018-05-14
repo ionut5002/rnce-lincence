@@ -208,6 +208,7 @@ export class LicenceComponent implements OnInit {
 
   // Function to post a new comment on Licence post
   draftComment(id) {
+    this.upl=[]
     this.commentForm.reset(); // Reset the comment form each time users starts a new comment
     this.newComment = []; // Clear array so only one post can be commented on at a time
     this.newComment.push(id); // Add the post that is being commented on to the array
@@ -469,7 +470,7 @@ getAllUsers() {
     
     this.emailList=[]
     for(let i =0; i < this.allusers.length; i++){
-      if(this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email){
+      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
       this.emailList.push(this.allusers[i].email)}
       }
       /* console.log(this.emailList.toString()) */
@@ -479,7 +480,7 @@ getAllUsers() {
     
     this.emailList=[]
     for(let i =0; i < this.allusers.length; i++){
-      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email)){
+      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email) || (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
       this.emailList.push(this.allusers[i].email)}
       }
       

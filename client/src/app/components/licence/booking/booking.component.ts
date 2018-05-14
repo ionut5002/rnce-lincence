@@ -99,7 +99,7 @@ export class BookingComponent implements OnInit {
     
     this.emailList=[]
     for(let i =0; i < this.allusers.length; i++){
-      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.licence.createdBy && this.allusers[i].email !== this.email)){
+      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.licence.createdBy && this.allusers[i].email !== this.email)|| (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
       this.emailList.push(this.allusers[i].email)}
       }
       

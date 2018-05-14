@@ -105,7 +105,7 @@
         <option >30Km/h</option>
         <option>40Km/h</option>
         <option>50Km/h</option>
-        <option class="selected">60Km/h</option>
+        <option>60Km/h</option>
         <option>80Km/h</option>
         <option>100Km/h</option>
         <option>120Km/h</option>
@@ -173,7 +173,7 @@
   <label for="WorksType">Works Type</label>
   <!-- WorksType Input -->
       <select class="form-control" name="WorksType" formControlName="WorksType">
-        <option selected>A</option>
+        <option >A</option>
         <option>B</option>
         <option>C</option>
       </select>
@@ -183,7 +183,7 @@
   <label for="WorksHours">Works Hours</label>
   <!-- WorksType Input -->
       <select class="form-control" name="WorksHours" formControlName="WorksHours" >
-        <option selected>24Hrs</option>
+        <option >24Hrs</option>
         <option>Day</option>
         <option>Night</option>
         <option>Short</option>  
@@ -194,7 +194,7 @@
   <label for="LocationOnRoad">Location On Road</label>
   <!-- WorksType Input -->
       <select class="form-control" name="LocationOnRoad" formControlName="LocationOnRoad">
-        <option selected>Path</option>
+        <option >Path</option>
         <option>H/S</option>
         <option>Bus Lane</option>
         <option>Lane</option> 
@@ -205,12 +205,49 @@
   <label for="TypeOfTrafficCR">Type Of Traffic Control Required</label>
   <!-- TypeOfTrafficCR Input -->
       <select class="form-control" name="TypeOfTrafficCR" formControlName="TypeOfTrafficCR">
-        <option selected>Road Closed</option>
+        <option>Road Closed</option>
         <option>Lane Closed</option>
         <option>Traffic Lights</option>
         <option>Stop&amp;Go</option>
         </select>
 </div></div>
+<div class="row">
+    <div class="form-group col-md-3">
+        <label for="emergency">Is an Emergency</label>
+        <input type="checkbox" name="emergency" formControlName="emergency">
+      </div>
+
+      <div class="form-group col-md-3">
+          <label for="PSDP">Prelim plan received and issued to GSEQ Dept
+              Af1 required/received from Client/PSDP?
+              </label>
+            <!-- PSDP Input -->
+              <select class="form-control" name="PSDP" formControlName="PSDP">
+                  
+                <option >Yes</option>
+                <option>No</option>
+              </select>
+        </div>
+
+<div class="form-group col-md-3">
+    <label for="SafetyFolder">Safety Folders is requested?</label>
+      <!-- SafetyFolder Input -->
+        <select class="form-control" name="SafetyFolder" formControlName="SafetyFolder">
+          <option >Yes</option>
+          <option>No</option>
+        </select>
+  </div>
+  <div class="form-group col-md-3">
+      <label for="PSCS">Are RNCE PSCS on the work?</label>
+        <!-- PSCS Input -->
+          <select class="form-control" name="PSCS" formControlName="PSCS">
+              <option >Yes</option>
+              <option>No</option>
+            
+          </select>
+    </div>
+  
+</div>
 
   <!-- Body Input -->
   <div class="form-group ">
@@ -254,7 +291,7 @@
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
   <div  *ngFor="let blog of blogPosts">
-<div class="panel panel-primary" *ngIf="!blog.close && (role === 'TMP' || blog.createdBy === username) ">
+<div [ngClass]="blog.emergency ? 'panel panel-danger' : 'panel panel-primary'" *ngIf="!blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">
       <h3 class="panel-title">{{ blog.title }} {{ blog.JobNo }}</h3>

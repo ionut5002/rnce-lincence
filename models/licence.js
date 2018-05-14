@@ -240,6 +240,8 @@ const licenceSchema = new Schema({
 
   WorksStartDate:{type:String, default:''},
   WorksEndDate:{type:String, default:''},
+  LvalidFrom:{type:String, default:''},
+  LvalidTo:{type:String, default:''},
   LicencePath:{type:Array},
 
   pathPost:{type:Array},

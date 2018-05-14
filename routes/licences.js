@@ -353,6 +353,8 @@ module.exports = (router) => {
                     licence.phase3=true;
                     licence.phase2=false;
                     licence.LicencePath=req.body.LicencePath
+                    licence.LvalidFrom= req.body.LvalidFrom,
+                    licence.LvalidTo= req.body.LvalidTo,
                     licence.save((err) => {
                       if (err) {
                         res.json({ success: false, message: err }); // Return error message

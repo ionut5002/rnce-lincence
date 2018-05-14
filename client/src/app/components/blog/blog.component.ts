@@ -85,6 +85,10 @@ export class BlogComponent implements OnInit {
       ])],
       StartDate : [],
       SpeedOfRoad: [],
+      emergency: [],
+      SafetyFolder: [],
+      PSCS: [],
+      PSDP: [],
       RoadWidth: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(4),
@@ -156,6 +160,10 @@ export class BlogComponent implements OnInit {
     this.form.get('TypeOfTrafficCR').enable();
     this.form.get('Address').enable();
     this.form.get('LicenceRequired').enable();
+    this.form.get('emergency').enable(),
+    this.form.get('SafetyFolder').enable(),
+    this.form.get('PSCS').enable(),
+    this.form.get('PSDP').enable()
     
   }
 
@@ -177,6 +185,10 @@ export class BlogComponent implements OnInit {
     this.form.get('TypeOfTrafficCR').disable();
     this.form.get('Address').disable();
     this.form.get('LicenceRequired').disable();
+    this.form.get('emergency').disable(),
+    this.form.get('SafetyFolder').disable(),
+    this.form.get('PSCS').disable(),
+    this.form.get('PSDP').disable()
      // Disable body field
   }
 
@@ -227,6 +239,7 @@ export class BlogComponent implements OnInit {
 
   // Function to post a new comment on blog post
   draftComment(id) {
+    this.upl=[]
     this.commentForm.reset(); // Reset the comment form each time users starts a new comment
     this.newComment = []; // Clear array so only one post can be commented on at a time
     this.newComment.push(id); // Add the post that is being commented on to the array
@@ -288,6 +301,10 @@ export class BlogComponent implements OnInit {
       Address:this.form.get('Address').value,
       LocationMap:this.LocationMap,
       LicenceRequired:this.form.get('LicenceRequired').value,
+      emergency:this.form.get('emergency').value,
+      SafetyFolder:this.form.get('SafetyFolder').value,
+      PSCS:this.form.get('PSCS').value,
+      PSDP:this.form.get('PSDP').value,
       path:this.upl,
       createdBy: this.username // CreatedBy field
     }
@@ -495,7 +512,7 @@ getAllUsers() {
     
     this.emailList=[]
     for(let i =0; i < this.allusers.length; i++){
-      if(this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email){
+      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
       this.emailList.push(this.allusers[i].email)}
       }
       /* console.log(this.emailList.toString()) */
@@ -505,7 +522,7 @@ getAllUsers() {
     
     this.emailList=[]
     for(let i =0; i < this.allusers.length; i++){
-      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email)){
+      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email) || (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
       this.emailList.push(this.allusers[i].email)}
       }
       /* console.log(this.emailList.toString()) */

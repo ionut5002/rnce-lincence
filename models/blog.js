@@ -1,3 +1,5 @@
+
+
 /* ===================
    Import Node Modules
 =================== */
@@ -280,6 +282,10 @@ const blogSchema = new Schema({
   LocationMap:{type:String},
   LicenceRequired:{type:String, required:true},
   close: {type:Boolean, default:false},
+  emergency: {type:Boolean, default:false},
+  SafetyFolder:{type:String, required: true},
+  PSCS:{type:String, required: true},
+  PSDP:{type:String, required: true},
   path:{type:Array},
   createdBy: { type: String },
   createdAt: { type: Date, default: Date.now },

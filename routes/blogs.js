@@ -56,7 +56,11 @@ module.exports = (router) => {
             TypeOfTrafficCR:req.body.TypeOfTrafficCR,
             Address: req.body.Address,
             LocationMap: req.body.LocationMap,
-            LicenceRequired:req.body.LicenceRequired
+            LicenceRequired:req.body.LicenceRequired,
+            emergency:req.body.emergency,
+            SafetyFolder:req.body.SafetyFolder,
+            PSCS:req.body.PSCS,
+            PSDP:req.body.PSDP
           });
           // Save blog into database
           blog.save((err) => {
@@ -200,6 +204,11 @@ module.exports = (router) => {
                     blog.Address = req.body.Address;
                     blog.LocationMap = req.body.LocationMap;
                     blog.LicenceRequired = req.body.LicenceRequired;
+                    blog.emergency = req.body.emergency;
+                    blog.SafetyFolder = req.body.SafetyFolder;
+                    blog.PSCS = req.body.PSCS;
+                    blog.PSDP = req.body.PSDP;
+
                     blog.save((err) => {
                       if (err) {
                         if (err.errors) {

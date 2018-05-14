@@ -143,6 +143,45 @@
           </select>
   </div></div>
 
+  <div class="row">
+      <div class="form-group col-md-3">
+          <label for="emergency">Is an Emergency</label>
+          <input type="checkbox"  name="emergency" [(ngModel)]="blog.emergency" #emergency="ngModel">
+        </div>
+  
+        <div class="form-group col-md-3">
+            <label for="PSDP">Prelim plan received and issued to GSEQ Dept
+                Af1 required/received from Client/PSDP?
+                </label>
+              <!-- PSDP Input -->
+                <select class="form-control" name="PSDP"  [(ngModel)]="blog.PSDP" #PSDP="ngModel">
+                    
+                  <option >Yes</option>
+                  <option>No</option>
+                </select>
+          </div>
+  
+  <div class="form-group col-md-3">
+      <label for="SafetyFolder">Safety Folders is requested?</label>
+        <!-- SafetyFolder Input -->
+          <select class="form-control" name="SafetyFolder"  [(ngModel)]="blog.SafetyFolder" #SafetyFolder="ngModel">
+            <option >Yes</option>
+            <option>No</option>
+          </select>
+    </div>
+    <div class="form-group col-md-3">
+        <label for="PSCS">Are RNCE PSCS on the work?</label>
+          <!-- PSCS Input -->
+            <select class="form-control" name="PSCS"  [(ngModel)]="blog.PSCS" #PSCS="ngModel">
+                <option >Yes</option>
+                <option>No</option>
+              
+            </select>
+      </div>
+    
+  </div>
+
+
   <!-- Body Field -->
   <div class="form-group">
     <label for="body">Description</label>
@@ -159,7 +198,7 @@
    (!title.dirty && !body.dirty && !JobNo.dirty && !Client.dirty && !StartDate.dirty && !SpeedOfRoad.dirty 
    && !RoadWidth.dirty && !CarriagewayType.dirty && !RoadLevel.dirty && !Volume.dirty && !WorksType.dirty 
    && !WorksHours.dirty && !LocationOnRoad.dirty && !TypeOfTrafficCR.dirty && !Address.dirty 
-   && !LicenceRequired.dirty && !LocationMap.dirty )" 
+   && !LicenceRequired.dirty && !LocationMap.dirty && !emergency.dirty && !SafetyFolder.dirty && !PSDP.dirty && !PSCS.dirty)" 
    type="submit" name="save" class="btn btn-info">Save Changes</button>
 
 </form>

@@ -70,7 +70,7 @@
 <div *ngIf="!foundBlog">
   <!-- Panel Outer Layer -->
   <div  *ngFor="let blog of blogPosts">
-<div class="panel panel-primary" *ngIf="blog.close && (role === 'TMP' || blog.createdBy === username) ">
+<div class="panel panel-primary" *ngIf="blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">
       <h3 class="panel-title">{{ blog.title }} {{ blog.JobNo }}</h3>

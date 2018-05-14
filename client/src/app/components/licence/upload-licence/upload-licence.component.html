@@ -23,18 +23,24 @@
 
     <!-- Modal Body -->
     <div class="modal-body">
+        <input type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+        <ul  class="list-unstyled" *ngFor="let names of this.upl">
+          <li >{{names}}</li>
+        </ul>
+        <br />
+        <br />
+      <label for="LvalidFrom">Licence valid From</label>
+      <input [disabled]="processing" type="date" name="LvalidFrom" placeholder="*LvalidFrom" class="form-control" [(ngModel)]="licence.LvalidFrom" #LvalidFrom="ngModel" />
+      <label for="LvalidTo">Licence valid To</label>
+      <input [disabled]="processing" type="date" name="LvalidTo" placeholder="*LvalidTo" class="form-control" [(ngModel)]="licence.LvalidTo" #LvalidTo="ngModel" />
       
-      <input type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
-  <ul  class="list-unstyled" *ngFor="let names of this.upl">
-    <li >{{names}}</li>
-  </ul>
     </div>
     
 
     <!-- Modal Footer -->
     <div class="modal-footer">
       <!-- Yes Button -->
-      <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="uploadLicence()">Upload</button>
+      <button [disabled]="!LvalidFrom.dirty || !LvalidTo.dirty || !this.uploadready" type="button" name="button" class="btn btn-success" (click)="uploadLicence()">Upload</button>
       <!-- No Button -->
       <a routerLink="/licence"><button [disabled]="processing" type="button" name="button" class="btn btn-danger">Back</button></a>
     </div>

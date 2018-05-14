@@ -70,7 +70,7 @@
 <div *ngIf="!foundLicence">
   <!-- Panel Outer Layer -->
   <div  *ngFor="let licence of licencePosts">
-<div class="panel panel-primary" *ngIf="licence.close && (role === 'TMP' || licence.createdBy === username) ">
+<div class="panel panel-primary" *ngIf="licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">
       <h3 class="panel-title">{{ licence.title }} {{ licence.LicenceNo }}</h3>
