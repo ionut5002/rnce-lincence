@@ -27,7 +27,7 @@ let alphaNumericTitleChecker = (title) => {
     return false; // Return error
   } else {
     // Regular expression to test for a valid title
-    const regExp = new RegExp(/^[a-zA-Z0-9 ]+$/);
+    const regExp = new RegExp(/^(?=.*[A-Z0-9])[\w.,!"'-\/$ ]+$/i);
     return regExp.test(title); // Return regular expression test results (true or false)
   }
 };
@@ -83,7 +83,7 @@ let AlphaNumericCheckerClient = (Client) => {
     return false; // Return error
   } else {
     // Regular expression to test for a valid Client
-    const regExp = new RegExp(/^[a-zA-Z0-9 ]+$/);
+    const regExp = new RegExp(/^(?=.*[A-Z0-9])[\w.,!"'-\/$ ]+$/i);
     return regExp.test(Client); // Return regular expression test results (true or false)
   }
 };
@@ -105,7 +105,7 @@ let WorkWidthLengthChecker = (WorkWidth) => {
     return false; // Return error
   } else {
     // Check length of WorkWidth
-    if (WorkWidth.length < 1 || WorkWidth.length > 4) {
+    if (WorkWidth.length < 1 || WorkWidth.length > 6) {
       return false; // Return error if does not meet length requirement
     } else {
       return true; // Return as valid WorkWidth
@@ -140,7 +140,7 @@ let WorkLengthLengthChecker = (WorkLength) => {
     return false; // Return error
   } else {
     // Check length of WorkLength
-    if (WorkLength.length < 1 || WorkLength.length > 4) {
+    if (WorkLength.length < 1 || WorkLength.length > 6) {
       return false; // Return error if does not meet length requirement
     } else {
       return true; // Return as valid WorkLength

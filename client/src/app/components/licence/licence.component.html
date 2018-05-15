@@ -45,7 +45,7 @@
       <ul class="help-block">
         <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.required">This field is required.</li>
         <li *ngIf="(form.controls.title.dirty && form.controls.title.errors?.minlength) || (form.controls.title.dirty && form.controls.title.errors?.maxlength)">Max length: 50, Min length: 5</li>
-        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.alphaNumericValidation">Must be a letter or number</li>
+        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.alphaNumericValidation">Must be a letter, number and not special characters</li>
       </ul>
     </div>
   </div>

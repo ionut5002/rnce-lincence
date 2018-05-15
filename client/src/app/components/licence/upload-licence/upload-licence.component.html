@@ -23,7 +23,7 @@
 
     <!-- Modal Body -->
     <div class="modal-body">
-        <input type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+        <input type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, application/pdf"  multiple  />
         <ul  class="list-unstyled" *ngFor="let names of this.upl">
           <li >{{names}}</li>
         </ul>

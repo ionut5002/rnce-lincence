@@ -119,7 +119,7 @@ export class UploadLicenceComponent implements OnInit {
   this.upl=[];
   this.uploadready= true;
     for(let i =0; i < this.filesToUpload.length; i++){
-      if(this.filesToUpload[i].type=='application/msword' || this.filesToUpload[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+      if(this.filesToUpload[i].type=='application/msword' || this.filesToUpload[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.filesToUpload[i].type=='application/pdf' ){
   this.upl.push(this.filesToUpload[i]['name'])
   }
     }

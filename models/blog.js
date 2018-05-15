@@ -29,7 +29,7 @@ let alphaNumericTitleChecker = (title) => {
     return false; // Return error
   } else {
     // Regular expression to test for a valid title
-    const regExp = new RegExp(/^[a-zA-Z0-9 ]+$/);
+    const regExp = new RegExp(/^(?=.*[A-Z0-9])[\w.,!"'-\/$ ]+$/i);
     return regExp.test(title); // Return regular expression test results (true or false)
   }
 };
@@ -119,7 +119,7 @@ let AlphaNumericCheckerClient = (Client) => {
     return false; // Return error
   } else {
     // Regular expression to test for a valid Client
-    const regExp = new RegExp(/^[a-zA-Z0-9 ]+$/);
+    const regExp = new RegExp(/^(?=.*[A-Z0-9])[\w.,!"'-\/$ ]+$/i);
     return regExp.test(Client); // Return regular expression test results (true or false)
   }
 };
@@ -141,7 +141,7 @@ let RoadWidthLengthChecker = (RoadWidth) => {
     return false; // Return error
   } else {
     // Check length of RoadWidth
-    if (RoadWidth.length < 1 || RoadWidth.length > 4) {
+    if (RoadWidth.length < 1 || RoadWidth.length > 6) {
       return false; // Return error if does not meet length requirement
     } else {
       return true; // Return as valid RoadWidth
@@ -178,7 +178,7 @@ let VolumeLengthChecker = (Volume) => {
     return false; // Return error
   } else {
     // Check length of Volume
-    if (Volume.length < 1 || Volume.length > 4) {
+    if (Volume.length < 1 || Volume.length > 6) {
       return false; // Return error if does not meet length requirement
     } else {
       return true; // Return as valid Volume

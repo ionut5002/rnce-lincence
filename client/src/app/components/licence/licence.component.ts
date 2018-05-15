@@ -84,13 +84,13 @@ export class LicenceComponent implements OnInit {
       StartDate : [],
       WorkWidth: ['', Validators.compose([
         Validators.required,
-        Validators.maxLength(4),
+        Validators.maxLength(6),
         Validators.minLength(1),
         this.NumericValidation
       ])],
       WorkLength: ['', Validators.compose([
         Validators.required,
-        Validators.maxLength(4),
+        Validators.maxLength(6),
         Validators.minLength(1),
         this.NumericValidation
       ])],
@@ -163,7 +163,7 @@ export class LicenceComponent implements OnInit {
 
   // Validation for title
   alphaNumericValidation(controls) {
-    const regExp = new RegExp(/^[a-zA-Z0-9 ]+$/); // Regular expression to perform test
+    const regExp = new RegExp(/^(?=.*[A-Z0-9])[\w.,!"'-\/$ ]+$/i); // Regular expression to perform test
     // Check if test returns false or true
     if (regExp.test(controls.value)) {
       return null; // Return valid
