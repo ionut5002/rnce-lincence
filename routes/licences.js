@@ -1012,8 +1012,264 @@ module.exports = (router) => {
     }
   });
 
-  
 
+
+  
+/* ===============================================================
+     AUTO EMAIL NOTIFICATION (phase1 reminder to apply)
+  =============================================================== */
+
+  const CronJob = require('cron').CronJob;
+  const ApplyReminder = new CronJob({
+    cronTime: '00 30 10 * * 1-5',
+    onTick: function() {
+      Licence.find({}, (err, licences) => {
+        // Check if error was found or not
+        if (err) {
+          console.log(err) // Return error message
+        } else {
+          // Check if licences were found in database
+          if (!licences) {
+            console.log('no licence found') // Return error of no licences found
+          } else {
+             // Return success and licences array
+             for(let i =0; i < licences.length; i++){
+              const licenceSubject = licences[i].title
+              const lincenceType = licences[i].LicenceType
+              console.log(licenceSubject)
+              if(licences[i].phase1){
+                
+                User.find({}, (err, users) => {
+                  // Check if error was found or not
+                  if (err) {
+                    console.log(err) // Return error message
+                  } else {
+                    // Check if licences were found in database
+                    if (!users) {
+                      console.log('no users found') // Return error of no licences found
+                    } else {
+                      for(let i =0; i < users.length; i++){
+                        if(users[i].role ==='TMP'){
+                          let transporter = nodemailer.createTransport({
+         
+                            service: 'gmail',
+                   auth: {
+                          user: process.env.Gmail,
+                          pass: process.env.GPass
+                      }
+                        });
+                    
+                        // setup email data with unicode symbols
+                        let mailOptions = {
+                            from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
+                            to: users[i].email, // list of receivers
+                            subject: licenceSubject, // Subject line
+                            text: 'Don&#39;t forget to apply for this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>', // plain text body
+                            html:'Don&#39;t forget to apply for this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>' // html body
+                        };
+                    
+                        // send mail with defined transport object
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                return console.log(error);
+                            }
+                            console.log('message send')
+                           
+                        });
+                        }
+                      }
+                      
+                       // Return success and licences array
+                    }
+                  }
+                })
+          
+          }
+            }
+          }
+        }
+      })
+    },
+    start: false,
+    timeZone: 'Europe/Dublin'
+  });
+ApplyReminder.start()
+
+
+/* ===============================================================
+     AUTO EMAIL NOTIFICATION (licence expired reminder to close)
+  =============================================================== */
+
+  
+  const CloseLicence = new CronJob({
+    cronTime: '00 30 10 * * 1-5',
+    onTick: function() {
+      Licence.find({}, (err, licences) => {
+        // Check if error was found or not
+        if (err) {
+          console.log(err) // Return error message
+        } else {
+          // Check if licences were found in database
+          if (!licences) {
+            console.log('no licence found') // Return error of no licences found
+          } else {
+             // Return success and licences array
+             for(let i =0; i < licences.length; i++){
+              const licenceSubject = licences[i].title
+              const lincenceType = licences[i].LicenceType
+              console.log(licenceSubject)
+              if(((new Date (licences[i].LvalidTo)) <= (new Date())) && (!licences[i].close)||((licences[i].phase6)&& (!licences[i].close))){
+                
+                User.findOne({username: licences[i].createdBy}, (err, user) => {
+                  // Check if error was found or not
+                  if (err) {
+                    console.log(err) // Return error message
+                  } else {
+                    // Check if licences were found in database
+                    if (!user) {
+                      console.log('no user found') // Return error of no licences found
+                    } else {
+                          let transporter = nodemailer.createTransport({
+         
+                            service: 'gmail',
+                   auth: {
+                          user: process.env.Gmail,
+                          pass: process.env.GPass
+                      }
+                        });
+                    
+                        // setup email data with unicode symbols
+                        let mailOptions = {
+                            from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
+                            to: user.email, // list of receivers
+                            subject: licenceSubject, // Subject line
+                            text:'The Licence is no more valid you have to close this licence request:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>', // plain text body
+                            html:'The Licence is no more valid.You have to close this licence request:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +
+                                  '</strong><br /> P.S. Don&#39;t forget to upload Post Works Photos and Mark it as complete before you close it.' // html body
+                        };
+                        let mailOptions2 = {
+                          from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
+                          to: user.email, // list of receivers
+                          subject: licenceSubject, // Subject line
+                          text:'The Licence is marked as Complete.You have to close this licence request:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>', // plain text body
+                          html:'The Licence is marked as Complete.You have to close this licence request:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>' // html body
+                      };
+                    
+                        // send mail with defined transport object
+                       if(((new Date (licences[i].LvalidTo)) <= (new Date())) && (!licences[i].close)){
+                        transporter.sendMail(mailOptions, (error, info) => {
+                          if (error) {
+                              return console.log(error);
+                          }
+                          console.log('message send')
+                         
+                      });
+                       }else{
+                        transporter.sendMail(mailOptions2, (error, info) => {
+                          if (error) {
+                              return console.log(error);
+                          }
+                          console.log('message send2')
+                         
+                      });
+                       }
+                       
+                      
+                       // Return success and licences array
+                    }
+                  }
+                })
+          
+          }
+            }
+          }
+        }
+      })
+    },
+    start: false,
+    timeZone: 'Europe/Dublin'
+  });
+  CloseLicence.start()
+
+/* ===============================================================
+     AUTO EMAIL NOTIFICATION (refund reminder)
+  =============================================================== */
+
+  const RefundReminder = new CronJob({
+    cronTime: '00 30 10 * * 1-5',
+    onTick: function() {
+      Licence.find({}, (err, licences) => {
+        // Check if error was found or not
+        if (err) {
+          console.log(err) // Return error message
+        } else {
+          // Check if licences were found in database
+          if (!licences) {
+            console.log('no licence found') // Return error of no licences found
+          } else {
+             // Return success and licences array
+             for(let i =0; i < licences.length; i++){
+              const licenceSubject = licences[i].title
+              const lincenceType = licences[i].LicenceType
+              console.log(licenceSubject)
+              if((new Date (licences[i].RefundDate)) === (new Date())){
+                
+                User.find({}, (err, users) => {
+                  // Check if error was found or not
+                  if (err) {
+                    console.log(err) // Return error message
+                  } else {
+                    // Check if licences were found in database
+                    if (!users) {
+                      console.log('no users found') // Return error of no licences found
+                    } else {
+                      for(let i =0; i < users.length; i++){
+                        if((users[i].role ==='TMP')|| (users[i].username === licences[i].createdBy)){
+                          let transporter = nodemailer.createTransport({
+         
+                            service: 'gmail',
+                   auth: {
+                          user: process.env.Gmail,
+                          pass: process.env.GPass
+                      }
+                        });
+                    
+                        // setup email data with unicode symbols
+                        let mailOptions = {
+                            from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
+                            to: users[i].email, // list of receivers
+                            subject: licenceSubject +'REFUND', // Subject line
+                            text: 'Don&#39;t forget to apply for this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>', // plain text body
+                            html:'Don&#39;t forget to apply for REFUND for this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>' // html body
+                        };
+                    
+                        // send mail with defined transport object
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                return console.log(error);
+                            }
+                            console.log('message send')
+                           
+                        });
+                        }
+                      }
+                      
+                       // Return success and licences array
+                    }
+                  }
+                })
+          
+          }
+            }
+          }
+        }
+      })
+    },
+    start: false,
+    timeZone: 'Europe/Dublin'
+  });
+  RefundReminder.start()
+ 
 
   return router;
 };
