@@ -45,7 +45,7 @@ export class EditBlogComponent implements OnInit {
       } else {
         this.messageClass = 'alert alert-success'; // Set success bootstrap class
         this.message = data.message; // Set success message
-        // After two seconds, navigate back to blog page
+        // After two seconds, navigate back to jobs page
         setTimeout(() => {
           this.getNewNotification();
           this.router.navigate(['/blog']); // Navigate back to route page
@@ -60,8 +60,6 @@ export class EditBlogComponent implements OnInit {
     }
     
     this.blogService.newNotification(notification).subscribe(data => {
-      // Check if blog was saved to database or not
-      
     });
   }
 

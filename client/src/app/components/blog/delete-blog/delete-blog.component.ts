@@ -21,7 +21,7 @@ export class DeleteBlogComponent implements OnInit {
     private router: Router
   ) { }
 
-  // Function to delete blogs
+  // Function to delete jobs
   deleteBlog() {
     this.processing = true; // Disable buttons
     // Function for DELETE request
@@ -33,9 +33,9 @@ export class DeleteBlogComponent implements OnInit {
       } else {
         this.messageClass = 'alert alert-success'; // Return bootstrap success class
         this.message = data.message; // Return success message
-        // After two second timeout, route to blog page
+        // After two second timeout, route to job page
         setTimeout(() => {
-          this.router.navigate(['/blog']); // Route users to blog page
+          this.router.navigate(['/blog']); // Route users to job page
         }, 2000);
       }
     });
@@ -50,7 +50,7 @@ export class DeleteBlogComponent implements OnInit {
         this.messageClass = 'alert alert-danger'; // Return bootstrap error class
         this.message = data.message; // Return error message
       } else {
-        // Create the blog object to use in HTML
+        // Create the job object to use in HTML
         this.blog = {
           title: data.blog.title, // Set title
           body: data.blog.body, // Set body

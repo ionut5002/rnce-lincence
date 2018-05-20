@@ -223,7 +223,9 @@ module.exports = (router) => {
       });
     }
   });
-
+/* ===============================================================
+     CHANGE PASSWORD
+  =============================================================== */
   router.put('/changePassword', (req, res)=>{
     if (!req.body.password) {
       res.json({ success: false, message: 'No password was provided.' }); // Return error
@@ -253,7 +255,7 @@ module.exports = (router) => {
                   }
                 } else {
                   
-                  res.json({ success: true, message: 'pass changed' });
+                  res.json({ success: true, message: 'Password changed!' });
                 }
               });
              

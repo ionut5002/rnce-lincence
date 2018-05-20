@@ -110,11 +110,6 @@
       <br />
       <strong>Date: </strong>{{ blog.createdAt | date:'dd MMM yyyy hh:mm a' }}
       <br />
-     <!--  <div *ngIf="username === blog.createdBy">
-        <strong>Likes: </strong>{{ blog.likes }}
-        <br />
-        <strong>Dislikes: </strong>{{ blog.dislikes }}
-      </div> -->
 
       <!-- Edit Button -->
       <a [routerLink]="['/edit-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-info">Edit</button></a>
@@ -124,25 +119,6 @@
       <a [routerLink]="['/closed-blog/', blog._id]" *ngIf="username === blog.createdBy && !blog.close"><button type="button" name="button" class="btn btn-sm btn-danger">Close</button></a>
       <a [routerLink]="['/closed-blog/', blog._id]" *ngIf="username === blog.createdBy &&  blog.close"><button type="button" name="button" class="btn btn-sm btn-success">Reopen</button></a>
 
-      <!-- Likes Dropdown  -->
-      <!-- <div class="dropdown"> -->
-        <!-- Like Button -->
-        <!-- <button [disabled]="blog.likedBy.indexOf(username) > -1" type="button" name="button" class="btn btn-sm btn-success" *ngIf="username !== blog.createdBy" (click)="likeBlog(blog._id)"><span class="glyphicon glyphicon-thumbs-up">&nbsp;</span>Likes: {{ blog.likes }}</button>
-        --> <!-- Dropdown Menu Items -->
-       <!--  <div class="dropdown-content">
-          <a [routerLink]="['/user/', liker]" *ngFor="let liker of blog.likedBy">{{ liker }}</a>
-        </div>
-      </div> -->
-
-      <!-- Dislikes Dropdown  -->
-      <!-- <div class="dropdown"> -->
-        <!-- Dislike Button -->
-<!--         <button [disabled]="blog.dislikedBy.indexOf(username) > -1" type="button" name="button" class="btn btn-sm btn-warning" *ngIf="username !== blog.createdBy" (click)="dislikeBlog(blog._id)"><span class="glyphicon glyphicon-thumbs-down">&nbsp;</span>Dislikes: {{ blog.dislikes }}</button>
-         --><!-- Dropdown Menu Items -->
-        <!-- <div class="dropdown-content">
-          <a [routerLink]="['/user/', disliker]" *ngFor="let disliker of blog.dislikedBy">{{ disliker }}</a>
-        </div>
-      </div> -->
 
     </div>
     <!-- Panel Footer End -->
@@ -150,10 +126,7 @@
     <!-- Post Comment Box: Start -->
     <ul class="list-group">
       <li class="list-group-item">
-        <!-- Post Comment Button -->
-        <!-- <button type="button" name="button" class="btn btn-sm btn-danger" (click)="draftComment(blog._id)" [disabled]="newComment.indexOf(blog._id) > -1">Post Comment</button> -->
         
-
         <!-- Show Comments -->
         <li *ngIf="enabledComments.indexOf(blog._id) === -1 && blog.comments.length > 0" class="list-group-item">
           <button  class="btn btn-sm btn-info" (click)="expand(blog._id)">

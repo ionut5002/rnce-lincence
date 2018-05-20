@@ -29,34 +29,34 @@ export class ClosedBlogComponent implements OnInit {
     private location:Location
   ) { }
 
-  // Function to delete blogs
+  // Function to close Jobs
   closedBlog() {
     this.processing=true;
-    // Function for DELETE request
+    // Function for close request
     this.blogService.closeBlog(this.currentUrl.id).subscribe(data => {
-      // Check if delete request worked
+      // Check if close request worked
       if (!data.success) {
         this.messageClass = 'alert alert-danger'; // Return error bootstrap class
         this.message = data.message; // Return error message
       } else {
         this.messageClass = 'alert alert-success'; // Return bootstrap success class
         this.message = data.message; // Return success message
-        // After two second timeout, route to blog page
+        // After two second timeout, route to jobs page
         setTimeout(() => {
-          this.router.navigate(['/blog']); // Route users to blog page
+          this.router.navigate(['/blog']); // Route users to job page
         }, 2000);
       }
     });
   }
 
   getAllBlogs() {
-    // Function to GET all blogs from database
+    // Function to GET all jobs from database
     this.blogService.getAllBlogs().subscribe(data => {
       this.blogPosts = data.blogs; // Assign array to use in HTML
       
     });}
     expand(id) {
-      this.enabledComments.push(id); // Add the current blog post id to array
+      this.enabledComments.push(id); // Add the current job post id to array
     }
   
     // Collapse the list of comments
@@ -83,15 +83,15 @@ export class ClosedBlogComponent implements OnInit {
           this.messageClass = 'alert alert-danger'; // Return bootstrap error class
           this.message = data.message; // Return error message
         } else {
-          // Create the blog object to use in HTML
+          // Create the job object to use in HTML
           this.blog = {
             title: data.blog.title, // Set title
             body: data.blog.body, // Set body
             createdBy: data.blog.createdBy, // Set created_by field
-            createdAt: data.blog.createdAt,
-            close: data.blog.close // Set created_at field
+            createdAt: data.blog.createdAt,  // Set created_at field
+            close: data.blog.close // Set close field
           }
-          this.foundBlog = true; // Displaly blog window
+          this.foundBlog = true; // Displaly job window
         }
       });
     }

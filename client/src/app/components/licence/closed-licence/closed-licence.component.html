@@ -80,23 +80,48 @@
     
     <div class="panel-body">
       <div class="col-md-6">
+          <h4 *ngIf="licence.phase1" class='text-danger'>Status: Request for Licence</h4>
+        <h4 *ngIf="licence.phase2">Status: Applying for Licence</h4>
+        <h4 *ngIf="licence.phase3">Status: Licence Uploaded, working dates need to be Booked</h4>
+        <h4 *ngIf="licence.phase4">Status: Working Dates Booked waiting for Post Works Photos</h4>
+        <h4 *ngIf="licence.phase5">Status: Post Works Photos Uploaded, Please mark when job is finished</h4>
+        <h4 *ngIf="licence.phase6" class='text-success'>Status: Job Finished</h4>
       <ul class="list-unstyled">
         <li><strong>Client: </strong> {{licence.Client}}</li>
         <li><strong>Address: </strong> {{licence.Address}}</li>
         <li><strong>Licence Type: </strong> {{licence.LicenceType}}</li>
-        <li><strong>StartDate:</strong> {{licence.StartDate}}</li>
+        <li><strong>StartDate:</strong> {{licence.StartDate | date:'dd MMM yyyy '}}</li>
         <li><strong>WorkLength:</strong> {{licence.WorkLength}} m</li>
         <li><strong>WorkWidth:</strong> {{licence.WorkWidth}} m</li>
         <li><strong>TMType:</strong> {{licence.TMType}}</li>
         <li><strong>Description:</strong> {{ licence.body }} </li>
         <li><a *ngIf="licence.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ licence.LocationMap }}" target="_blank">See on Map by Coordonates</a>
             <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ licence.Address }}" target="_blank">See on Map by Address</a></li>
-      </ul>
-    </div>
-    <div class="col-md-6" *ngFor="let ph of licence.path">
+            <li *ngIf="licence.WorksStartDate"><strong>Works Starts:</strong> {{ licence.WorksStartDate | date:'dd MMM yyyy ' }} </li>
+            <li *ngIf="licence.WorksStartDate"><strong>Works Ends:</strong> {{ licence.WorksEndDate | date:'dd MMM yyyy ' }} </li>
+          </ul>
+      
+    </div><div class="col-md-6">
+      <h3>Pre works photos</h3>
+    <div *ngFor="let ph of licence.path">
       <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" alt="" width="200" height="100"></a>
       {{ph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
-    </div></div>
+    </div></div></div>
+    <div class="row">
+    <div class="col-md-6" >
+        <h3>Licence Valid</h3>
+      <div *ngFor="let lph of licence.LicencePath">
+          <strong>Valid From: </strong>{{ licence.LvalidFrom| date:'dd MMM yyyy ' }} <strong>Valid To: </strong>{{ licence.LvalidTo| date:'dd MMM yyyy ' }} <br />
+        <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" alt="" width="200" height="100"></a>
+        {{lph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+      </div></div>
+
+      <div class="col-md-6" >
+          <h3>Post works photos</h3>
+        <div *ngFor="let pph of licence.pathPost">
+          <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" alt="" width="200" height="100"></a>
+          {{pph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+        </div></div></div>
 
     <!-- Panel Footer Start -->
     <div class="panel-footer">
