@@ -113,11 +113,11 @@ let WorkWidthLengthChecker = (WorkWidth) => {
   }
 };
 let NumericCheckerWorkWidth = (WorkWidth) => {
-  // Check if title exists
+  // Check if WorkWidth exists
   if (!WorkWidth) {
     return false; // Return error
   } else {
-    // Regular expression to test for a valid title
+    // Regular expression to test for a valid WorkWidth
     const regExp = new RegExp(/^\d*\.?\d*$/);
     return regExp.test(WorkWidth); // Return regular expression test results (true or false)
   }
@@ -148,11 +148,11 @@ let WorkLengthLengthChecker = (WorkLength) => {
   }
 };
 let NumericCheckerWorkLength = (WorkLength) => {
-  // Check if title exists
+  // Check if WorkLength exists
   if (!WorkLength) {
     return false; // Return error
   } else {
-    // Regular expression to test for a valid title
+    // Regular expression to test for a valid WorkLength
     const regExp = new RegExp(/^\d*\.?\d*$/);
     return regExp.test(WorkLength); // Return regular expression test results (true or false)
   }
@@ -224,7 +224,7 @@ const commentValidators = [
     message: 'Comments may not exceed 200 characters.'
   }
 ];
-const twoyears = 365*2*24*60*60*1000;
+
 // Licence Model Definition
 const licenceSchema = new Schema({
   title: { type: String, required: true, validate: titleValidators },

@@ -86,7 +86,7 @@
   <div class="form-group col-md-9">
     <label for="Address">Address</label>
     <div [ngClass]="{'has-success': form.controls.Address.valid, 'has-error': form.controls.Address.dirty && form.controls.Address.errors}">
-  <!-- Client Input -->
+  <!-- Address Input -->
   <input type="text" name="Address" class="form-control" placeholder="*Address" autocomplete="off" formControlName="Address" />
   <!-- Validation -->
   <ul class="help-block">
@@ -182,7 +182,7 @@
 
 <div class="form-group col-md-6">
   <label for="WorksHours">Works Hours</label>
-  <!-- WorksType Input -->
+  <!-- WorksHours Input -->
       <select class="form-control" name="WorksHours" formControlName="WorksHours" >
         <option >24Hrs</option>
         <option>Day</option>
@@ -193,7 +193,7 @@
 <div class="row">
 <div class="form-group col-md-6">
   <label for="LocationOnRoad">Location On Road/Path/Verge</label>
-  <!-- WorksType Input -->
+  <!-- LocationOnRoad Input -->
       <select class="form-control" name="LocationOnRoad" formControlName="LocationOnRoad">
         <option >Path</option>
         <option>H/S</option>
@@ -312,7 +312,7 @@
         <li><strong>Client: </strong> {{blog.Client}}</li>
         <li><strong>Address: </strong> {{blog.Address}}</li>
         <li><strong>Licence Required: </strong> {{blog.LicenceRequired}}</li>
-        <li><strong>StartDate:</strong> {{blog.StartDate}}</li>
+        <li><strong>StartDate:</strong> {{blog.StartDate | date:'dd MMM yyyy'}}</li>
         <li><strong>SpeedOfRoad:</strong> {{blog.SpeedOfRoad}}</li>
         <li><strong>RoadWidth:</strong> {{blog.RoadWidth}} m</li>
         <li><strong>CarriagewayType:</strong> {{blog.CarriagewayType}}</li>

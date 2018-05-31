@@ -50,11 +50,11 @@ export class BlogComponent implements OnInit {
     private http: Http
   ) {
 
-    this.createNewBlogForm(); // Create new blog form on start up
-    this.createCommentForm(); // Create form for posting comments on a user's blog post
+    this.createNewBlogForm(); // Create new job form on start up
+    this.createCommentForm(); // Create form for posting comments on a user's job post
   }
 
-  // Function to create new blog form
+  // Function to create new job form
   createNewBlogForm() {
     this.form = this.formBuilder.group({
       // Title field
@@ -64,6 +64,7 @@ export class BlogComponent implements OnInit {
         Validators.minLength(5),
         this.alphaNumericValidation
       ])],
+      // JobNo field
       JobNo: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(5),
@@ -76,43 +77,62 @@ export class BlogComponent implements OnInit {
         Validators.maxLength(500),
         Validators.minLength(5)
       ])],
+      // path field
       path: [],
+      // Client field
       Client: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(25),
         Validators.minLength(3),
         this.alphaNumericValidation
       ])],
+      // StartDate field
       StartDate : [],
+      // SpeedOfRoad field
       SpeedOfRoad: [],
+      // emergency field
       emergency: [],
+      // SafetyFolder field
       SafetyFolder: [],
+      // PSCS field
       PSCS: [],
+      // PSDP field
       PSDP: [],
+      // RoadWidth field
       RoadWidth: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(6),
         Validators.minLength(1),
         this.NumericValidation
       ])],
+      // CarriagewayType field
       CarriagewayType: [],
+      // RoadLevel field
       RoadLevel: [],
+      // Volume field
       Volume : ['',Validators.compose([
         Validators.required,
         Validators.maxLength(6),
         Validators.minLength(1),
         this.NumericValidation
       ])],
+      // WorksType field
       WorksType : [],
+      // WorksHours field
       WorksHours : [],
+      // LocationOnRoad field
       LocationOnRoad : [],
+      // TypeOfTrafficCR field
       TypeOfTrafficCR : [],
+      // Address field
       Address: ['',Validators.compose([
         Validators.required,
         Validators.maxLength(200),
         Validators.minLength(10),
       ])],
+      // LocationMap field
       LocationMap:[],
+      // LicenceRequired field
       LicenceRequired:['',Validators.compose([
         Validators.required
       ])]
@@ -142,9 +162,9 @@ export class BlogComponent implements OnInit {
     this.commentForm.get('comment').disable(); // Disable comment field
   }
 
-  // Enable new blog form
+  // Enable new job form
   enableFormNewBlogForm() {
-    this.form.get('title').enable(); // Enable title field
+    this.form.get('title').enable(); 
     this.form.get('body').enable();
     this.form.get('JobNo').enable();
     this.form.get('Client').enable();
@@ -164,12 +184,11 @@ export class BlogComponent implements OnInit {
     this.form.get('SafetyFolder').enable(),
     this.form.get('PSCS').enable(),
     this.form.get('PSDP').enable()
-    
   }
 
-  // Disable new blog form
+  // Disable new job form
   disableFormNewBlogForm() {
-    this.form.get('title').disable(); // Disable title field
+    this.form.get('title').disable(); 
     this.form.get('body').disable();
     this.form.get('JobNo').disable();
     this.form.get('Client').disable();
@@ -189,10 +208,9 @@ export class BlogComponent implements OnInit {
     this.form.get('SafetyFolder').disable(),
     this.form.get('PSCS').disable(),
     this.form.get('PSDP').disable()
-     // Disable body field
   }
 
-  // Validation for title
+  // Validation for form
   alphaNumericValidation(controls) {
     const regExp = new RegExp(/^(?=.*[A-Z0-9])[\w.,!"'-\/$ ]+$/i); // Regular expression to perform test
     // Check if test returns false or true
@@ -221,13 +239,13 @@ export class BlogComponent implements OnInit {
     }
   }
 
-  // Function to display new blog form
+  // Function to display new job form
   newBlogForm() {
-    this.newPost = true; // Show new blog form
+    this.newPost = true; // Show new job form
     this.getEmailList()
   }
 
-  // Reload blogs on current page
+  // Reload jobs on current page
   reloadBlogs() {
     this.loadingBlogs = true; // Used to lock button
     this.getAllBlogs();
@@ -237,7 +255,7 @@ export class BlogComponent implements OnInit {
     }, 4000);
   }
 
-  // Function to post a new comment on blog post
+  // Function to post a new comment on job post
   draftComment(id) {
     this.upl=[]
     this.commentForm.reset(); // Reset the comment form each time users starts a new comment
@@ -276,16 +294,16 @@ export class BlogComponent implements OnInit {
     this.processing = false; // Enable any buttons that were locked
   }
 
-  // Function to submit a new blog post
+  // Function to submit a new job post
   onBlogSubmit() {
     this.upload();
     this.processing = true; // Disable submit button
     this.disableFormNewBlogForm(); // Lock form
 
-    // Create blog object from form fields
+    // Create job object from form fields
     const blog = {
       title: this.form.get('title').value,
-      JobNo: this.form.get('JobNo').value, // Title field
+      JobNo: this.form.get('JobNo').value, 
       body: this.form.get('body').value,
       Client:this.form.get('Client').value,
       StartDate:this.form.get('StartDate').value,
@@ -306,12 +324,12 @@ export class BlogComponent implements OnInit {
       PSCS:this.form.get('PSCS').value,
       PSDP:this.form.get('PSDP').value,
       path:this.upl,
-      createdBy: this.username // CreatedBy field
+      createdBy: this.username 
     }
 
-    // Function to save blog into database
+    // Function to save job into database
     this.blogService.newBlog(blog).subscribe(data => {
-      // Check if blog was saved to database or not
+      // Check if job was saved to database or not
       if (!data.success) {
         this.messageClass = 'alert alert-danger'; // Return error class
         this.message = data.message; // Return error message

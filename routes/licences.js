@@ -21,7 +21,7 @@ var upload = multer({ storage: storage });
 module.exports = (router) => {
 
   /* ===============================================================
-     CREATE NEW BLOG
+     CREATE NEW Licence
   =============================================================== */
   router.post('/newLicence', (req, res) => {
     // Check if licence title was provided
@@ -83,7 +83,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     GET ALL BLOGS
+     GET ALL LICENCES
   =============================================================== */
   router.get('/allLicences', (req, res) => {
     // Search database for all licence posts
@@ -103,7 +103,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     GET SINGLE BLOG
+     GET SINGLE LICENCE
   =============================================================== */
   router.get('/singleLicence/:id', (req, res) => {
     // Check if id is present in parameters
@@ -147,7 +147,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     UPDATE BLOG POST
+     UPDATE LICENCE POST
   =============================================================== */
   router.put('/updateLicence', (req, res) => {
     // Check if id was provided
@@ -209,7 +209,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     DELETE BLOG POST
+     DELETE LICENCE POST
   =============================================================== */
   router.delete('/deleteLicence/:id', (req, res) => {
     // Check if ID was provided in parameters
@@ -258,7 +258,7 @@ module.exports = (router) => {
     }
   });
  /* ===============================================================
-     close BLOG POST
+     CLOSE LICENCE POST
   =============================================================== */
   router.put('/closeLicence/', (req, res) => {
     // Check if ID was provided in parameters
@@ -319,7 +319,7 @@ module.exports = (router) => {
     }
   });
   /* ===============================================================
-     upload BLOG POST
+     UPLOAD LICENCE POST
   =============================================================== */
   router.put('/uploadLicence/', (req, res) => {
     // Check if ID was provided in parameters
@@ -373,7 +373,7 @@ module.exports = (router) => {
     }
   });
   /* ===============================================================
-     post works  POST
+     POST-WORKS LICENCE  POST
   =============================================================== */
   router.put('/post-works/', (req, res) => {
     // Check if ID was provided in parameters
@@ -425,7 +425,7 @@ module.exports = (router) => {
     }
   });
   /* ===============================================================
-     Applyingfor BLOG POST
+     APPLYING LICENCE POST
   =============================================================== */
   
   router.put('/ApplyingForLicence/', (req, res) => {
@@ -479,7 +479,7 @@ module.exports = (router) => {
     }
   });
   /* ===============================================================
-     Complete Works  POST
+     COMPLETE WORKS LICENCE POST
   =============================================================== */
   
   router.put('/CompleteWorks/', (req, res) => {
@@ -533,7 +533,7 @@ module.exports = (router) => {
     }
   });
     /* ===============================================================
-     LIKE BLOG POST
+     BOOK-WORKS LICENCE POST
   =============================================================== */
 
   router.put('/book-works', (req, res) => {
@@ -591,7 +591,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     LIKE BLOG POST
+     LIKE LICENCE POST (NOT USED)
   =============================================================== */
   router.put('/likeLicence', (req, res) => {
     // Check if id was passed provided in request body
@@ -666,7 +666,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     DISLIKE BLOG POST
+     DISLIKE LICENCE POST (NOT USED)
   =============================================================== */
   router.put('/dislikeLicence', (req, res) => {
     // Check if id was provided inside the request body
@@ -742,7 +742,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     COMMENT ON BLOG POST
+     COMMENT ON LICENCE POST
   =============================================================== */
   router.post('/comments', (req, res) => {
     // Check if comment was provided in request body
@@ -797,11 +797,16 @@ module.exports = (router) => {
       }
     }
   });
+  /* ===============================================================
+     UPLOAD PHOTOS
+  =============================================================== */
   router.post("https://us-central1-upload-rnce.cloudfunctions.net/uploadFile", upload.array("uploads[]", 12), function (req, res) {
     console.log('files', req.files);
     res.send(req.files);
   });
-
+/* ===============================================================
+     CREATE NEW NOTIFICATION
+  =============================================================== */
   router.post("/notifications", (req, res) => {
         if (!req.body.createdBy) {
           res.json({ success: false, message: 'Licence creator is required.' }); // Return error
@@ -825,7 +830,9 @@ module.exports = (router) => {
       
     
   });
- 
+ /* ===============================================================
+     MARK AS SEEN NOTIFICATION
+  =============================================================== */
   router.put("/seen", (req, res)=>{
     
     // Check if id was passed provided in request body
@@ -870,7 +877,9 @@ module.exports = (router) => {
       });
     }
   });
-
+/* ===============================================================
+     GET ALL NOTIFICATIONS
+  =============================================================== */
   router.get('/allNotifications', (req, res) => {
     // Search database for all licence posts
     Notification.find({}, (err, notificatons) => {
@@ -888,26 +897,14 @@ module.exports = (router) => {
     }).sort({ '_id': -1 }); // Sort licences from newest to oldest
   });
 
-  /* mail notifications */
+  /* ===============================================================
+     EMAIL NOTIFICATION SEND 
+  =============================================================== */
 
   router.post('/send', (req, res) => {
-    // create reusable transporter object using the default SMTP transport
-  
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-      // create reusable transporter object using the default SMTP transport
+    
       let transporter = nodemailer.createTransport({
-         /*  host: 'smtp.gmail.com',
-          port: 465,
-          secure: true,
-          auth: {
-              type: 'OAuth2',
-              user: 'ionita.claudiu.ionut@gmail.com',
-              clientId: ' 386206867075-cnhmg78ao2p12er5r94fktp3ticltkrv.apps.googleusercontent.com',
-              clientSecret: 'hFEue0VXUCFA37RDC36iJtgK',
-              refreshToken: '1/CalT4ZTvB-LXHLcBEIf8Hl2EVt5klwX0dRiM95HLcs36PG1h5ZgXq9yjINWGwFDX',
-              accessToken: 'ya29.GlumBdXboO0cI20ymqrnSH2yW8MGvejgvt6sJ5P4AKdbKvYmfspR4aiR-4DgyHmnrEF00jjP17Ll9KkSMlxo5ef43jWsNWsvQkuPdVRneC-KP7C92YDxRp9WOrr8'
-          } */
+         
           service: 'gmail',
  auth: {
         user: process.env.Gmail,
@@ -930,14 +927,13 @@ module.exports = (router) => {
               return console.log(error);
           }
           res.json({message:'mail sent'})
-          /* console.log('Message sent: %s', info.messageId);
-          // Preview only available when sending through an Ethereal account
-          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-  
-          // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-          // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou... */
+         
       });
   });
+
+  /* ===============================================================
+     GET ALL USERS
+  =============================================================== */
   router.get('/allUsers', (req, res) => {
     // Search database for all licence posts
     User.find({}, (err, users) => {
@@ -954,6 +950,10 @@ module.exports = (router) => {
       }
     }).select('email role');
   });
+
+  /* ===============================================================
+     GET SINGLE USER
+  =============================================================== */
 
   router.get('/singleUser/:licenceC', (req, res) => {
     // Search database for all licence posts
@@ -972,7 +972,9 @@ module.exports = (router) => {
     }).select(' email '); 
   });
 
-
+/* ===============================================================
+     ADD NEW USER AS SEEN TO OLD NOTIFICATIONS
+  =============================================================== */
   router.put('/updateNotification', (req, res) => {
     // Check if id was provided
     if (!req.body._id) {
@@ -1002,7 +1004,7 @@ module.exports = (router) => {
               }
             });
           }
-            // Check who user is that is requesting licence update
+            
            
           
         }
@@ -1010,8 +1012,264 @@ module.exports = (router) => {
     }
   });
 
-  
 
+
+  
+/* ===============================================================
+     AUTO EMAIL NOTIFICATION (phase1 reminder to apply)
+  =============================================================== */
+
+  const CronJob = require('cron').CronJob;
+  const ApplyReminder = new CronJob({
+    cronTime: '00 30 10 * * 1-5',
+    onTick: function() {
+      Licence.find({}, (err, licences) => {
+        // Check if error was found or not
+        if (err) {
+          console.log(err) // Return error message
+        } else {
+          // Check if licences were found in database
+          if (!licences) {
+            console.log('no licence found') // Return error of no licences found
+          } else {
+             // Return success and licences array
+             for(let i =0; i < licences.length; i++){
+              const licenceSubject = licences[i].title
+              const lincenceType = licences[i].LicenceType
+              console.log(licenceSubject)
+              if(licences[i].phase1){
+                
+                User.find({}, (err, users) => {
+                  // Check if error was found or not
+                  if (err) {
+                    console.log(err) // Return error message
+                  } else {
+                    // Check if licences were found in database
+                    if (!users) {
+                      console.log('no users found') // Return error of no licences found
+                    } else {
+                      for(let i =0; i < users.length; i++){
+                        if(users[i].role ==='TMP'){
+                          let transporter = nodemailer.createTransport({
+         
+                            service: 'gmail',
+                   auth: {
+                          user: process.env.Gmail,
+                          pass: process.env.GPass
+                      }
+                        });
+                    
+                        // setup email data with unicode symbols
+                        let mailOptions = {
+                            from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
+                            to: users[i].email, // list of receivers
+                            subject: licenceSubject, // Subject line
+                            text: 'Don&#39;t forget to apply for this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>', // plain text body
+                            html:'Don&#39;t forget to apply for this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>' // html body
+                        };
+                    
+                        // send mail with defined transport object
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                return console.log(error);
+                            }
+                            console.log('message send')
+                           
+                        });
+                        }
+                      }
+                      
+                       // Return success and licences array
+                    }
+                  }
+                })
+          
+          }
+            }
+          }
+        }
+      })
+    },
+    start: false,
+    timeZone: 'Europe/Dublin'
+  });
+ApplyReminder.start()
+
+
+/* ===============================================================
+     AUTO EMAIL NOTIFICATION (licence expired reminder to close)
+  =============================================================== */
+
+  
+  const CloseLicence = new CronJob({
+    cronTime: '00 30 10 * * 1-5',
+    onTick: function() {
+      Licence.find({}, (err, licences) => {
+        // Check if error was found or not
+        if (err) {
+          console.log(err) // Return error message
+        } else {
+          // Check if licences were found in database
+          if (!licences) {
+            console.log('no licence found') // Return error of no licences found
+          } else {
+             // Return success and licences array
+             for(let i =0; i < licences.length; i++){
+              const licenceSubject = licences[i].title
+              const lincenceType = licences[i].LicenceType
+              console.log(licenceSubject)
+              if(((new Date (licences[i].LvalidTo)) <= (new Date())) && (!licences[i].close)||((licences[i].phase6)&& (!licences[i].close))){
+                
+                User.findOne({username: licences[i].createdBy}, (err, user) => {
+                  // Check if error was found or not
+                  if (err) {
+                    console.log(err) // Return error message
+                  } else {
+                    // Check if licences were found in database
+                    if (!user) {
+                      console.log('no user found') // Return error of no licences found
+                    } else {
+                          let transporter = nodemailer.createTransport({
+         
+                            service: 'gmail',
+                   auth: {
+                          user: process.env.Gmail,
+                          pass: process.env.GPass
+                      }
+                        });
+                    
+                        // setup email data with unicode symbols
+                        let mailOptions = {
+                            from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
+                            to: user.email, // list of receivers
+                            subject: licenceSubject, // Subject line
+                            text:'The Licence is no more valid you have to close this licence request:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>', // plain text body
+                            html:'The Licence is no more valid.You have to close this licence request:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +
+                                  '</strong><br /> P.S. Don&#39;t forget to upload Post Works Photos and Mark it as complete before you close it.' // html body
+                        };
+                        let mailOptions2 = {
+                          from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
+                          to: user.email, // list of receivers
+                          subject: licenceSubject, // Subject line
+                          text:'The Licence is marked as Complete.You have to close this licence request:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>', // plain text body
+                          html:'The Licence is marked as Complete.You have to close this licence request:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>' // html body
+                      };
+                    
+                        // send mail with defined transport object
+                       if(((new Date (licences[i].LvalidTo)) <= (new Date())) && (!licences[i].close)){
+                        transporter.sendMail(mailOptions, (error, info) => {
+                          if (error) {
+                              return console.log(error);
+                          }
+                          console.log('message send')
+                         
+                      });
+                       }else{
+                        transporter.sendMail(mailOptions2, (error, info) => {
+                          if (error) {
+                              return console.log(error);
+                          }
+                          console.log('message send2')
+                         
+                      });
+                       }
+                       
+                      
+                       // Return success and licences array
+                    }
+                  }
+                })
+          
+          }
+            }
+          }
+        }
+      })
+    },
+    start: false,
+    timeZone: 'Europe/Dublin'
+  });
+  CloseLicence.start()
+
+/* ===============================================================
+     AUTO EMAIL NOTIFICATION (refund reminder)
+  =============================================================== */
+
+  const RefundReminder = new CronJob({
+    cronTime: '00 30 10 * * 1-5',
+    onTick: function() {
+      Licence.find({}, (err, licences) => {
+        // Check if error was found or not
+        if (err) {
+          console.log(err) // Return error message
+        } else {
+          // Check if licences were found in database
+          if (!licences) {
+            console.log('no licence found') // Return error of no licences found
+          } else {
+             // Return success and licences array
+             for(let i =0; i < licences.length; i++){
+              const licenceSubject = licences[i].title
+              const lincenceType = licences[i].LicenceType
+              console.log(licenceSubject)
+              if((new Date (licences[i].RefundDate)) === (new Date())){
+                
+                User.find({}, (err, users) => {
+                  // Check if error was found or not
+                  if (err) {
+                    console.log(err) // Return error message
+                  } else {
+                    // Check if licences were found in database
+                    if (!users) {
+                      console.log('no users found') // Return error of no licences found
+                    } else {
+                      for(let i =0; i < users.length; i++){
+                        if((users[i].role ==='TMP')|| (users[i].username === licences[i].createdBy)){
+                          let transporter = nodemailer.createTransport({
+         
+                            service: 'gmail',
+                   auth: {
+                          user: process.env.Gmail,
+                          pass: process.env.GPass
+                      }
+                        });
+                    
+                        // setup email data with unicode symbols
+                        let mailOptions = {
+                            from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
+                            to: users[i].email, // list of receivers
+                            subject: licenceSubject +'REFUND', // Subject line
+                            text: 'Don&#39;t forget to apply for this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>', // plain text body
+                            html:'Don&#39;t forget to apply for REFUND for this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>' // html body
+                        };
+                    
+                        // send mail with defined transport object
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                return console.log(error);
+                            }
+                            console.log('message send')
+                           
+                        });
+                        }
+                      }
+                      
+                       // Return success and licences array
+                    }
+                  }
+                })
+          
+          }
+            }
+          }
+        }
+      })
+    },
+    start: false,
+    timeZone: 'Europe/Dublin'
+  });
+  RefundReminder.start()
+ 
 
   return router;
 };

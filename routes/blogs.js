@@ -21,25 +21,25 @@ var upload = multer({ storage: storage });
 module.exports = (router) => {
 
   /* ===============================================================
-     CREATE NEW BLOG
+     CREATE NEW JOB
   =============================================================== */
   router.post('/newBlog', (req, res) => {
-    // Check if blog title was provided
+    // Check if job title was provided
     if (!req.body.title) {
       res.json({ success: false, message: 'Job title is required.' }); // Return error message
     } else {
-      // Check if blog body was provided
+      // Check if job body was provided
       if (!req.body.body) {
         res.json({ success: false, message: 'Job body is required.' }); // Return error message
       } else {
-        // Check if blog's creator was provided
+        // Check if job's creator was provided
         if (!req.body.createdBy) {
           res.json({ success: false, message: 'Job creator is required.' }); // Return error
         } else {
-          // Create the blog object for insertion into database
+          // Create the job object for insertion into database
           const blog = new Blog({
-            title: req.body.title, // Title field
-            body: req.body.body,// Body field
+            title: req.body.title,
+            body: req.body.body,
             path: req.body.path,
             JobNo: req.body.JobNo,
             createdBy: req.body.createdBy,
@@ -62,7 +62,7 @@ module.exports = (router) => {
             PSCS:req.body.PSCS,
             PSDP:req.body.PSDP
           });
-          // Save blog into database
+          // Save job into database
           blog.save((err) => {
             // Check if error
             if (err) {
@@ -92,40 +92,40 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     GET ALL BLOGS
+     GET ALL JOBS
   =============================================================== */
   router.get('/allBlogs', (req, res) => {
-    // Search database for all blog posts
+    // Search database for all job posts
     Blog.find({}, (err, blogs) => {
       // Check if error was found or not
       if (err) {
         res.json({ success: false, message: err }); // Return error message
       } else {
-        // Check if blogs were found in database
+        // Check if jobs were found in database
         if (!blogs) {
-          res.json({ success: false, message: 'No Jobs found.' }); // Return error of no blogs found
+          res.json({ success: false, message: 'No Jobs found.' }); // Return error of no jobs found
         } else {
           res.json({ success: true, blogs: blogs }); // Return success and blogs array
         }
       }
-    }).sort({ '_id': -1 }); // Sort blogs from newest to oldest
+    }).sort({ '_id': -1 }); // Sort jobs from newest to oldest
   });
 
   /* ===============================================================
-     GET SINGLE BLOG
+     GET SINGLE JOB
   =============================================================== */
   router.get('/singleBlog/:id', (req, res) => {
     // Check if id is present in parameters
     if (!req.params.id) {
       res.json({ success: false, message: 'No Job ID was provided.' }); // Return error message
     } else {
-      // Check if the blog id is found in database
+      // Check if the job id is found in database
       Blog.findOne({ _id: req.params.id }, (err, blog) => {
         // Check if the id is a valid ID
         if (err) {
           res.json({ success: false, message: 'Not a valid Job id' }); // Return error message
         } else {
-          // Check if blog was found by id
+          // Check if job was found by id
           if (!blog) {
             res.json({ success: false, message: 'Job not found.' }); // Return error message
           } else {
@@ -140,12 +140,7 @@ module.exports = (router) => {
                   res.json({ success: false, message: 'Unable to authenticate user' }); // Return error message
                 } else {
                   res.json({ success: true, blog: blog }); // Return success
-                  // Check if the user who requested single blog is the one who created it
-                 /*  if (user.username !== blog.createdBy) {
-                    res.json({ success: false, message: 'You are not authorized to edit this blog.' }); 
-                  } else {
-                    res.json({ success: true, blog: blog }); // Return success
-                  } */
+                  
                 }
               }
             });
@@ -156,7 +151,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     UPDATE BLOG POST
+     UPDATE JOB POST
   =============================================================== */
   router.put('/updateBlog', (req, res) => {
     // Check if id was provided
@@ -173,7 +168,7 @@ module.exports = (router) => {
           if (!blog) {
             res.json({ success: false, message: 'Job id was not found.' }); // Return error message
           } else {
-            // Check who user is that is requesting blog update
+            // Check who user is that is requesting job update
             User.findOne({ _id: req.decoded.userId }, (err, user) => {
               // Check if error was found
               if (err) {
@@ -183,12 +178,12 @@ module.exports = (router) => {
                 if (!user) {
                   res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
                 } else {
-                  // Check if user logged in the the one requesting to update blog post
+                  // Check if user logged in the the one requesting to update job post
                   if (user.username !== blog.createdBy) {
                     res.json({ success: false, message: 'You are not authorized to edit this blog post.' }); // Return error message
                   } else {
                     blog.title = req.body.title;
-                    blog.JobNo = req.body.JobNo; // Save latest blog title
+                    blog.JobNo = req.body.JobNo; 
                     blog.body = req.body.body;
                     blog.Client = req.body.Client;
                     blog.StartDate = req.body.StartDate;
@@ -231,7 +226,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     DELETE BLOG POST
+     DELETE JOB POST
   =============================================================== */
   router.delete('/deleteBlog/:id', (req, res) => {
     // Check if ID was provided in parameters
@@ -244,11 +239,11 @@ module.exports = (router) => {
         if (err) {
           res.json({ success: false, message: 'Invalid id' }); // Return error message
         } else {
-          // Check if blog was found in database
+          // Check if job was found in database
           if (!blog) {
             res.json({ success: false, messasge: 'Job was not found' }); // Return error message
           } else {
-            // Get info on user who is attempting to delete post
+            // Get info on user who is attempting to delete job
             User.findOne({ _id: req.decoded.userId }, (err, user) => {
               // Check if error was found
               if (err) {
@@ -258,11 +253,11 @@ module.exports = (router) => {
                 if (!user) {
                   res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
                 } else {
-                  // Check if user attempting to delete blog is the same user who originally posted the blog
+                  // Check if user attempting to delete job is the same user who originally posted the blog
                   if (user.username !== blog.createdBy) {
                     res.json({ success: false, message: 'You are not authorized to delete this blog post' }); // Return error message
                   } else {
-                    // Remove the blog from database
+                    // Remove the job from database
                     blog.remove((err) => {
                       if (err) {
                         res.json({ success: false, message: err }); // Return error message
@@ -280,7 +275,7 @@ module.exports = (router) => {
     }
   });
  /* ===============================================================
-     close BLOG POST
+     CLOSE JOB POST
   =============================================================== */
   router.put('/closeBlog/', (req, res) => {
     // Check if ID was provided in parameters
@@ -293,11 +288,11 @@ module.exports = (router) => {
         if (err) {
           res.json({ success: false, message: 'Invalid id' }); // Return error message
         } else {
-          // Check if blog was found in database
+          // Check if job was found in database
           if (!blog) {
             res.json({ success: false, messasge: 'Job was not found' }); // Return error message
           } else {
-            // Get info on user who is attempting to delete post
+            // Get info on user who is attempting to close job
             User.findOne({ _id: req.decoded.userId }, (err, user) => {
               // Check if error was found
               if (err) {
@@ -307,7 +302,7 @@ module.exports = (router) => {
                 if (!user) {
                   res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
                 } else {
-                  // Check if user attempting to delete blog is the same user who originally posted the blog
+                  // Check if user attempting to close job is the same user who originally posted the blog
                   if (user.username !== blog.createdBy) {
                     res.json({ success: false, message: 'You are not authorized to delete this blog post' }); // Return error message
                   } else {
@@ -342,7 +337,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     LIKE BLOG POST
+     LIKE JOB POST (NOT USED)
   =============================================================== */
   router.put('/likeBlog', (req, res) => {
     // Check if id was passed provided in request body
@@ -353,11 +348,11 @@ module.exports = (router) => {
       Blog.findOne({ _id: req.body.id }, (err, blog) => {
         // Check if error was encountered
         if (err) {
-          res.json({ success: false, message: 'Invalid blog id' }); // Return error message
+          res.json({ success: false, message: 'Invalid job id' }); // Return error message
         } else {
-          // Check if id matched the id of a blog post in the database
+          // Check if id matched the id of a job post in the database
           if (!blog) {
-            res.json({ success: false, message: 'That blog was not found.' }); // Return error message
+            res.json({ success: false, message: 'That job was not found.' }); // Return error message
           } else {
             // Get data from user that is signed in
             User.findOne({ _id: req.decoded.userId }, (err, user) => {
@@ -369,11 +364,11 @@ module.exports = (router) => {
                 if (!user) {
                   res.json({ success: false, message: 'Could not authenticate user.' }); // Return error message
                 } else {
-                  // Check if user who liked post is the same user that originally created the blog post
+                  // Check if user who liked post is the same user that originally created the job post
                   if (user.username === blog.createdBy) {
                     res.json({ success: false, messagse: 'Cannot like your own post.' }); // Return error message
                   } else {
-                    // Check if the user who liked the post has already liked the blog post before
+                    // Check if the user who liked the post has already liked the job post before
                     if (blog.likedBy.includes(user.username)) {
                       res.json({ success: false, message: 'You already liked this post.' }); // Return error message
                     } else {
@@ -390,7 +385,7 @@ module.exports = (router) => {
                           if (err) {
                             res.json({ success: false, message: 'Something went wrong.' }); // Return error message
                           } else {
-                            res.json({ success: true, message: 'Blog liked!' }); // Return success message
+                            res.json({ success: true, message: 'Job liked!' }); // Return success message
                           }
                         });
                       } else {
@@ -401,7 +396,7 @@ module.exports = (router) => {
                           if (err) {
                             res.json({ success: false, message: 'Something went wrong.' }); // Return error message
                           } else {
-                            res.json({ success: true, message: 'Blog liked!' }); // Return success message
+                            res.json({ success: true, message: 'Job liked!' }); // Return success message
                           }
                         });
                       }
@@ -417,22 +412,22 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     DISLIKE BLOG POST
+     DISLIKE JOB POST (NOT USED)
   =============================================================== */
   router.put('/dislikeBlog', (req, res) => {
     // Check if id was provided inside the request body
     if (!req.body.id) {
       res.json({ success: false, message: 'No id was provided.' }); // Return error message
     } else {
-      // Search database for blog post using the id
+      // Search database for job post using the id
       Blog.findOne({ _id: req.body.id }, (err, blog) => {
         // Check if error was found
         if (err) {
-          res.json({ success: false, message: 'Invalid blog id' }); // Return error message
+          res.json({ success: false, message: 'Invalid job id' }); // Return error message
         } else {
-          // Check if blog post with the id was found in the database
+          // Check if job post with the id was found in the database
           if (!blog) {
-            res.json({ success: false, message: 'That blog was not found.' }); // Return error message
+            res.json({ success: false, message: 'That job was not found.' }); // Return error message
           } else {
             // Get data of user who is logged in
             User.findOne({ _id: req.decoded.userId }, (err, user) => {
@@ -444,7 +439,7 @@ module.exports = (router) => {
                 if (!user) {
                   res.json({ success: false, message: 'Could not authenticate user.' }); // Return error message
                 } else {
-                  // Check if user who disliekd post is the same person who originated the blog post
+                  // Check if user who disliekd post is the same person who originated the job post
                   if (user.username === blog.createdBy) {
                     res.json({ success: false, messagse: 'Cannot dislike your own post.' }); // Return error message
                   } else {
@@ -465,7 +460,7 @@ module.exports = (router) => {
                           if (err) {
                             res.json({ success: false, message: 'Something went wrong.' }); // Return error message
                           } else {
-                            res.json({ success: true, message: 'Blog disliked!' }); // Return success message
+                            res.json({ success: true, message: 'Job disliked!' }); // Return success message
                           }
                         });
                       } else {
@@ -477,7 +472,7 @@ module.exports = (router) => {
                           if (err) {
                             res.json({ success: false, message: 'Something went wrong.' }); // Return error message
                           } else {
-                            res.json({ success: true, message: 'Blog disliked!' }); // Return success message
+                            res.json({ success: true, message: 'Job disliked!' }); // Return success message
                           }
                         });
                       }
@@ -493,7 +488,7 @@ module.exports = (router) => {
   });
 
   /* ===============================================================
-     COMMENT ON BLOG POST
+     COMMENT ON JOB POST
   =============================================================== */
   router.post('/comment', (req, res) => {
     // Check if comment was provided in request body
@@ -504,13 +499,13 @@ module.exports = (router) => {
       if (!req.body.id) {
         res.json({ success: false, message: 'No id was provided' }); // Return error message
       } else {
-        // Use id to search for blog post in database
+        // Use id to search for job post in database
         Blog.findOne({ _id: req.body.id }, (err, blog) => {
           // Check if error was found
           if (err) {
             res.json({ success: false, message: 'Invalid Job id' }); // Return error message
           } else {
-            // Check if id matched the id of any blog post in the database
+            // Check if id matched the id of any job post in the database
             if (!blog) {
               res.json({ success: false, message: 'Job not found.' }); // Return error message
             } else {
@@ -524,13 +519,13 @@ module.exports = (router) => {
                   if (!user) {
                     res.json({ success: false, message: 'User not found.' }); // Return error message
                   } else {
-                    // Add the new comment to the blog post's array
+                    // Add the new comment to the job post's array
                     blog.comments.push({
                       comment: req.body.comment, // Comment field
                       commentator: user.username,// Person who commented
                       attachements:req.body.attachements 
                     });
-                    // Save blog post
+                    // Save job post
                     blog.save((err) => {
                       // Check if error was found
                       if (err) {
@@ -548,11 +543,16 @@ module.exports = (router) => {
       }
     }
   });
+  /* ===============================================================
+     UPLOAD PHOTOS
+  =============================================================== */
   router.post("https://us-central1-upload-rnce.cloudfunctions.net/uploadFile", upload.array("uploads[]", 12), function (req, res) {
     console.log('files', req.files);
     res.send(req.files);
   });
-
+/* ===============================================================
+     CREATE NEW NOTIFICATION
+  =============================================================== */
   router.post("/notifications", (req, res) => {
         if (!req.body.createdBy) {
           res.json({ success: false, message: 'Job creator is required.' }); // Return error
@@ -576,7 +576,9 @@ module.exports = (router) => {
       
     
   });
- 
+ /* ===============================================================
+     MARK AS SEEN A NOTIFICATION
+  =============================================================== */
   router.put("/seen", (req, res)=>{
     
     // Check if id was passed provided in request body
@@ -621,7 +623,9 @@ module.exports = (router) => {
       });
     }
   });
-
+/* ===============================================================
+     GET ALL NOTIFICATIONS
+  =============================================================== */
   router.get('/allNotifications', (req, res) => {
     // Search database for all blog posts
     Notification.find({}, (err, notificatons) => {
@@ -639,26 +643,14 @@ module.exports = (router) => {
     }).sort({ '_id': -1 }); // Sort blogs from newest to oldest
   });
 
-  /* mail notifications */
+  /* ===============================================================
+     SEND EMAIL NOTIFICATION
+  =============================================================== */
 
   router.post('/send', (req, res) => {
-    // create reusable transporter object using the default SMTP transport
-  
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-      // create reusable transporter object using the default SMTP transport
+    
       let transporter = nodemailer.createTransport({
-         /*  host: 'smtp.gmail.com',
-          port: 465,
-          secure: true,
-          auth: {
-              type: 'OAuth2',
-              user: 'ionita.claudiu.ionut@gmail.com',
-              clientId: ' 386206867075-cnhmg78ao2p12er5r94fktp3ticltkrv.apps.googleusercontent.com',
-              clientSecret: 'hFEue0VXUCFA37RDC36iJtgK',
-              refreshToken: '1/CalT4ZTvB-LXHLcBEIf8Hl2EVt5klwX0dRiM95HLcs36PG1h5ZgXq9yjINWGwFDX',
-              accessToken: 'ya29.GlumBdXboO0cI20ymqrnSH2yW8MGvejgvt6sJ5P4AKdbKvYmfspR4aiR-4DgyHmnrEF00jjP17Ll9KkSMlxo5ef43jWsNWsvQkuPdVRneC-KP7C92YDxRp9WOrr8'
-          } */
+         
           service: 'gmail',
  auth: {
         user: process.env.Gmail,
@@ -681,14 +673,12 @@ module.exports = (router) => {
               return console.log(error);
           }
           res.json({message:'mail sent'})
-          /* console.log('Message sent: %s', info.messageId);
-          // Preview only available when sending through an Ethereal account
-          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-  
-          // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-          // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou... */
+          
       });
   });
+  /* ===============================================================
+     GET ALL USERS
+  =============================================================== */
   router.get('/allUsers', (req, res) => {
     // Search database for all blog posts
     User.find({}, (err, users) => {
@@ -705,7 +695,9 @@ module.exports = (router) => {
       }
     }).select('email role');
   });
-
+/* ===============================================================
+     GET SINGLE USER
+  =============================================================== */
   router.get('/singleUser/:blogC', (req, res) => {
     // Search database for all blog posts
     User.findOne({username: req.params.blogC}, (err, user) => {
@@ -723,7 +715,9 @@ module.exports = (router) => {
     }).select(' email '); 
   });
 
-
+/* ===============================================================
+     ADD NEW USER AS SEEN TO OLD NOTIFICATIONS
+  =============================================================== */
   router.put('/updateNotification', (req, res) => {
     // Check if id was provided
     if (!req.body._id) {
@@ -753,7 +747,7 @@ module.exports = (router) => {
               }
             });
           }
-            // Check who user is that is requesting blog update
+          
            
           
         }

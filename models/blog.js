@@ -7,9 +7,9 @@ const mongoose = require('mongoose'); // Node Tool for MongoDB
 mongoose.Promise = global.Promise; // Configure Mongoose Promises
 const Schema = mongoose.Schema; // Import Schema from Mongoose
 
-// Validate Function to check blog title length
+// Validate Function to check job title length
 let titleLengthChecker = (title) => {
-  // Check if blog title exists
+  // Check if job title exists
   if (!title) {
     return false; // Return error
   } else {
@@ -78,11 +78,11 @@ let JobNoLengthChecker = (JobNo) => {
   }
 };
 let NumericCheckerJobNo = (JobNo) => {
-  // Check if title exists
+  // Check if JobNo exists
   if (!JobNo) {
     return false; // Return error
   } else {
-    // Regular expression to test for a valid title
+    // Regular expression to test for a valid JobNo
     const regExp = new RegExp(/^[0-9]+$/);
     return regExp.test(JobNo); // Return regular expression test results (true or false)
   }
@@ -149,11 +149,11 @@ let RoadWidthLengthChecker = (RoadWidth) => {
   }
 };
 let NumericCheckerRoadWidth = (RoadWidth) => {
-  // Check if title exists
+  // Check if RoadWidth exists
   if (!RoadWidth) {
     return false; // Return error
   } else {
-    // Regular expression to test for a valid title
+    // Regular expression to test for a valid RoadWidth
     const regExp = new RegExp(/^\d*\.?\d*$/);
     return regExp.test(RoadWidth); // Return regular expression test results (true or false)
   }
