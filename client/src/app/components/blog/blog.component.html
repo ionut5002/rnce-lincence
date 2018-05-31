@@ -129,7 +129,7 @@
 <!-- Validation -->
 <ul class="help-block">
   <li *ngIf="form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.required">This field is required.</li>
-  <li *ngIf="(form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.minlength) || (form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.maxlength)">Max length: 4, Min length: 1</li>
+  <li *ngIf="(form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.minlength) || (form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.maxlength)">Max length: 6, Min length: 1</li>
   <li *ngIf="form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.NumericValidation">Must be a number</li>
 </ul>
 </div>
@@ -146,7 +146,31 @@
 </div></div>
 <div class="row">
 <div class="form-group col-md-6">
-  <label for="RoadLevel">Road Level</label>
+  <label for="RoadLevel">Road Level</label><div class="dropdown">
+    &nbsp;&nbsp;Help<span class=" glyphicon glyphicon-info-sign "></span>
+    <div class="dropdown-content">
+      <div>
+          <p>Type A – Full-time roadworks that remain in operation in all traffic flows
+              and all visibility conditions. This type of works typically includes
+              temporary traffic measures that will remain in position for a duration in
+              excess of 24hrs.
+              
+              Type B – Part-time roadworks that remain in operation when the
+              expected traffic flow is less than the available carriageway capacity. This
+              type of works typically includes temporary traffic measures at off-peak
+              times. With this type of works, the roadworks are such that they can be
+              removed if necessary to minimise potential traffic delays.(8 hours shift)
+              
+              Type C – Roadworks that are of a short duration and involve the use of
+              one or two vehicles, typically maintenance to utilities or street furniture, in
+              all visibility conditions, when the expected traffic flow is less than the
+              available carriageway capacity or the works do not reduce the
+              carriageway width significantly.(max 2 hours works)
+              </p>
+      </div>
+    </div>
+    
+    </div>
   <!-- RoadLevel Input -->
       <select class="form-control" name="RoadLevel" formControlName="RoadLevel">
         <option >1&amp;2</option>
@@ -164,7 +188,7 @@
 <!-- Validation -->
 <ul class="help-block">
   <li *ngIf="form.controls.Volume.dirty && form.controls.Volume.errors?.required">This field is required.</li>
-  <li *ngIf="(form.controls.Volume.dirty && form.controls.Volume.errors?.minlength) || (form.controls.Volume.dirty && form.controls.Volume.errors?.maxlength)">Max length: 4, Min length: 1</li>
+  <li *ngIf="(form.controls.Volume.dirty && form.controls.Volume.errors?.minlength) || (form.controls.Volume.dirty && form.controls.Volume.errors?.maxlength)">Max length: 6, Min length: 1</li>
   <li *ngIf="form.controls.Volume.dirty && form.controls.Volume.errors?.NumericValidation">Must be a number</li>
 </ul>
 </div>
@@ -172,6 +196,16 @@
 <div class="row">
 <div class="form-group col-md-6">
   <label for="WorksType">Works Type</label>
+  <div class="dropdown">
+    &nbsp;&nbsp;Help<span class=" glyphicon glyphicon-info-sign "></span>
+    <div class="dropdown-content">
+      <div>
+        <img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/roadclasification.JPG?alt=media" alt="" width="400" height="200">
+        
+      </div>
+    </div>
+    
+    </div>
   <!-- WorksType Input -->
       <select class="form-control" name="WorksType" formControlName="WorksType">
         <option >A</option>

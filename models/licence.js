@@ -252,10 +252,11 @@ const licenceSchema = new Schema({
   phase4: {type:Boolean, default:false},
   phase5: {type:Boolean, default:false},
   phase6: {type:Boolean, default:false},
+  reminderIfValid:{type:String, default:''},
 
   createdBy: { type: String },
   createdAt: { type: Date, default: Date.now },
-  RefundDate: { type: Date, default: () => Date.now() + 410*2*24*60*60*1000},
+  RefundDate: { type: String, default:''},
   comments: [{
     comment: { type: String, validate: commentValidators },
     commentator: { type: String },

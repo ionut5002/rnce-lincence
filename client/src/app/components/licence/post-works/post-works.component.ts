@@ -28,6 +28,7 @@ export class PostWorksComponent implements OnInit {
   enabledComments = [];
   username;
   role;
+  randomKey;
   constructor(
     private licenceService: LicenceService,
     private activatedRoute: ActivatedRoute,
@@ -101,7 +102,8 @@ export class PostWorksComponent implements OnInit {
     
         for(let i =0; i < files.length; i++){
           if(files[i].type=='application/pdf' || files[i].type=='image/jpeg' || files[i].type=='image/jpg' || files[i].type=='image/png'){
-            formData.append("uploads[]", files[i], files[i]['name']);}
+            const newfilename = this.randomKey + '-' + files[i]['name']
+            formData.append("uploads[]", files[i], newfilename);}
             this.createAuthenticationHeaders();
            this.http.post("https://us-central1-upload-rnce.cloudfunctions.net/uploadFile", formData,  this.options )
             .map(files => files).subscribe()
@@ -114,7 +116,7 @@ export class PostWorksComponent implements OnInit {
   this.upl=[];
     for(let i =0; i < this.filesToUpload.length; i++){
       if(this.filesToUpload[i].type=='application/pdf' || this.filesToUpload[i].type=='image/jpeg' || this.filesToUpload[i].type=='image/jpg' || this.filesToUpload[i].type=='image/png'){
-  this.upl.push(this.filesToUpload[i]['name'])
+        this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name'])
   }
     }
   }
@@ -152,6 +154,7 @@ export class PostWorksComponent implements OnInit {
   
 
   ngOnInit() {
+    this.randomKey = Math.random().toString(36).substring(2, 10)
     this.getAllUsers() 
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username;

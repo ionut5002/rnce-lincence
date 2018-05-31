@@ -19,6 +19,27 @@ var upload = multer({ storage: storage });
 
 
 module.exports = (router) => {
+  /* ================================================
+  MIDDLEWARE - Used to grab user's token from headers
+  ================================================ */
+  router.use((req, res, next) => {
+    const token = req.headers['authorization']; // Create token found in headers
+    // Check if token was found in headers
+    if (!token) {
+      res.json({ success: false, message: 'No token provided' }); // Return error
+    } else {
+      // Verify the token is valid
+      jwt.verify(token, config.secret, (err, decoded) => {
+        // Check if error is expired or invalid
+        if (err) {
+          res.json({ success: false, message: 'Token invalid: ' + err }); // Return error for token validation
+        } else {
+          req.decoded = decoded; // Create global variable to use in any request beyond
+          next(); // Exit middleware
+        }
+      });
+    }
+  });
 
   /* ===============================================================
      CREATE NEW Licence
@@ -36,6 +57,9 @@ module.exports = (router) => {
         if (!req.body.createdBy) {
           res.json({ success: false, message: 'Job creator is required.' }); // Return error
         } else {
+                    var RefundD = Date.now()+ 410*2*24*60*60*1000
+                    var dateRef = new Date(RefundD).toLocaleDateString( options);
+                    var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
           // Create the licence object for insertion into database
           const licence = new Licence({
             title: req.body.title, // Title field
@@ -49,6 +73,7 @@ module.exports = (router) => {
             TMType:req.body.TMType,
             path: req.body.path,
             createdBy: req.body.createdBy,
+            RefundDate: dateRef
             
             
             
@@ -459,6 +484,10 @@ module.exports = (router) => {
                   } else {
                     licence.phase2=true;
                     licence.phase1=false;
+                    var datee = Date.now()+ 14*24*60*60*1000
+                    var date = new Date(datee).toLocaleDateString( options);
+                    var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                    licence.reminderIfValid= date
                     
                     
                     licence.save((err) => {
@@ -1196,7 +1225,7 @@ ApplyReminder.start()
   =============================================================== */
 
   const RefundReminder = new CronJob({
-    cronTime: '00 30 10 * * 1-5',
+    cronTime: '00 30 10 * * *',
     onTick: function() {
       Licence.find({}, (err, licences) => {
         // Check if error was found or not
@@ -1212,7 +1241,8 @@ ApplyReminder.start()
               const licenceSubject = licences[i].title
               const lincenceType = licences[i].LicenceType
               console.log(licenceSubject)
-              if((new Date (licences[i].RefundDate)) === (new Date())){
+              var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+              if(((new Date (licences[i].RefundReminder).toLocaleDateString(options)) === (new Date().toLocaleDateString(options)))){
                 
                 User.find({}, (err, users) => {
                   // Check if error was found or not
@@ -1269,7 +1299,88 @@ ApplyReminder.start()
     timeZone: 'Europe/Dublin'
   });
   RefundReminder.start()
- 
+
+  
+ /* ===============================================================
+     AUTO EMAIL NOTIFICATION (phase1 reminder to apply)
+  =============================================================== */
+
+  
+  const reminderIfValid = new CronJob({
+    cronTime: '00 30 10 * * *',
+    onTick: function() {
+      Licence.find({}, (err, licences) => {
+        // Check if error was found or not
+        if (err) {
+          console.log(err) // Return error message
+        } else {
+          // Check if licences were found in database
+          if (!licences) {
+            console.log('no licence found') // Return error of no licences found
+          } else {
+             // Return success and licences array
+             for(let i =0; i < licences.length; i++){
+              const licenceSubject = licences[i].title
+              const lincenceType = licences[i].LicenceType
+              console.log(licenceSubject)
+              var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+              if((licences[i].phase2)&&((new Date (licences[i].reminderIfValid).toLocaleDateString(options)) === (new Date().toLocaleDateString(options)))){
+                
+                User.find({}, (err, users) => {
+                  // Check if error was found or not
+                  if (err) {
+                    console.log(err) // Return error message
+                  } else {
+                    // Check if licences were found in database
+                    if (!users) {
+                      console.log('no users found') // Return error of no licences found
+                    } else {
+                      for(let i =0; i < users.length; i++){
+                        if(users[i].role ==='TMP'){
+                          let transporter = nodemailer.createTransport({
+         
+                            service: 'gmail',
+                   auth: {
+                          user: process.env.Gmail,
+                          pass: process.env.GPass
+                      }
+                        });
+                    
+                        // setup email data with unicode symbols
+                        let mailOptions = {
+                            from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
+                            to: users[i].email, // list of receivers
+                            subject: licenceSubject +'Check Status', // Subject line
+                            text:'Please check the status this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>', // plain text body
+                            html:'Please check the status this licence:'+'<strong>'+ licenceSubject +'</strong> Type: <strong>' + lincenceType +'</strong>' // html body
+                        };
+                    
+                        // send mail with defined transport object
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                return console.log(error);
+                            }
+                            console.log('message send')
+                           
+                        });
+                        }
+                      }
+                      
+                       // Return success and licences array
+                    }
+                  }
+                })
+          
+          }
+            }
+          }
+        }
+      })
+    },
+    start: false,
+    timeZone: 'Europe/Dublin'
+  });
+  reminderIfValid.start()
 
   return router;
 };

@@ -46,6 +46,8 @@ export class LicenceComponent implements OnInit {
    licenceC;
    creatorEmail;
    email;
+   randomKey;
+   links = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -194,6 +196,7 @@ export class LicenceComponent implements OnInit {
   newLicenceForm() {
     this.newPost = true; // Show new Licence form
     this.getEmailList()
+    this.randomKey = Math.random().toString(36).substring(2, 10)
   }
 
   // Reload Licences on current page
@@ -208,6 +211,7 @@ export class LicenceComponent implements OnInit {
 
   // Function to post a new comment on Licence post
   draftComment(id) {
+    this.randomKey = Math.random().toString(36).substring(2, 10)
     this.upl=[]
     this.commentForm.reset(); // Reset the comment form each time users starts a new comment
     this.newComment = []; // Clear array so only one post can be commented on at a time
@@ -422,7 +426,8 @@ export class LicenceComponent implements OnInit {
   
       for(let i =0; i < files.length; i++){
         if(files[i].type=='application/pdf' || files[i].type=='image/jpeg' || files[i].type=='image/jpg' || files[i].type=='image/png'){
-          formData.append("uploads[]", files[i], files[i]['name']);}
+          const newfilename = this.randomKey + '-' + files[i]['name']
+          formData.append("uploads[]", files[i], newfilename);}
           this.createAuthenticationHeaders();
          this.http.post("https://us-central1-upload-rnce.cloudfunctions.net/uploadFile", formData,  this.options )
           .map(files => files).subscribe()
@@ -435,7 +440,7 @@ fileChangeEvent(fileInput: any) {
 this.upl=[];
   for(let i =0; i < this.filesToUpload.length; i++){
     if(this.filesToUpload[i].type=='application/pdf' || this.filesToUpload[i].type=='image/jpeg' || this.filesToUpload[i].type=='image/jpg' || this.filesToUpload[i].type=='image/png'){
-this.upl.push(this.filesToUpload[i]['name'])
+this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name'])
 }
   }
 }
@@ -501,17 +506,36 @@ getAllUsers() {
   }
 
   CommEmailNote(){
-    
-    const newEmail = {
+    if(this.upl.length>0){
+      
+      for(let i =0; i < this.upl.length; i++){
+        
+        this.links.push('<a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/'+this.upl[i]+'?alt=media">'+this.upl[i]+'</a><br />')
+      }
+      const newEmail = { 
       to: this.emailList.toString(),// Title field
-      html:'<h2>New Changes on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
+      html:'<h2>New Files added on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username+'</strong><br />'+'Comment: '+ this.commentForm.get('comment').value +'</strong><br />' +'Files: ' +'<strong>' + 
+       this.links +'</strong>', // CreatedBy field
     }
-    
     this.licenceService.newEmailNot(newEmail).subscribe(data => {
       // Check if licence was saved to database or not
       
     });
+  }else{
+      const newEmail = {
+        to: this.emailList.toString(),// Title field
+        html:'<h2>New Comments on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username +'</strong><br />'+'Comment: ' +'<strong>' + this.commentForm.get('comment').value +'</strong><br />', // CreatedBy field
+      }
+      this.licenceService.newEmailNot(newEmail).subscribe(data => {
+        // Check if licence was saved to database or not
+        
+      });
+    }
+    
+    
+    
   }
+
   ApplyingEmailNote(){
     
     const newEmail = {
