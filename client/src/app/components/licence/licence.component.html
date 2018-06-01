@@ -8,6 +8,8 @@
 </div>
 
 <!-- New Post Button -->
+<div class="row">
+    <div class="col-md-6">
 <button type="button" name="button" class="btn btn-warning" *ngIf="!newPost" (click)="newLicenceForm()">New Licence</button>
 
 <!-- Reload Button -->
@@ -29,6 +31,14 @@
   
   </div>
   <a *ngIf="!newPost" [routerLink]="['/closed-licence/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Licences</button></a>
+</div>
+<div class="col-md-3">
+  
+</div>
+<div class="col-md-3">
+    <input #box (keyup)="0" placeholder="Search By Title">
+  </div>
+</div>
 <br />
 <br />
 
@@ -202,7 +212,7 @@
 <!-- Panel Start -->
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
-  <div  *ngFor="let licence of licencePosts">
+  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value">
 <div  [ngClass]="licence.LicenceType=='T4' ? 'panel panel-danger' : 'panel panel-primary'"  *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">

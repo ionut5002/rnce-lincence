@@ -8,6 +8,8 @@
 </div>
 
 <!-- New Post Button -->
+<div class="row">
+  <div class="col-md-6">
 <button type="button" name="button" class="btn btn-warning" *ngIf="!newPost" (click)="newBlogForm()">New Job</button>
 
 <!-- Reload Button -->
@@ -29,6 +31,14 @@
   
   </div>
   <a *ngIf="!newPost" [routerLink]="['/closed-blog/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Jobs</button></a>
+</div>
+<div class="col-md-3">
+  
+</div>
+<div class="col-md-3">
+    <input #box (keyup)="0" placeholder="Search By Job No">
+  </div>
+</div>
 <br />
 <br />
 
@@ -331,7 +341,7 @@
 <!-- Panel Start -->
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
-  <div  *ngFor="let blog of blogPosts">
+  <div  *ngFor="let blog of blogPosts | searchFilter: 'JobNo': box.value">
 <div [ngClass]="blog.emergency ? 'panel panel-danger' : 'panel panel-primary'" *ngIf="!blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">

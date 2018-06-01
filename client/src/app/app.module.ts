@@ -30,6 +30,7 @@ import { LicenceService } from './services/licence.service';
 import { UploadLicenceComponent } from './components/licence/upload-licence/upload-licence.component';
 import { BookingComponent } from './components/licence/booking/booking.component';
 import { PostWorksComponent } from './components/licence/post-works/post-works.component';
+import { SearchFilterPipe } from './pipes/search-filter.pipe';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { PostWorksComponent } from './components/licence/post-works/post-works.c
     UploadLicenceComponent,
     BookingComponent,
     PostWorksComponent,
+    SearchFilterPipe,
     
   ],
   imports: [
