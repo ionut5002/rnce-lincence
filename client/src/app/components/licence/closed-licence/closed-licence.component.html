@@ -65,11 +65,12 @@
 
 
 <button *ngIf="!foundLicence" [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
+<input [hidden]="foundLicence" #box (keyup)="0" placeholder="Search By Title">
 <br />
 <br />
 <div *ngIf="!foundLicence">
   <!-- Panel Outer Layer -->
-  <div  *ngFor="let licence of licencePosts">
+  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value">
 <div class="panel panel-primary" *ngIf="licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">

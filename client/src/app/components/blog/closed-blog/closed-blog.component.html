@@ -65,11 +65,12 @@
 
 
 <button *ngIf="!foundBlog" [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
+<input [hidden]="foundLicence" #box (keyup)="0" placeholder="Search By Job No">
 <br />
 <br />
 <div *ngIf="!foundBlog">
   <!-- Panel Outer Layer -->
-  <div  *ngFor="let blog of blogPosts">
+  <div  *ngFor="let blog of blogPosts | searchFilter: 'JobNo': box.value">
 <div class="panel panel-primary" *ngIf="blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">
