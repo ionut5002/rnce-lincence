@@ -65,7 +65,7 @@
 
 
 <button *ngIf="!foundBlog" [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
-<input [hidden]="foundLicence" #box (keyup)="0" placeholder="Search By Job No">
+<input [hidden]="foundBlog" #box (keyup)="0" placeholder="Search By Job No">
 <br />
 <br />
 <div *ngIf="!foundBlog">
