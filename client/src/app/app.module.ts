@@ -30,7 +30,7 @@ import { LicenceService } from './services/licence.service';
 import { UploadLicenceComponent } from './components/licence/upload-licence/upload-licence.component';
 import { BookingComponent } from './components/licence/booking/booking.component';
 import { PostWorksComponent } from './components/licence/post-works/post-works.component';
-import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { SearchFilterPipe } from './search-filter.pipe';
 
 
 @NgModule({
@@ -66,6 +66,7 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     FlashMessagesModule,
     FileUploadModule
   ],
+  
   providers: [AuthService, AuthGuard, NotAuthGuard, BlogService, LicenceService],
   bootstrap: [AppComponent]
 })

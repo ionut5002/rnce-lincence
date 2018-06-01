@@ -5,7 +5,7 @@ import { LicenceService } from '../../services/licence.service';
 import {  FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { Http ,RequestOptions, Headers} from '@angular/http';
 import { forEach } from '@angular/router/src/utils/collection';
-import {SearchFilterPipe} from '../../Pipes/search-filter.pipe';
+import {SearchFilterPipe} from '../../search-filter.pipe';
 
 
 @Component({
