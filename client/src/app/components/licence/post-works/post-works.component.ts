@@ -29,6 +29,7 @@ export class PostWorksComponent implements OnInit {
   username;
   role;
   randomKey;
+  links=[];
   constructor(
     private licenceService: LicenceService,
     private activatedRoute: ActivatedRoute,
@@ -140,10 +141,14 @@ export class PostWorksComponent implements OnInit {
 
   UploadEmailNote(){
     this.getEmailListComm()
-    
+    for(let i =0; i < this.upl.length; i++){
+        
+      this.links.push('<a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/'+this.upl[i]+'?alt=media">'+this.upl[i]+'</a><br />')
+    }
     const newEmail = {
       to: this.emailList.toString(),// Title field
-      html:'<h2>Post Works Photos Uploaded on </h2><br /> '+ ' Title: <strong>' +this.licence.title +'</strong><br />' +'Job No: ' +'<strong>' + this.licence.LicenceType+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
+      html:'<h2>Post Works Photos Uploaded on </h2><br /> '+ ' Title: <strong>' +this.licence.title +'</strong><br />' +'Job No: ' +'<strong>' + this.licence.LicenceType+'</strong>'+'</strong><br />' +'Photos Uploaded By: ' +'<strong>' + this.username+'</strong>'+'Files: ' +'<strong>' + 
+      this.links +'</strong>', // CreatedBy field
     }
     
     this.licenceService.newEmailNot(newEmail).subscribe(data => {
