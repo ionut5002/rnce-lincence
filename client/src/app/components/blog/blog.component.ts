@@ -571,7 +571,7 @@ getAllUsers() {
 
   CommEmailNote(){
     if(this.upl.length>0){
-      
+      this.links = [];
       for(let i =0; i < this.upl.length; i++){
         
         this.links.push('<a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/'+this.upl[i]+'?alt=media">'+this.upl[i]+'</a><br />')
