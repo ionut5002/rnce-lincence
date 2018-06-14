@@ -24,6 +24,7 @@ export class DisplayComponent implements OnInit {
   role;
   blogPosts;
   email;
+  
 
 
   constructor(

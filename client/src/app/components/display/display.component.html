@@ -1,27 +1,11 @@
 
 <!-- Custom Success/Error Message -->
 <div id="top" ></div>
-<div class="row show-hide-message" *ngIf="message && newPost">
-  <div [ngClass]="messageClass">
-    {{ message }}
-  </div>
-</div>
 <!-- New Post Button -->
-<div  class="col-md-3">
-  <input [hidden]="!newPost"  #box (keyup)="0" placeholder="Search By Job No">
-  
-</div>
-<br />
-<br />
-
-<!-- New Blog Forms -->
-
-<!-- New Blog Form -->
-
 <!-- Panel Start -->
-<div *ngIf="!newPost">
+<div>
   <!-- Panel Outer Layer -->
-  <div  *ngFor="let blog of blogPosts | searchFilter: 'JobNo': box.value">
+  <div  *ngFor="let blog of blogPosts">
 <div [ngClass]="blog.emergency ? 'panel panel-danger' : 'panel panel-primary'" *ngIf="!blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">
