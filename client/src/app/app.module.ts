@@ -31,6 +31,10 @@ import { UploadLicenceComponent } from './components/licence/upload-licence/uplo
 import { BookingComponent } from './components/licence/booking/booking.component';
 import { PostWorksComponent } from './components/licence/post-works/post-works.component';
 import { SearchFilterPipe } from './search-filter.pipe';
+import { DisplayComponent } from './components/display/display.component';
+import { ScrollToModule } from 'ng2-scroll-to-el';
+
+
 
 
 @NgModule({
@@ -55,6 +59,8 @@ import { SearchFilterPipe } from './search-filter.pipe';
     BookingComponent,
     PostWorksComponent,
     SearchFilterPipe,
+    DisplayComponent,
+    
     
   ],
   imports: [
@@ -64,7 +70,8 @@ import { SearchFilterPipe } from './search-filter.pipe';
     FormsModule,
     AppRoutingModule,
     FlashMessagesModule,
-    FileUploadModule
+    FileUploadModule,
+    ScrollToModule.forRoot()
   ],
   
   providers: [AuthService, AuthGuard, NotAuthGuard, BlogService, LicenceService],

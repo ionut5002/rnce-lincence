@@ -19,6 +19,7 @@ import { DeleteLicenceComponent } from './components/licence/delete-licence/dele
 import { UploadLicenceComponent } from './components/licence/upload-licence/upload-licence.component';
 import { BookingComponent } from './components/licence/booking/booking.component';
 import { PostWorksComponent } from './components/licence/post-works/post-works.component';
+import { DisplayComponent } from './components/display/display.component';
 
 
 // Our Array of Angular 2 Routes
@@ -45,6 +46,11 @@ const appRoutes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent, // Profile Route
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'display',
+    component: DisplayComponent, // Blog Route,
     canActivate: [AuthGuard] // User must be logged in to view this route
   },
   {
