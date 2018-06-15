@@ -11,7 +11,8 @@ const NotificationSchema = new Schema({
   changesTo:{type:String},
   seen:{type:Array},
   author: { type: String },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  action:{type:String}
 });
 
 // Export Module/Schema

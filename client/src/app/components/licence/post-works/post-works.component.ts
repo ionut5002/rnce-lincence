@@ -41,6 +41,7 @@ export class PostWorksComponent implements OnInit {
 
   // Function to delete licences
   uploadPostWorks() {
+    this.getNewNotification()
     this.UploadEmailNote()
     this.upload()
     this.processing=true;
@@ -62,6 +63,18 @@ export class PostWorksComponent implements OnInit {
           this.router.navigate(['/licence']); // Route users to licence page
         }, 2000);
       }
+    });
+  }
+  getNewNotification(){
+    const notification = {
+      title: this.licence.title, // Title field
+      createdBy: this.username,// CreatedBy field
+      action: 'Uploaded post-works photos on:'
+    }
+    
+    this.licenceService.newNotification(notification).subscribe(data => {
+      // Check if licence was saved to database or not
+      
     });
   }
 

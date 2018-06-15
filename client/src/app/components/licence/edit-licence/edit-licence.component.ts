@@ -56,8 +56,10 @@ export class EditLicenceComponent implements OnInit {
   getNewNotification(){
     const notification = {
       title: this.licence.title, // Title field
-      createdBy: this.licence.createdBy // CreatedBy field
+      createdBy: this.licence.createdBy, // CreatedBy field
+      action: 'made some changes on:'
     }
+    
     
     this.licenceService.newNotification(notification).subscribe(data => {
       // Check if licence was saved to database or not

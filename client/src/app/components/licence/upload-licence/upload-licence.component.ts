@@ -43,6 +43,7 @@ export class UploadLicenceComponent implements OnInit {
 
   // Function to delete licences
   uploadLicence() {
+    this.getNewNotification()
     this.UploadEmailNote()
     this.upload()
     this.processing=true;
@@ -67,6 +68,18 @@ export class UploadLicenceComponent implements OnInit {
           this.router.navigate(['/licence']); // Route users to licence page
         }, 2000);
       }
+    });
+  }
+  getNewNotification(){
+    const notification = {
+      title: this.licence.title, // Title field
+      createdBy: this.username,// CreatedBy field
+      action: 'Uploaded the Licence for:'
+    }
+    
+    this.licenceService.newNotification(notification).subscribe(data => {
+      // Check if licence was saved to database or not
+      
     });
   }
 

@@ -61,7 +61,8 @@ export class BookingComponent implements OnInit {
   getNewNotification(){
     const notification = {
       title: this.licence.title, // Title field
-      createdBy: this.username // CreatedBy field
+      createdBy: this.username,// CreatedBy field
+      action: 'Booked works on:'
     }
     
     this.licenceService.newNotification(notification).subscribe(data => {

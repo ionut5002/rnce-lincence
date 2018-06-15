@@ -56,8 +56,10 @@ export class EditBlogComponent implements OnInit {
   getNewNotification(){
     const notification = {
       title: this.blog.title, // Title field
-      createdBy: this.blog.createdBy // CreatedBy field
+      createdBy: this.blog.createdBy, // CreatedBy field
+      action: 'made some changes on'
     }
+    
     
     this.blogService.newNotification(notification).subscribe(data => {
     });

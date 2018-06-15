@@ -305,7 +305,8 @@ export class LicenceComponent implements OnInit {
   getNewNotification(){
     const notification = {
       title: this.form.get('title').value, // Title field
-      createdBy: this.username // CreatedBy field
+      createdBy: this.username, // CreatedBy field
+      action: 'created a new Licence Request for:'
     }
     this.licenceService.newNotification(notification).subscribe(data => {
       // Check if licence was saved to database or not
@@ -374,7 +375,8 @@ export class LicenceComponent implements OnInit {
     this.CommEmailNote()
     const notification = {
       title: this.licenceT, // Title field
-      createdBy: this.username // CreatedBy field
+      createdBy: this.username, // CreatedBy field
+      action: 'added a comment on'
     }
     
     this.licenceService.newNotification(notification).subscribe(data => {

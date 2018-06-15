@@ -578,21 +578,122 @@ module.exports = (router) => {
         if (!req.body.createdBy) {
           res.json({ success: false, message: 'Job creator is required.' }); // Return error
         } else {
-          // Create the notification object for insertion into database
-          const notification = new Notification({
-              changesTo:req.body.title,
-              author: req.body.createdBy,
-            
-          });
-          // Save notification into database
-          notification.save((err) => {
-            // Check if error was found
+          User.findOne({username: req.body.createdBy}, (err, user) => {
+            // Check if error was found or not
             if (err) {
-              res.json({ success: false, message: 'Something went wrong.' }); // Return error message
+              res.json({ success: false, message: err }); // Return error message
             } else {
-              res.json({ success: true, message: 'Notification saved' }); // Return success message
+              // Check if blogs were found in database
+              if (!user) {
+                res.json({ success: false, message: 'No user found.' }); // Return error of no blogs found
+              } else {
+                if(user.role === 'TMP'|| user.role === 'HS'){
+                  Blog.findOne({title: req.body.title}, (err, blog) => {
+                    // Check if error was found or not
+                    if (err) {
+                      res.json({ success: false, message: err }); // Return error message
+                    } else {
+                      // Check if blogs were found in database
+                      if (!blog) {
+                        res.json({ success: false, message: 'No blog found.' }); // Return error of no blogs found
+                      } else {
+                        User.find({}, (err, users) => {
+                          // Check if error was found or not
+                          if (err) {
+                            res.json({ success: false, message: err }); // Return error message
+                          } else {
+                            // Check if blogs were found in database
+                            if (!users) {
+                              res.json({ success: false, message: 'No users found.' }); // Return error of no blogs found
+                            } else {const seenlist = [];
+                              for(let i =0; i < users.length; i++){
+                                if(users[i].username !== blog.createdBy && users[i].role !== 'TMP' && users[i].role !== 'HS' && users[i].username !== req.body.createdBy){
+                                  seenlist.push(users[i].username);
+                                  
+                                }
+                              }
+                              const notification = new Notification({
+                                changesTo:req.body.title,
+                                author: req.body.createdBy,
+                                seen: seenlist,
+                                action: req.body.action
+                              
+                            });
+                            
+                            // Save notification into database
+                            notification.save((err) => {
+                              // Check if error was found
+                              if (err) {
+                                res.json({ success: false, message: 'Something went wrong.' }); // Return error message
+                              } else {
+                                res.json({ success: true, message: 'Notification saved' }); // Return success message
+                              }
+                            });
+                               
+                            }
+                          }
+                        })
+                         
+                      }
+                    }
+                  })
+                } else{
+                  Blog.findOne({createdBy: req.body.createdBy}, (err, blog) => {
+                    // Check if error was found or not
+                    if (err) {
+                      res.json({ success: false, message: err }); // Return error message
+                    } else {
+                      // Check if blogs were found in database
+                      if (!blog) {
+                        res.json({ success: false, message: 'No blog found.' }); // Return error of no blogs found
+                      } else {
+                        User.find({}, (err, users) => {
+                          // Check if error was found or not
+                          if (err) {
+                            res.json({ success: false, message: err }); // Return error message
+                          } else {
+                            // Check if blogs were found in database
+                            if (!users) {
+                              res.json({ success: false, message: 'No users found.' }); // Return error of no blogs found
+                            } else { seenlist = [];
+                              for(let i =0; i < users.length; i++){
+                                if((users[i].role !== 'TMP')&&(users[i].role !== 'HS')){
+                                  seenlist.push(users[i].username);
+                                  
+                                }
+                              }
+                              const notification = new Notification({
+                                changesTo:req.body.title,
+                                author: req.body.createdBy,
+                                seen: seenlist,
+                                action: req.body.action
+                              
+                            });
+                            
+                            // Save notification into database
+                            notification.save((err) => {
+                              // Check if error was found
+                              if (err) {
+                                res.json({ success: false, message: 'Something went wrong.' }); // Return error message
+                              } else {
+                                res.json({ success: true, message: 'Notification saved' }); // Return success message
+                              }
+                            });
+                            }
+                          }
+                        })
+                         
+                      }
+                    }
+                  })
+
+                }
+                 
+              }
             }
-          });
+          })
+          // Create the notification object for insertion into database
+          
         }
       
     

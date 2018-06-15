@@ -838,23 +838,124 @@ module.exports = (router) => {
   =============================================================== */
   router.post("/notifications", (req, res) => {
         if (!req.body.createdBy) {
-          res.json({ success: false, message: 'Licence creator is required.' }); // Return error
+          res.json({ success: false, message: 'Job creator is required.' }); // Return error
         } else {
-          // Create the notification object for insertion into database
-          const notification = new Notification({
-              changesTo:req.body.title,
-              author: req.body.createdBy,
-            
-          });
-          // Save notification into database
-          notification.save((err) => {
-            // Check if error was found
+          User.findOne({username: req.body.createdBy}, (err, user) => {
+            // Check if error was found or not
             if (err) {
-              res.json({ success: false, message: 'Something went wrong.' }); // Return error message
+              res.json({ success: false, message: err }); // Return error message
             } else {
-              res.json({ success: true, message: 'Notification saved' }); // Return success message
+              // Check if licences were found in database
+              if (!user) {
+                res.json({ success: false, message: 'No user found.' }); // Return error of no licences found
+              } else {
+                if(user.role === 'TMP'|| user.role === 'HS'){
+                  Licence.findOne({title: req.body.title}, (err, licence) => {
+                    // Check if error was found or not
+                    if (err) {
+                      res.json({ success: false, message: err }); // Return error message
+                    } else {
+                      // Check if licences were found in database
+                      if (!licence) {
+                        res.json({ success: false, message: 'No licence found.' }); // Return error of no licences found
+                      } else {
+                        User.find({}, (err, users) => {
+                          // Check if error was found or not
+                          if (err) {
+                            res.json({ success: false, message: err }); // Return error message
+                          } else {
+                            // Check if licences were found in database
+                            if (!users) {
+                              res.json({ success: false, message: 'No users found.' }); // Return error of no licences found
+                            } else {const seenlist = [];
+                              for(let i =0; i < users.length; i++){
+                                if(users[i].username !== licence.createdBy || users[i].role !== 'TMP' || users[i].role !== 'HS' || users[i].username !== req.body.createdBy){
+                                  seenlist.push(users[i].username);
+                                  
+                                }
+                              }
+                              const notification = new Notification({
+                                changesTo:req.body.title,
+                                author: req.body.createdBy,
+                                seen: seenlist,
+                                action: req.body.action
+                              
+                            });
+                            
+                            // Save notification into database
+                            notification.save((err) => {
+                              // Check if error was found
+                              if (err) {
+                                res.json({ success: false, message: 'Something went wrong.' }); // Return error message
+                              } else {
+                                res.json({ success: true, message: 'Notification saved' }); // Return success message
+                              }
+                            });
+                               
+                            }
+                          }
+                        })
+                         
+                      }
+                    }
+                  })
+                } else{
+                  Licence.findOne({createdBy: req.body.createdBy}, (err, licence) => {
+                    // Check if error was found or not
+                    if (err) {
+                      res.json({ success: false, message: err }); // Return error message
+                    } else {
+                      // Check if licences were found in database
+                      if (!licence) {
+                        res.json({ success: false, message: 'No licence found.' }); // Return error of no licences found
+                      } else {
+                        User.find({}, (err, users) => {
+                          // Check if error was found or not
+                          if (err) {
+                            res.json({ success: false, message: err }); // Return error message
+                          } else {
+                            // Check if licences were found in database
+                            if (!users) {
+                              res.json({ success: false, message: 'No users found.' }); // Return error of no licences found
+                            } else { seenlist = [];
+                              for(let i =0; i < users.length; i++){
+                                if((users[i].role !== 'TMP')&&(users[i].role !== 'HS')){
+                                  seenlist.push(users[i].username);
+                                  
+                                }
+                              }
+                              const notification = new Notification({
+                                changesTo:req.body.title,
+                                author: req.body.createdBy,
+                                seen: seenlist,
+                                action: req.body.action
+                              
+                            });
+                            
+                            // Save notification into database
+                            notification.save((err) => {
+                              // Check if error was found
+                              if (err) {
+                                res.json({ success: false, message: 'Something went wrong.' }); // Return error message
+                              } else {
+                                res.json({ success: true, message: 'Notification saved' }); // Return success message
+                              }
+                            });
+                            }
+                          }
+                        })
+                         
+                      }
+                    }
+                  })
+
+                }
+                 
+              }
             }
-          });
+          })
+          // Create the notification object for insertion into database
+          
         }
       
     

@@ -22,7 +22,7 @@
   <!-- Dropdown Menu Items -->
   <div class="dropdown-content">
     <div  *ngFor="let notification of Notifications"><div *ngIf="(notification.author !== username) && (!notification.seen.includes(username)) "><tr>
-        <td ><strong>{{notification.author}}</strong> made some changes on <strong>{{notification.changesTo}}</strong> at <strong>{{notification.createdAt | date:'dd MMM yyyy hh:mm a'}}</strong>.</td>
+        <td ><strong>{{notification.author}}</strong> {{notification.action}} <strong>{{notification.changesTo}}</strong> at <strong>{{notification.createdAt | date:'dd MMM yyyy hh:mm a'}}</strong>.</td>
       <td><span class="glyphicon glyphicon-remove " (click)="seenNotification(notification._id)"></span></td>
       
     </tr>

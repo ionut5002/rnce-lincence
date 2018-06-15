@@ -368,8 +368,10 @@ export class BlogComponent implements OnInit {
   getNewNotification(){
     const notification = {
       title: this.form.get('title').value, // Title field
-      createdBy: this.username // CreatedBy field
+      createdBy: this.username, // CreatedBy field
+      action: 'created a new Job Request for:'
     }
+    
     this.blogService.newNotification(notification).subscribe(data => {
       // Check if blog was saved to database or not
       
@@ -437,7 +439,8 @@ export class BlogComponent implements OnInit {
     this.CommEmailNote()
     const notification = {
       title: this.blogT, // Title field
-      createdBy: this.username // CreatedBy field
+      createdBy: this.username, // CreatedBy field
+      action: 'added a comment on'
     }
     
     this.blogService.newNotification(notification).subscribe(data => {
