@@ -49,7 +49,7 @@ export class DisplayComponent implements OnInit {
   
 reloadAuto(){
   setInterval(()=>{
-    this.getAllBlogs(); },30000); 
+    this.getAllBlogs(); },200000); 
   }
 
 
