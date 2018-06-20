@@ -504,12 +504,12 @@ export class BlogComponent implements OnInit {
  
 fileChangeEvent(fileInput: any) {
   this.filesToUpload = <Array<File>>fileInput.target.files;
-this.upl=[];
+  this.upl=[];
   for(let i =0; i < this.filesToUpload.length; i++){
     if(this.filesToUpload[i].type=='application/pdf' || this.filesToUpload[i].type=='image/jpeg' || this.filesToUpload[i].type=='image/jpg' || this.filesToUpload[i].type=='image/png'){
 this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name'])
-}
-  }
+    }
+   }
 }
 reloadAuto(){
   setInterval(()=>{
