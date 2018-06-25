@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { LicenceService } from '../../services/licence.service';
-import {  FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { Http ,RequestOptions, Headers} from '@angular/http';
-import { forEach } from '@angular/router/src/utils/collection';
-import {SearchFilterPipe} from '../../search-filter.pipe';
 
 
 @Component({
@@ -308,16 +305,15 @@ export class LicenceComponent implements OnInit {
       createdBy: this.username, // CreatedBy field
       action: 'created a new Licence Request for:'
     }
-    this.licenceService.newNotification(notification).subscribe(data => {
+    this.licenceService.newNotification(notification).subscribe(() => {
       // Check if licence was saved to database or not
-      
     });
   }
 /*   getNewNotificationComment(){
   
   } */
   seenNotification(id){
-    this.licenceService.seenNotification(id).subscribe(data =>{
+    this.licenceService.seenNotification(id).subscribe(() => {
       this.getAllNotifications();
     })
   }
@@ -357,16 +353,16 @@ export class LicenceComponent implements OnInit {
   // Function to like a licence post
   likeLicence(id) {
     // Service to like a licence post
-    this.licenceService.likeLicence(id).subscribe(data => {
-      this.getAllLicences(); // Refresh licences after like
+    this.licenceService.likeLicence(id).subscribe(() => {
+      this.getAllLicences();
     });
   }
 
   // Function to disliked a licence post
   dislikeLicence(id) {
     // Service to dislike a licence post
-    this.licenceService.dislikeLicence(id).subscribe(data => {
-      this.getAllLicences(); // Refresh licences after dislike
+    this.licenceService.dislikeLicence(id).subscribe(() => {
+      this.getAllLicences();
     });
   }
 
@@ -379,8 +375,7 @@ export class LicenceComponent implements OnInit {
       action: 'added a comment on'
     }
     
-    this.licenceService.newNotification(notification).subscribe(data => {
-      // Check if licence was saved to database or not
+    this.licenceService.newNotification(notification).subscribe(() => {
     });
     this.upload();
     this.disableCommentForm(); // Disable form while saving comment to database
@@ -389,14 +384,15 @@ export class LicenceComponent implements OnInit {
     const attachements=this.upl;
     
     // Function to save the comment to the database
-    this.licenceService.postComment(id, comment, attachements).subscribe(data => {
+    this.licenceService.postComment(id, comment, attachements).subscribe(() => {
       this.getAllLicences(); // Refresh all licences to reflect the new comment
       const index = this.newComment.indexOf(id); // Get the index of the licence id to remove from array
       this.newComment.splice(index, 1); // Remove id from the array
       this.enableCommentForm(); // Re-enable the form
-      this.commentForm.reset();// Reset the comment form
+      this.commentForm.reset(); // Reset the comment form
       this.processing = false; // Unlock buttons on comment form
-      if (this.enabledComments.indexOf(id) < 0) this.expand(id); // Expand comments for user on comment submission
+      if (this.enabledComments.indexOf(id) < 0)
+        this.expand(id);
     });
   }
 
@@ -502,9 +498,8 @@ getAllUsers() {
       html:'<h2>New Licence</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Licence Type: ' +'<strong>' + this.form.get('LicenceType').value+'</strong>'+'</strong><br />' +'Start Date: ' +'<strong>' + this.form.get('StartDate').value+'</strong>', // CreatedBy field
     }
     
-    this.licenceService.newEmailNot(newEmail).subscribe(data => {
+    this.licenceService.newEmailNot(newEmail).subscribe(() => {
       // Check if licence was saved to database or not
-      
     });
   }
 
@@ -520,18 +515,16 @@ getAllUsers() {
       html:'<h2>New Files added on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username+'</strong><br />'+'Comment: '+ this.commentForm.get('comment').value +'</strong><br />' +'Files: ' +'<strong>' + 
        this.links +'</strong>', // CreatedBy field
     }
-    this.licenceService.newEmailNot(newEmail).subscribe(data => {
+    this.licenceService.newEmailNot(newEmail).subscribe(() => {
       // Check if licence was saved to database or not
-      
     });
   }else{
       const newEmail = {
         to: this.emailList.toString(),// Title field
         html:'<h2>New Comments on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username +'</strong><br />'+'Comment: ' +'<strong>' + this.commentForm.get('comment').value +'</strong><br />', // CreatedBy field
       }
-      this.licenceService.newEmailNot(newEmail).subscribe(data => {
+      this.licenceService.newEmailNot(newEmail).subscribe(() => {
         // Check if licence was saved to database or not
-        
       });
     }
     
@@ -546,9 +539,8 @@ getAllUsers() {
       html:'<h2>Applying Process started on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
     }
     
-    this.licenceService.newEmailNot(newEmail).subscribe(data => {
+    this.licenceService.newEmailNot(newEmail).subscribe(() => {
       // Check if licence was saved to database or not
-      
     });
   }
   CompleteEmailNote(){
@@ -558,9 +550,8 @@ getAllUsers() {
       html:'<h2>Works completed on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
     }
     
-    this.licenceService.newEmailNot(newEmail).subscribe(data => {
+    this.licenceService.newEmailNot(newEmail).subscribe(() => {
       // Check if licence was saved to database or not
-      
     });
   }
 
@@ -587,8 +578,8 @@ getAllUsers() {
       
     })
     // Service to like a licence post
-    this.licenceService.ApplyingForLicence(id).subscribe(data => {
-      this.getAllLicences(); // Refresh licences after like
+    this.licenceService.ApplyingForLicence(id).subscribe(() => {
+      this.getAllLicences();
     });
   }
   CompleteWorks(id) {
@@ -601,8 +592,8 @@ getAllUsers() {
       this.CompleteEmailNote();
     })
     // Service to like a licence post
-    this.licenceService.CompleteWorks(id).subscribe(data => {
-      this.getAllLicences(); // Refresh licences after like
+    this.licenceService.CompleteWorks(id).subscribe(() => {
+      this.getAllLicences();
     });
   }
 

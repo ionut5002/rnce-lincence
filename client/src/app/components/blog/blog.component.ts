@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { BlogService } from '../../services/blog.service';
-import {  FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { Http ,RequestOptions, Headers} from '@angular/http';
-import { forEach } from '@angular/router/src/utils/collection';
-import {SearchFilterPipe} from '../../search-filter.pipe';
-
+import { Router } from '@angular/router';
+import {LicenceComponent} from '../licence/licence.component';
 
 @Component({
   selector: 'app-blog',
@@ -53,7 +51,9 @@ export class BlogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private blogService: BlogService,
-    private http: Http
+    private http: Http,
+    public router: Router,
+    
   ) {
 
     this.createNewBlogForm(); // Create new job form on start up
@@ -249,6 +249,7 @@ export class BlogComponent implements OnInit {
   newBlogForm() {
     this.newPost = true; // Show new job form
     this.getEmailList()
+    this.getEmailListLicence();
     this.randomKey = Math.random().toString(36).substring(2, 10)
   }
 
@@ -358,8 +359,17 @@ export class BlogComponent implements OnInit {
           this.newPost = false; // Hide form
           this.processing = false; // Enable submit button
           this.message = false; // Erase error/success message
-          this.form.reset(); // Reset all form fields
+           // Reset all form fields
+           
           this.enableFormNewBlogForm(); // Enable the form fields
+          if(blog.LicenceRequired ==='Yes'){
+            
+            this.newEmailNoteLicence()
+            alert('You have to make a request for Licence as well!')
+            this.router.navigate(['/licence']);
+            
+          }
+          this.form.reset();
         }, 4000);
       }
     });
@@ -372,16 +382,15 @@ export class BlogComponent implements OnInit {
       action: 'created a new Job Request for:'
     }
     
-    this.blogService.newNotification(notification).subscribe(data => {
+    this.blogService.newNotification(notification).subscribe(() => {
       // Check if blog was saved to database or not
-      
     });
   }
 /*   getNewNotificationComment(){
   
   } */
   seenNotification(id){
-    this.blogService.seenNotification(id).subscribe(data =>{
+    this.blogService.seenNotification(id).subscribe(() => {
       this.getAllNotifications();
     })
   }
@@ -421,16 +430,16 @@ export class BlogComponent implements OnInit {
   // Function to like a blog post
   likeBlog(id) {
     // Service to like a blog post
-    this.blogService.likeBlog(id).subscribe(data => {
-      this.getAllBlogs(); // Refresh blogs after like
+    this.blogService.likeBlog(id).subscribe(() => {
+      this.getAllBlogs();
     });
   }
 
   // Function to disliked a blog post
   dislikeBlog(id) {
     // Service to dislike a blog post
-    this.blogService.dislikeBlog(id).subscribe(data => {
-      this.getAllBlogs(); // Refresh blogs after dislike
+    this.blogService.dislikeBlog(id).subscribe(() => {
+      this.getAllBlogs();
     });
   }
 
@@ -443,8 +452,7 @@ export class BlogComponent implements OnInit {
       action: 'added a comment on'
     }
     
-    this.blogService.newNotification(notification).subscribe(data => {
-      // Check if blog was saved to database or not
+    this.blogService.newNotification(notification).subscribe(() => {
     });
     this.upload();
     this.disableCommentForm(); // Disable form while saving comment to database
@@ -453,14 +461,15 @@ export class BlogComponent implements OnInit {
     const attachements=this.upl;
     
     // Function to save the comment to the database
-    this.blogService.postComment(id, comment, attachements).subscribe(data => {
+    this.blogService.postComment(id, comment, attachements).subscribe(() => {
       this.getAllBlogs(); // Refresh all blogs to reflect the new comment
       const index = this.newComment.indexOf(id); // Get the index of the blog id to remove from array
       this.newComment.splice(index, 1); // Remove id from the array
       this.enableCommentForm(); // Re-enable the form
-      this.commentForm.reset();// Reset the comment form
+      this.commentForm.reset(); // Reset the comment form
       this.processing = false; // Unlock buttons on comment form
-      if (this.enabledComments.indexOf(id) < 0) this.expand(id); // Expand comments for user on comment submission
+      if (this.enabledComments.indexOf(id) < 0)
+        this.expand(id);
     });
   }
 
@@ -558,6 +567,24 @@ getAllUsers() {
       /* console.log(this.emailList.toString()) */
   }
 
+  getEmailListLicence(){
+    
+    this.emailList=[]
+    this.emailList.push(this.email)
+      /* console.log(this.emailList.toString()) */
+  }
+  
+  newEmailNoteLicence(){
+    
+    const newEmail = {
+      to: this.emailList.toString(), // Title field
+      html:'<h2>You need to make a request for licence:</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Job No: ' +'<strong>' + this.form.get('JobNo').value+'</strong>'+'</strong><br />' +'Client: ' +'<strong>' + this.form.get('Client').value+'</strong>', // CreatedBy field
+    }
+    
+    this.blogService.newEmailNot(newEmail).subscribe(() => {
+      // Check if blog was saved to database or not
+    });
+  }
   
   newEmailNote(){
     
@@ -566,9 +593,8 @@ getAllUsers() {
       html:'<h2>New Job</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Job No: ' +'<strong>' + this.form.get('JobNo').value+'</strong>'+'</strong><br />' +'Client: ' +'<strong>' + this.form.get('Client').value+'</strong>', // CreatedBy field
     }
     
-    this.blogService.newEmailNot(newEmail).subscribe(data => {
+    this.blogService.newEmailNot(newEmail).subscribe(() => {
       // Check if blog was saved to database or not
-      
     });
   }
 
@@ -584,18 +610,16 @@ getAllUsers() {
       html:'<h2>New Files added on</h2><br /> '+ ' Title: <strong>' +this.blogT +'</strong><br />' +'Job No: ' +'<strong>' + this.blogJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username+'</strong><br />'+'Comment: '+ this.commentForm.get('comment').value +'</strong><br />' +'Files: ' +'<strong>' + 
        this.links +'</strong>', // CreatedBy field
     }
-    this.blogService.newEmailNot(newEmail).subscribe(data => {
+    this.blogService.newEmailNot(newEmail).subscribe(() => {
       // Check if blog was saved to database or not
-      
     });
   }else{
       const newEmail = {
         to: this.emailList.toString(),// Title field
         html:'<h2>New Comments on</h2><br /> '+ ' Title: <strong>' +this.blogT +'</strong><br />' +'Job No: ' +'<strong>' + this.blogJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username +'</strong><br />'+'Comment: ' +'<strong>' + this.commentForm.get('comment').value +'</strong><br />', // CreatedBy field
       }
-      this.blogService.newEmailNot(newEmail).subscribe(data => {
+      this.blogService.newEmailNot(newEmail).subscribe(() => {
         // Check if blog was saved to database or not
-        
       });
     }
     
