@@ -249,7 +249,6 @@ export class BlogComponent implements OnInit {
   newBlogForm() {
     this.newPost = true; // Show new job form
     this.getEmailList()
-    this.getEmailListLicence();
     this.randomKey = Math.random().toString(36).substring(2, 10)
   }
 
@@ -567,17 +566,12 @@ getAllUsers() {
       /* console.log(this.emailList.toString()) */
   }
 
-  getEmailListLicence(){
-    
-    this.emailList=[]
-    this.emailList.push(this.email)
-      /* console.log(this.emailList.toString()) */
-  }
+  
   
   newEmailNoteLicence(){
     
     const newEmail = {
-      to: this.emailList.toString(), // Title field
+      to: this.email, // Title field
       html:'<h2>You need to make a request for licence:</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Job No: ' +'<strong>' + this.form.get('JobNo').value+'</strong>'+'</strong><br />' +'Client: ' +'<strong>' + this.form.get('Client').value+'</strong>', // CreatedBy field
     }
     
