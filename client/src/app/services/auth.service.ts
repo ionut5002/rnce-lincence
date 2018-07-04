@@ -32,7 +32,7 @@ export class AuthService {
 
   // Function to get token from client local storage
   loadToken() {
-    this.authToken = localStorage.getItem('token');; // Get token and asssign to variable to be used elsewhere
+    this.authToken = sessionStorage.getItem('token');; // Get token and asssign to variable to be used elsewhere
   }
 
   // Function to register user accounts
@@ -59,13 +59,13 @@ export class AuthService {
   logout() {
     this.authToken = null; // Set token to null
     this.user = null; // Set user to null
-    localStorage.clear(); // Clear local storage
+    sessionStorage.clear(); // Clear local storage
   }
 
   // Function to store user's data in client local storage
   storeUserData(token, user) {
-    localStorage.setItem('token', token); // Set token in local storage
-    localStorage.setItem('user', JSON.stringify(user)); // Set user in local storage as string
+    sessionStorage.setItem('token', token); // Set token in local storage
+    sessionStorage.setItem('user', JSON.stringify(user)); // Set user in local storage as string
     this.authToken = token; // Assign token to be used elsewhere
     this.user = user; // Set user to be used elsewhere
   }
