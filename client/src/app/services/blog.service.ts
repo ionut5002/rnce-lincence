@@ -120,6 +120,14 @@ export class BlogService {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'blogs/send', newEMail, this.options).map(res => res.json());
   }
+  Drawing(id) {
+    const blogData = { id: id };
+    return this.http.put(this.domain + 'blogs/Drawing', blogData, this.options).map(res => res.json());
+  }
+  Done(id) {
+    const blogData = { id: id };
+    return this.http.put(this.domain + 'blogs/Done', blogData, this.options).map(res => res.json());
+  }
  
 
 }

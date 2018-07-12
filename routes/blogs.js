@@ -129,7 +129,7 @@ module.exports = (router) => {
           res.json({ success: true, blogs: blogs }); // Return success and blogs array
         }
       }
-    }).sort({ '_id': -1 }); // Sort jobs from newest to oldest
+    }).sort({ 'StartDate': 1 }); // Sort jobs from newest to oldest
   });
 
   /* ===============================================================
@@ -224,6 +224,7 @@ module.exports = (router) => {
                     blog.SafetyFolder = req.body.SafetyFolder;
                     blog.PSCS = req.body.PSCS;
                     blog.PSDP = req.body.PSDP;
+                    
 
                     blog.save((err) => {
                       if (err) {
@@ -338,6 +339,9 @@ module.exports = (router) => {
                     });
                     }else{
                       blog.close=false;
+                      blog.drawing=false;
+                      blog.done=false;
+                      blog.JobStatus = 'TMP Requested!'
                     blog.save((err) => {
                       if (err) {
                         res.json({ success: false, message: err }); // Return error message
@@ -877,6 +881,110 @@ module.exports = (router) => {
     }
   });
 
+   /* ===============================================================
+     DRAWING STATUS
+  =============================================================== */
+router.put('/Drawing/', (req, res) => {
+  // Check if ID was provided in parameters
+  if (!req.body.id) {
+    res.json({ success: false, message: 'No id provided' }); // Return error message
+  } else {
+    // Check if id is found in database
+    Blog.findOne({ _id: req.body.id }, (err, blog) => {
+      // Check if error was found
+      if (err) {
+        res.json({ success: false, message: 'Invalid id' }); // Return error message
+      } else {
+        // Check if blog was found in database
+        if (!blog) {
+          res.json({ success: false, messasge: 'Blog was not found' }); // Return error message
+        } else {
+          // Get info on user who is attempting to delete post
+          User.findOne({ _id: req.decoded.userId }, (err, user) => {
+            // Check if error was found
+            if (err) {
+              res.json({ success: false, message: err }); // Return error message
+            } else {
+              // Check if user's id was found in database
+              if (!user) {
+                res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
+              } else {
+                // Check if user attempting to delete blog is the same user who originally posted the blog
+                if (user.role !== 'TMP') {
+                  res.json({ success: false, message: 'You are not authorized to apply for this blog' }); // Return error message
+                } else {
+                  blog.drawing=true;
+                  blog.JobStatus = user.username + ' is Drawing this TMP';
+                  blog.save((err) => {
+                    if (err) {
+                      res.json({ success: false, message: err }); // Return error message
+                    } else {
+                      res.json({ success: true, message: 'Drawing !' }); // Return success message
+                    }
+                  });
+                  
+                }
+              }
+            }
+          });
+        }
+      }
+    });
+  }
+});
+
+ /* ===============================================================
+     DONE STATUS
+  =============================================================== */
+  router.put('/Done/', (req, res) => {
+    // Check if ID was provided in parameters
+    if (!req.body.id) {
+      res.json({ success: false, message: 'No id provided' }); // Return error message
+    } else {
+      // Check if id is found in database
+      Blog.findOne({ _id: req.body.id }, (err, blog) => {
+        // Check if error was found
+        if (err) {
+          res.json({ success: false, message: 'Invalid id' }); // Return error message
+        } else {
+          // Check if blog was found in database
+          if (!blog) {
+            res.json({ success: false, messasge: 'Blog was not found' }); // Return error message
+          } else {
+            // Get info on user who is attempting to delete post
+            User.findOne({ _id: req.decoded.userId }, (err, user) => {
+              // Check if error was found
+              if (err) {
+                res.json({ success: false, message: err }); // Return error message
+              } else {
+                // Check if user's id was found in database
+                if (!user) {
+                  res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
+                } else {
+                  // Check if user attempting to delete blog is the same user who originally posted the blog
+                  if (user.role !== 'TMP') {
+                    res.json({ success: false, message: 'You are not authorized to apply for this blog' }); // Return error message
+                  } else {
+                    blog.drawing=true;
+                    blog.done=true;
+                    blog.JobStatus = 'TMP Done!';
+                    blog.save((err) => {
+                      if (err) {
+                        res.json({ success: false, message: err }); // Return error message
+                      } else {
+                        res.json({ success: true, message: 'Drawing !' }); // Return success message
+                      }
+                    });
+                    
+                  }
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  });
   
 
 

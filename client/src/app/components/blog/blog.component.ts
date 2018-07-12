@@ -16,7 +16,7 @@ import {LicenceComponent} from '../licence/licence.component';
 export class BlogComponent implements OnInit {
   
   messageClass;
-  
+  status= 'TMP Requested!';
   message;
   newPost = false;
   loadingBlogs = false;
@@ -37,6 +37,7 @@ export class BlogComponent implements OnInit {
    Notifications;
    blogT;
    blogJ;
+   blogCr;
    co=0;
    LocationMap;
    location;
@@ -332,7 +333,8 @@ export class BlogComponent implements OnInit {
       PSCS:this.form.get('PSCS').value,
       PSDP:this.form.get('PSDP').value,
       path:this.upl,
-      createdBy: this.username 
+      createdBy: this.username, 
+      
     }
 
     // Function to save job into database
@@ -546,6 +548,41 @@ getAllUsers() {
   });
 }
 
+Done(id) {
+  this.blogT='';
+  this.blogJ='';
+  this.blogService.getSingleBlog(id).subscribe(data =>{
+    this.blogT = data.blog.title;
+    this.blogJ = data.blog.JobNo;
+    this.blogCr = data.blog.createdBy;
+    this.blogService.getSingleUser(this.blogCr).subscribe(data=>{
+      if (!data.success) {
+        this.messageClass = 'alert alert-danger'; // Return error class
+        this.message = data.message; // Return error message
+      } else {
+        this.messageClass = 'alert alert-success'; // Return success class
+        this.message = data.message; // Return success message
+      this.creatorEmail=data.user.email;
+      this.getEmailListComm()
+      this.DoneEmailNote()
+      
+      }
+    })
+  
+    
+  })
+  // Service to like a blog post
+  this.blogService.Done(id).subscribe(() => {
+    this.getAllBlogs();
+  });
+}
+
+Drawing(id) {
+  this.blogService.Drawing(id).subscribe(() => {
+    this.getAllBlogs();
+  });
+}
+
   getEmailList(){
     
     this.emailList=[]
@@ -619,6 +656,17 @@ getAllUsers() {
     
     
     
+  }
+
+  DoneEmailNote(){
+    
+    const newEmail = {
+        to: this.emailList.toString(),// Title field
+        html:'<h2>Job Done</h2><br /> '+ ' Title: <strong>' +this.blogT +'</strong><br />' +'Job No: ' +'<strong>' + this.blogJ+'</strong>'+'</strong><br />' +'Done by: ' +'<strong>' + this.username +'</strong><br />', // CreatedBy field
+      }
+      this.blogService.newEmailNot(newEmail).subscribe(() => {
+        // Check if blog was saved to database or not
+      });
   }
 
   ngOnInit() {

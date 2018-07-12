@@ -353,6 +353,10 @@
     
     <div class="panel-body">
       <div class="col-md-6">
+          <h4 class="text-danger" *ngIf="blog.JobStatus == 'TMP Requested!'">Status: {{blog.JobStatus}}</h4>
+          <h4 class="text-success" *ngIf="blog.JobStatus !== 'TMP Requested!'">Status: {{blog.JobStatus}}</h4>
+          
+          
       <ul class="list-unstyled">
         <li><strong>Client: </strong> {{blog.Client}}</li>
         <li><strong>Address: </strong> {{blog.Address}}</li>
@@ -400,6 +404,8 @@
       <a [routerLink]="['/delete-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-danger">Delete</button></a>
       <!-- Close Button -->
       <a [routerLink]="['/closed-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-success">Close</button></a>
+      <button [disabled]="blog.drawing" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="Drawing(blog._id)">Drawing</button>
+      <button [disabled]="blog.done" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="Done(blog._id)">Done</button>
 
       <!-- Likes Dropdown  -->
       <!-- <div class="dropdown"> -->
