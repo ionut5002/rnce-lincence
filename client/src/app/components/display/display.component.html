@@ -15,6 +15,8 @@
     <!-- Panel Body -->
     
     <div class="panel-body">
+        <h4 class="text-danger" *ngIf="blog.JobStatus == 'TMP Requested!'">Status: {{blog.JobStatus}}</h4>
+        <h4 class="text-success" *ngIf="blog.JobStatus !== 'TMP Requested!'">Status: {{blog.JobStatus}}</h4>
       <div class="col-md-6">
       <ul class="list-unstyled">
         <li><strong>Client: </strong> {{blog.Client}}</li>
