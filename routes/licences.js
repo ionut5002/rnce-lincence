@@ -1343,7 +1343,7 @@ ApplyReminder.start()
               const lincenceType = licences[i].LicenceType
               console.log(licenceSubject)
               var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-              if(((new Date (licences[i].RefundReminder).toLocaleDateString(options)) === (new Date().toLocaleDateString(options)))){
+              if(((new Date (licences[i].RefundReminder).toLocaleDateString(options)) <= (new Date().toLocaleDateString(options)))){
                 
                 User.find({}, (err, users) => {
                   // Check if error was found or not
@@ -1425,7 +1425,7 @@ ApplyReminder.start()
               const lincenceType = licences[i].LicenceType
               console.log(licenceSubject)
               var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-              if((licences[i].phase2)&&((new Date (licences[i].reminderIfValid).toLocaleDateString(options)) === (new Date().toLocaleDateString(options)))){
+              if((licences[i].phase2)&&((new Date (licences[i].reminderIfValid).toLocaleDateString(options)) <= (new Date().toLocaleDateString(options)))){
                 
                 User.find({}, (err, users) => {
                   // Check if error was found or not
