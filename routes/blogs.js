@@ -538,7 +538,7 @@ module.exports = (router) => {
               User.findOne({ _id: req.decoded.userId }, (err, user) => {
                 // Check if error was found
                 if (err) {
-                  res.json({ success: false, message: 'Something went wrong' }); // Return error message
+                  res.json({ success: false, message: err }); // Return error message
                 } else {
                   // Check if user was found in the database
                   if (!user) {
@@ -554,7 +554,7 @@ module.exports = (router) => {
                     blog.save((err) => {
                       // Check if error was found
                       if (err) {
-                        res.json({ success: false, message: 'Something went wrong.' }); // Return error message
+                        res.json({ success: false, message: err }); // Return error message
                       } else {
                         res.json({ success: true, message: 'Comment saved' }); // Return success message
                       }

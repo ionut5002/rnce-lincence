@@ -13,7 +13,7 @@ const NotificationSchema = new Schema({
   author: { type: String },
   createdAt: { type: Date, default: Date.now },
   action:{type:String}
-});
+},{ usePushEach: true });
 
 // Export Module/Schema
 module.exports = mongoose.model('Notification', NotificationSchema);

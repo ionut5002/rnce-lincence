@@ -302,7 +302,7 @@ const blogSchema = new Schema({
     attachements:{ type:Array },
     createdTime: { type: Date, default: Date.now }
   }]
-});
+},{ usePushEach: true });
 
 // Export Module/Schema
 module.exports = mongoose.model('Blog', blogSchema);
