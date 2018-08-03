@@ -408,7 +408,7 @@ export class BlogComponent implements OnInit {
       this.blogPosts = data.blogs;
       this.queue=0
       for(let i=0; i< this.blogPosts.length; i++){
-        if(!this.blogPosts[i].close){
+        if((!this.blogPosts[i].close)&&(this.blogPosts[i].JobStatus !='TMP Done!')){
           this.queue= this.queue+1;
           
         }
