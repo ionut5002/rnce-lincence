@@ -1166,7 +1166,6 @@ module.exports = (router) => {
              for(let i =0; i < licences.length; i++){
               const licenceSubject = licences[i].title
               const lincenceType = licences[i].LicenceType
-              console.log(licenceSubject)
               if(licences[i].phase1){
                 
                 User.find({}, (err, users) => {
@@ -1232,7 +1231,7 @@ ApplyReminder.start()
 
   
   const CloseLicence = new CronJob({
-    cronTime: '00 30 10 * * 1-5',
+    cronTime: '00 00 10 * * 1-5',
     onTick: function() {
       Licence.find({}, (err, licences) => {
         // Check if error was found or not
@@ -1248,7 +1247,7 @@ ApplyReminder.start()
               const licenceSubject = licences[i].title
               const lincenceType = licences[i].LicenceType
               console.log(licenceSubject)
-              if(((new Date (licences[i].LvalidTo)) <= (new Date())) && (!licences[i].close)||((licences[i].phase6)&& (!licences[i].close))){
+              if(((Date.parse(licences[i].LvalidTo)) <= (Date.parse(new Date()))) && (!licences[i].close)||((licences[i].phase6)&& (!licences[i].close))){
                 
                 User.findOne({username: licences[i].createdBy}, (err, user) => {
                   // Check if error was found or not
@@ -1326,7 +1325,7 @@ ApplyReminder.start()
   =============================================================== */
 
   const RefundReminder = new CronJob({
-    cronTime: '00 30 10 * * *',
+    cronTime: '00 30 12 * * *',
     onTick: function() {
       Licence.find({}, (err, licences) => {
         // Check if error was found or not
@@ -1343,7 +1342,7 @@ ApplyReminder.start()
               const lincenceType = licences[i].LicenceType
               console.log(licenceSubject)
               var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-              if(((new Date (licences[i].RefundReminder).toLocaleDateString(options)) <= (new Date().toLocaleDateString(options)))){
+              if((Date.parse(licences[i].RefundReminder) < (Date.parse(new Date())))){
                 
                 User.find({}, (err, users) => {
                   // Check if error was found or not
@@ -1379,7 +1378,7 @@ ApplyReminder.start()
                             if (error) {
                                 return console.log(error);
                             }
-                            console.log('message send')
+                            console.log('message send to' + users[i].email)
                            
                         });
                         }
@@ -1408,7 +1407,7 @@ ApplyReminder.start()
 
   
   const reminderIfValid = new CronJob({
-    cronTime: '00 30 10 * * *',
+    cronTime: '00 30 11 * * *',
     onTick: function() {
       Licence.find({}, (err, licences) => {
         // Check if error was found or not
@@ -1423,9 +1422,9 @@ ApplyReminder.start()
              for(let i =0; i < licences.length; i++){
               const licenceSubject = licences[i].title
               const lincenceType = licences[i].LicenceType
-              console.log(licenceSubject)
+              
               var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-              if((licences[i].phase2)&&((new Date (licences[i].reminderIfValid).toLocaleDateString(options)) <= (new Date().toLocaleDateString(options)))){
+              if((licences[i].phase2)&&((Date.parse(licences[i].reminderIfValid)) < (Date.parse(new Date())))){
                 
                 User.find({}, (err, users) => {
                   // Check if error was found or not
@@ -1462,8 +1461,9 @@ ApplyReminder.start()
                                 return console.log(error);
                             }
                             console.log('message send')
-                           
+                              
                         });
+                        
                         }
                       }
                       
