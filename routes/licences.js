@@ -1403,7 +1403,7 @@ ApplyReminder.start()
 
   
  /* ===============================================================
-     AUTO EMAIL NOTIFICATION (phase1 reminder to apply)
+     AUTO EMAIL NOTIFICATION (status check)
   =============================================================== */
 
   

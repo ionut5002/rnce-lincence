@@ -19,7 +19,7 @@
         <!-- <li><a *ngIf="role==='Admin'&& authService.loggedIn()" routerLink="/register">Add User</a></li> -->
         <li><a *ngIf="authService.loggedIn()" routerLink="/profile">Profile</a></li>
         <li><a *ngIf="authService.loggedIn()" routerLink="/blog">Jobs</a></li>
-        <li><a *ngIf="authService.loggedIn()" routerLink="/licence">Licence</a></li>
+        <li><a *ngIf="authService.loggedIn()" routerLink="/licence">Licence <span *ngIf="this.role === 'TMP'" class="badge">{{this.licencequeue}}</span></a></li>
         <li><a *ngIf="!authService.loggedIn()" routerLink="/login">Login</a></li>
         <li><a *ngIf="authService.loggedIn()" href="#" (click)="onLogoutClick()">Logout</a></li>
         

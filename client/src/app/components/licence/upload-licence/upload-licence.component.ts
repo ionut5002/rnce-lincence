@@ -120,7 +120,7 @@ export class UploadLicenceComponent implements OnInit {
         const files: Array<File> = this.filesToUpload;
     
         for(let i =0; i < files.length; i++){
-          if(files[i].type=='application/msword' || files[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+          if(files[i].type=='application/msword' || files[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document'|| files[i].type=='application/pdf'){
             const newfilename = this.randomKey + '-' + files[i]['name']
             formData.append("uploads[]", files[i], newfilename);}
             this.createAuthenticationHeaders();

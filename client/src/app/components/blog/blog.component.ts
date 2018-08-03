@@ -46,6 +46,7 @@ export class BlogComponent implements OnInit {
    email;
    randomKey;
    links = [];
+   queue=0;
 
 
   constructor(
@@ -404,7 +405,15 @@ export class BlogComponent implements OnInit {
   getAllBlogs() {
     // Function to GET all blogs from database
     this.blogService.getAllBlogs().subscribe(data => {
-      this.blogPosts = data.blogs; // Assign array to use in HTML
+      this.blogPosts = data.blogs;
+      this.queue=0
+      for(let i=0; i< this.blogPosts.length; i++){
+        if(!this.blogPosts[i].close){
+          this.queue= this.queue+1;
+          
+        }
+      }
+       // Assign array to use in HTML
     });
   }
   getAllNotifications() {
@@ -426,6 +435,7 @@ export class BlogComponent implements OnInit {
     
     });
   }
+
   
 
   // Function to like a blog post
