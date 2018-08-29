@@ -57,7 +57,7 @@
     <div class="panel-footer">
       <strong>Posted by: </strong> {{ blog.createdBy }}
       <br />
-      <strong>Date: </strong> {{ blog.createdAt | date:'MMM dd, yyyy' }}
+      <strong>Date: </strong> {{ blog.createdAt | date:'dd MMM yyyy' }}
     </div>
   </div>
 
@@ -85,7 +85,7 @@
         <li><strong>Client: </strong> {{blog.Client}}</li>
         <li><strong>Address: </strong> {{blog.Address}}</li>
         <li><strong>Licence Required: </strong> {{blog.LicenceRequired}}</li>
-        <li><strong>StartDate:</strong> {{blog.StartDate}}</li>
+        <li><strong>StartDate:</strong> {{blog.StartDate | date:'dd MMM yyyy'}}</li>
         <li><strong>SpeedOfRoad:</strong> {{blog.SpeedOfRoad}}</li>
         <li><strong>RoadWidth:</strong> {{blog.RoadWidth}} m</li>
         <li><strong>CarriagewayType:</strong> {{blog.CarriagewayType}}</li>

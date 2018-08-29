@@ -324,7 +324,7 @@
       <br />
     </div>
     <div class="col-md-12"><h4>Please attach photos(Location map, Working area)</h4>
-  <input type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+  <input type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
   <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul></div>
@@ -446,7 +446,7 @@
             <label for="comment">Reply</label>
             <textarea name="comment" rows="10" cols="30" class="form-control" formControlName="comment"></textarea>
             <h5>Please attach files(Location map, Working area, TM plans)</h5>
-            <input type="file" name="attachement" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+            <input type="file" name="attachement" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
             <ul  class="list-unstyled" *ngFor="let names of this.upl">
               <li >{{names}}</li>
             </ul>
