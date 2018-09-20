@@ -81,7 +81,13 @@ module.exports = (router) => {
             emergency:req.body.emergency,
             SafetyFolder:req.body.SafetyFolder,
             PSCS:req.body.PSCS,
-            PSDP:req.body.PSDP
+            PSDP:req.body.PSDP,
+            CrewNeeded:req.body.CrewNeeded,
+            NightTime:req.body.NightTime,
+            DeliveryOnSite:req.body.DeliveryOnSite,
+            AfterCare:req.body.AfterCare,
+            Phases:req.body.Phases,
+
           });
           // Save job into database
           blog.save((err) => {
@@ -224,6 +230,11 @@ module.exports = (router) => {
                     blog.SafetyFolder = req.body.SafetyFolder;
                     blog.PSCS = req.body.PSCS;
                     blog.PSDP = req.body.PSDP;
+                    blog.CrewNeeded = req.body.CrewNeeded;
+                    blog.NightTime = req.body.NightTime;
+                    blog.DeliveryOnSite = req.body.DeliveryOnSite;
+                    blog.AfterCare = req.body.AfterCare;
+                    blog.Phases = req.body.Phases;
                     
 
                     blog.save((err) => {
@@ -799,6 +810,7 @@ module.exports = (router) => {
               return console.log(error);
           }
           res.json({message:'mail sent'})
+          console.log('message sent')
           
       });
   });

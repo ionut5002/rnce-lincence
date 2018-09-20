@@ -106,6 +106,21 @@ export class BlogComponent implements OnInit {
       PSCS: [],
       // PSDP field
       PSDP: [],
+      // CrewNeeded field
+      CrewNeeded: [],
+      // NightTime field
+      NightTime: [],
+      // DeliveryOnSite field
+      DeliveryOnSite: [],
+      // AfterCare field
+      AfterCare: [],
+      // Phases field
+      Phases: ['',Validators.compose([
+        Validators.required,
+        Validators.maxLength(3),
+        Validators.minLength(1),
+        this.NumericValidation
+      ])],
       // RoadWidth field
       RoadWidth: ['', Validators.compose([
         Validators.required,
@@ -191,7 +206,14 @@ export class BlogComponent implements OnInit {
     this.form.get('emergency').enable(),
     this.form.get('SafetyFolder').enable(),
     this.form.get('PSCS').enable(),
-    this.form.get('PSDP').enable()
+    this.form.get('PSDP').enable(),
+    this.form.get('CrewNeeded').enable(),
+    this.form.get('NightTime').enable(),
+    this.form.get('DeliveryOnSite').enable(),
+    this.form.get('AfterCare').enable(),
+    this.form.get('Phases').enable()
+  
+
   }
 
   // Disable new job form
@@ -215,7 +237,12 @@ export class BlogComponent implements OnInit {
     this.form.get('emergency').disable(),
     this.form.get('SafetyFolder').disable(),
     this.form.get('PSCS').disable(),
-    this.form.get('PSDP').disable()
+    this.form.get('PSDP').disable(),
+    this.form.get('CrewNeeded').disable(),
+    this.form.get('NightTime').disable(),
+    this.form.get('DeliveryOnSite').disable(),
+    this.form.get('AfterCare').disable(),
+    this.form.get('Phases').disable()
   }
 
   // Validation for form
@@ -334,6 +361,12 @@ export class BlogComponent implements OnInit {
       SafetyFolder:this.form.get('SafetyFolder').value,
       PSCS:this.form.get('PSCS').value,
       PSDP:this.form.get('PSDP').value,
+      CrewNeeded:this.form.get('CrewNeeded').value,
+      NightTime:this.form.get('NightTime').value,
+      DeliveryOnSite:this.form.get('DeliveryOnSite').value,
+      AfterCare:this.form.get('AfterCare').value,
+      Phases:this.form.get('Phases').value,
+
       path:this.upl,
       createdBy: this.username, 
       

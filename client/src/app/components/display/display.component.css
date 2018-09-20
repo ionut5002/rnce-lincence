@@ -49,3 +49,15 @@ td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
+.panel-custom-actavo {
+    background:rgb(4, 42, 167); color: #fff; }
+.panel-custom-obelisk {
+    background: rgb(224, 93, 41); color: #fff; }
+.panel-custom-balfour {
+    background: lightseagreen; color: #fff; }
+.panel-custom-emergency {
+     background: #dd3c33; color: #fff; }
+.panel-custom-normal {
+    background: skyblue; color: #fff; }
+.panel-custom-done {
+    background: #4BB543; color: #fff; }

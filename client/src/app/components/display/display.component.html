@@ -8,15 +8,18 @@
   <div  *ngFor="let blog of blogPosts">
 <div [ngClass]="blog.emergency ? 'panel panel-danger' : 'panel panel-primary'" *ngIf="!blog.close && (role === 'Display') ">
     <!-- Panel Title -->
-    <div class="panel-heading">
+    <div [ngClass]="(blog.Client=='Actavo' ? 'panel-heading panel-custom-actavo':'') ||
+     (blog.Client=='OBELISK' ? 'panel-heading panel-custom-obelisk':'') || 
+     (blog.Client=='Balfour Beatty' ? 'panel-heading panel-custom-balfour':'')||
+     (blog.JobStatus=='TMP Done!' ? 'panel-heading panel-custom-done':'') ||
+     (blog.emergency ? 'panel-heading panel-custom-emergency' : 'panel-heading panel-custom-normal')" >
       <h3 class="panel-title">{{ blog.title }} {{ blog.JobNo }}</h3>
     </div>
 
     <!-- Panel Body -->
     
     <div class="panel-body">
-        <h4 class="text-danger" *ngIf="blog.JobStatus == 'TMP Requested!'">Status: {{blog.JobStatus}}</h4>
-        <h4 class="text-success" *ngIf="blog.JobStatus !== 'TMP Requested!'">Status: {{blog.JobStatus}}</h4>
+      <h4 [ngClass]="blog.JobStatus=='TMP Requested!' ? 'text-danger':'text-success'">Status: {{blog.JobStatus}}</h4>
       <div class="col-md-6">
       <ul class="list-unstyled">
         <li><strong>Client: </strong> {{blog.Client}}</li>

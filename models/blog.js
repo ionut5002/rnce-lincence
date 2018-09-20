@@ -296,6 +296,11 @@ const blogSchema = new Schema({
   likedBy: { type: Array },
   dislikes: { type: Number, default: 0 },
   dislikedBy: { type: Array },
+  CrewNeeded:{type:String, required: true},
+  NightTime:{type:String, required: true},
+  DeliveryOnSite:{type:String, required: true},
+  AfterCare:{type:String, required: true},
+  Phases:{type:String,required:true, validate:VolumeValidators},
   comments: [{
     comment: { type: String, validate: commentValidators },
     commentator: { type: String },

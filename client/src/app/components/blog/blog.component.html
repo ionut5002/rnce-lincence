@@ -110,7 +110,7 @@
   <div class="form-group col-md-3"><a class="btn btn-success" (click)="getGeolocation()">Get my Location</a><div *ngIf="this.location">Latitude:{{location.latitude}} Longitude:{{location.longitude}}</div></div>
 </div>
 <div class="row">
-<div class="form-group col-md-6">
+<div class="form-group col-md-4">
   <label for="SpeedOfRoad">Speed Of Road</label>
     <!-- SpeedOfRoad Input -->
       <select class="form-control" name="SpeedOfRoad" formControlName="SpeedOfRoad">
@@ -124,16 +124,15 @@
       </select>
 </div>
 
-<div class="form-group col-md-6">
+<div class="form-group col-md-4">
   <label for="LicenceRequired">Licence Required</label>
     <!-- LicenceRequired Input -->
       <select class="form-control" name="LicenceRequired" formControlName="LicenceRequired">
         <option >Yes</option>
         <option>No</option>
       </select>
-</div></div>
-<div class="row">
-<div class="form-group col-md-6">
+</div>
+<div class="form-group col-md-4">
   <label for="RoadWidth">Road Width(in meters)</label>
   <div [ngClass]="{'has-success': form.controls.RoadWidth.valid, 'has-error': form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors}">
 <!-- Road Width Input -->
@@ -145,19 +144,19 @@
   <li *ngIf="form.controls.RoadWidth.dirty && form.controls.RoadWidth.errors?.NumericValidation">Must be a number</li>
 </ul>
 </div>
-</div>
-
-<div class="form-group col-md-6">
-  <label for="CarriagewayType">Carriageway Type</label>
-    <!-- CarriagewayType Input -->
-      <select class="form-control" name="CarriagewayType" formControlName="CarriagewayType">
-        <option >Single</option>
-        <option>Dual</option>
-        <option>Multiple Lanes</option>
-      </select>
 </div></div>
+
 <div class="row">
-<div class="form-group col-md-6">
+    <div class="form-group col-md-4">
+        <label for="CarriagewayType">Carriageway Type</label>
+          <!-- CarriagewayType Input -->
+            <select class="form-control" name="CarriagewayType" formControlName="CarriagewayType">
+              <option >Single</option>
+              <option>Dual</option>
+              <option>Multiple Lanes</option>
+            </select>
+      </div>
+<div class="form-group col-md-4">
   <label for="RoadLevel">Road Level</label><div class="dropdown">
     &nbsp;&nbsp;Help<span class=" glyphicon glyphicon-info-sign "></span>
     <div class="dropdown-content">
@@ -176,7 +175,7 @@
       </select>
 </div>
 
-<div class="form-group col-md-6">
+<div class="form-group col-md-4">
   <label for="Volume">Volume(3 min count)</label>
   <div [ngClass]="{'has-success': form.controls.Volume.valid, 'has-error': form.controls.Volume.dirty && form.controls.Volume.errors}">
 <!-- Volume Input -->
@@ -190,7 +189,7 @@
 </div>
 </div></div>
 <div class="row">
-<div class="form-group col-md-6">
+<div class="form-group col-md-4">
   <label for="WorksType">Works Type</label>
   <div class="dropdown">
     &nbsp;&nbsp;Help<span class=" glyphicon glyphicon-info-sign "></span>
@@ -226,7 +225,7 @@
       </select>
 </div>
 
-<div class="form-group col-md-6">
+<div class="form-group col-md-4">
   <label for="WorksHours">Works Hours</label>
   <!-- WorksHours Input -->
       <select class="form-control" name="WorksHours" formControlName="WorksHours" >
@@ -235,54 +234,100 @@
         <option>Night</option>
         <option>Short</option>  
       </select>
-</div></div>
+</div>
+<div class="form-group col-md-4">
+    <label for="LocationOnRoad">Location On Road/Path/Verge</label>
+    <!-- LocationOnRoad Input -->
+        <select class="form-control" name="LocationOnRoad" formControlName="LocationOnRoad">
+          <option >Path</option>
+          <option>H/S</option>
+          <option>Bus Lane</option>
+          <option>Lane</option> 
+          <option>Lane&amp;Path</option> 
+          <option>Bus Lane&amp;Path</option> 
+        </select>
+  </div></div>
+
 <div class="row">
-<div class="form-group col-md-6">
-  <label for="LocationOnRoad">Location On Road/Path/Verge</label>
-  <!-- LocationOnRoad Input -->
-      <select class="form-control" name="LocationOnRoad" formControlName="LocationOnRoad">
-        <option >Path</option>
-        <option>H/S</option>
-        <option>Bus Lane</option>
-        <option>Lane</option> 
-        <option>Lane&amp;Path</option> 
-        <option>Bus Lane&amp;Path</option> 
+    <div class="form-group col-md-4">
+        <label for="TypeOfTrafficCR">Type Of Traffic Control Required</label>
+        <!-- TypeOfTrafficCR Input -->
+            <select class="form-control" name="TypeOfTrafficCR" formControlName="TypeOfTrafficCR">
+              <option>Road Closed</option>
+              <option>Lane Closed</option>
+              <option>Temp Traffic Lights</option>
+              <option>Stop&amp;Go</option>
+              <option>Footpath Closed</option>
+              <option>Road Narrows</option>
+              <option>Convoy</option>
+              <option>Contra Flow</option>
+              </select>
+      </div>
+  <div class="form-group col-md-4">
+    <label for="CrewNeeded">Crew Needed for this plan?
+        </label>
+      <!-- CrewNeeded Input -->
+        <select class="form-control" name="CrewNeeded" formControlName="CrewNeeded">
+            
+          <option >Yes</option>
+          <option>No</option>
+        </select>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="NightTime">NightTime Plan Needed?
+        </label>
+      <!-- NightTime Input -->
+        <select class="form-control" name="NightTime" formControlName="NightTime">
+            
+          <option >Yes</option>
+          <option>No</option>
+        </select>
+  </div></div>
+<div class="row">
+    <div class="form-group col-md-4">
+        <label for="DeliveryOnSite">Deliveries On Site?(Ex:Grab Wagen etc.)
+            </label>
+          <!-- DeliveryOnSite Input -->
+            <select class="form-control" name="DeliveryOnSite" formControlName="DeliveryOnSite">
+                
+              <option >Yes</option>
+              <option>No</option>
+            </select>
+      </div>
+
+<div class="form-group col-md-4">
+  <label for="AfterCare">AfterCare Plan Needed?
+  </label>
+    <!-- AfterCare Input -->
+      <select class="form-control" name="AfterCare" formControlName="AfterCare">
+        <option >Yes</option>
+        <option>No</option>
       </select>
 </div>
+<div class="form-group col-md-4">
+  <label for="Phases">No of Phases</label>
+  <div [ngClass]="{'has-success': form.controls.Phases.valid, 'has-error': form.controls.Phases.dirty && form.controls.Phases.errors}">
+<!-- Phases Input -->
+<input type="text" name="Phases" class="form-control" placeholder="*Phases" autocomplete="off" formControlName="Phases" />
+<!-- Validation -->
+<ul class="help-block">
+  <li *ngIf="form.controls.Phases.dirty && form.controls.Phases.errors?.required">This field is required.</li>
+  <li *ngIf="(form.controls.Phases.dirty && form.controls.Phases.errors?.minlength) || (form.controls.Phases.dirty && form.controls.Phases.errors?.maxlength)">Max length: 3, Min length: 1</li>
+  <li *ngIf="form.controls.Phases.dirty && form.controls.Phases.errors?.NumericValidation">Must be a number</li>
+</ul>
+</div>
+</div>
+</div>
 
-<div class="form-group col-md-6">
-  <label for="TypeOfTrafficCR">Type Of Traffic Control Required</label>
-  <!-- TypeOfTrafficCR Input -->
-      <select class="form-control" name="TypeOfTrafficCR" formControlName="TypeOfTrafficCR">
-        <option>Road Closed</option>
-        <option>Lane Closed</option>
-        <option>Temp Traffic Lights</option>
-        <option>Stop&amp;Go</option>
-        <option>Footpath Closed</option>
-        <option>Road Narrows</option>
-        <option>Convoy</option>
-        <option>Contra Flow</option>
-        </select>
-</div></div>
 <div class="row">
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-4">
         <label for="emergency">Is an Emergency</label>
         <input type="checkbox" name="emergency" formControlName="emergency">
       </div>
 
-      <div class="form-group col-md-3">
-          <label for="PSDP">Prelim plan received and issued to HSEQ Dept
-              Af1 required/received from Client/PSDP?
-              </label>
-            <!-- PSDP Input -->
-              <select class="form-control" name="PSDP" formControlName="PSDP">
-                  
-                <option >Yes</option>
-                <option>No</option>
-              </select>
-        </div>
+      
 
-<div class="form-group col-md-3">
+<div class="form-group col-md-4">
     <label for="SafetyFolder">Safety Folders is requested?</label>
       <!-- SafetyFolder Input -->
         <select class="form-control" name="SafetyFolder" formControlName="SafetyFolder">
@@ -290,7 +335,7 @@
           <option>No</option>
         </select>
   </div>
-  <div class="form-group col-md-3">
+  <div class="form-group col-md-4">
       <label for="PSCS">Are RNCE PSCS on the work?</label>
         <!-- PSCS Input -->
           <select class="form-control" name="PSCS" formControlName="PSCS">
@@ -300,6 +345,19 @@
           </select>
     </div>
   
+</div>
+<div class="row">
+    <div class="form-group col-md-6">
+        <label for="PSDP">Prelim plan received and issued to HSEQ Dept
+            Af1 required/received from Client/PSDP?
+            </label>
+          <!-- PSDP Input -->
+            <select class="form-control" name="PSDP" formControlName="PSDP">
+                
+              <option >Yes</option>
+              <option>No</option>
+            </select>
+      </div>
 </div>
 
   <!-- Body Input -->
@@ -344,9 +402,13 @@
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
   <div  *ngFor="let blog of blogPosts | searchFilter: 'JobNo': box.value">
-<div [ngClass]="blog.emergency ? 'panel panel-danger' : 'panel panel-primary'" *ngIf="!blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
+<div class="panel panel-default" *ngIf="!blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
-    <div class="panel-heading">
+    <div [ngClass]="(blog.Client=='Actavo' ? 'panel-heading panel-custom-actavo':'') ||
+     (blog.Client=='OBELISK' ? 'panel-heading panel-custom-obelisk':'') || 
+     (blog.Client=='Balfour Beatty' ? 'panel-heading panel-custom-balfour':'')||
+     (blog.JobStatus=='TMP Done!' ? 'panel-heading panel-custom-done':'') ||
+     (blog.emergency ? 'panel-heading panel-custom-emergency' : 'panel-heading panel-custom-normal')" >
       <h3 class="panel-title">{{ blog.title }} {{ blog.JobNo }}</h3>
     </div>
 
@@ -354,12 +416,12 @@
     
     <div class="panel-body">
       <div class="col-md-6">
-          <h4 class="text-danger" *ngIf="blog.JobStatus == 'TMP Requested!'">Status: {{blog.JobStatus}}</h4>
-          <h4 class="text-success" *ngIf="blog.JobStatus !== 'TMP Requested!'">Status: {{blog.JobStatus}}</h4>
+          <h4 [ngClass]="blog.JobStatus=='TMP Requested!' ? 'text-danger':'text-success'">Status: {{blog.JobStatus}}</h4>
+          
           
           
       <ul class="list-unstyled">
-        <li><strong>Client: </strong> {{blog.Client}}</li>
+        <li><strong>Client:</strong>  {{blog.Client}}</li>
         <li><strong>Address: </strong> {{blog.Address}}</li>
         <li><strong>Licence Required: </strong> {{blog.LicenceRequired}}</li>
         <li><strong>StartDate:</strong> {{blog.StartDate | date:'dd MMM yyyy'}}</li>
@@ -372,6 +434,11 @@
         <li><strong>WorksHours:</strong> {{blog.WorksHours}}</li>
         <li><strong>LocationOnRoad:</strong> {{blog.LocationOnRoad}}</li>
         <li><strong>Type Of Traffic Control Required:</strong> {{blog.TypeOfTrafficCR}}</li>
+        <li><strong>Crew Needed:</strong> {{blog.CrewNeeded}}</li>
+        <li><strong>Night Time Plan Needed?:</strong> {{blog.NightTime}}</li>
+        <li><strong>Deliveries On Site:</strong> {{blog.DeliveryOnSite}}</li>
+        <li><strong>AfterCare Plan Needed?:</strong> {{blog.AfterCare}}</li>
+        <li><strong>No of Phases:</strong> {{blog.Phases}}</li>
         <li><strong>Description:</strong> {{ blog.body }} </li>
         <h4>Health and Safety</h4>
         <li><strong>-Safety Folder Needed?:</strong> {{ blog.SafetyFolder }} </li>
