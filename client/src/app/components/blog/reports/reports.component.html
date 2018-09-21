@@ -1,0 +1,37 @@
+
+
+
+<div  >
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th scope="col">JobNo</th>
+        <th scope="col">Title</th>
+        <th scope="col">Client</th>
+        <th scope="col">CreatedAt</th>
+        <th scope="col">CreatedBy</th>
+        <th scope="col">DoneBy</th>
+        <th scope="col">DoneAt</th>
+        <th scope="col">TMP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let blog of blogsReport">
+        <th scope="row">{{blog.JobNo}}</th>
+        <td>{{blog.title}}</td>
+        <td>{{blog.client}}</td>
+        <td>{{blog.createdAt | date:'dd MMM yyyy hh:mm a'}}</td>
+        <td>{{blog.createdBy}}</td>
+        <td><ul style="list-style-type: none" *ngFor="let comments of blog.comment"><li>{{comments.commentator}}</li></ul></td>
+        <td><ul style="list-style-type: none" *ngFor="let comments of blog.comment"><li>{{comments.createdTime | date:'dd MMM yyyy hh:mm a'}}</li></ul> </td>
+        <td><ul style="list-style-type: none" *ngFor="let comments of blog.comment"><li>{{comments.attt}}</li></ul> </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+</div>
+
+
+
+

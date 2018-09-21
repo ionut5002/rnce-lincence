@@ -20,6 +20,7 @@ import { UploadLicenceComponent } from './components/licence/upload-licence/uplo
 import { BookingComponent } from './components/licence/booking/booking.component';
 import { PostWorksComponent } from './components/licence/post-works/post-works.component';
 import { DisplayComponent } from './components/display/display.component';
+import { ReportsComponent } from './components/blog/reports/reports.component';
 
 
 // Our Array of Angular 2 Routes
@@ -76,6 +77,11 @@ const appRoutes: Routes = [
   {
     path: 'delete-blog/:id',
     component: DeleteBlogComponent, // Delete Blog Route
+    canActivate: [AuthGuard] // User must be logged in to view this route
+  },
+  {
+    path: 'Reports-Jobs',
+    component: ReportsComponent, // Blog Route,
     canActivate: [AuthGuard] // User must be logged in to view this route
   },
   {

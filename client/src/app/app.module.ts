@@ -33,6 +33,7 @@ import { PostWorksComponent } from './components/licence/post-works/post-works.c
 import { SearchFilterPipe } from './search-filter.pipe';
 import { DisplayComponent } from './components/display/display.component';
 import { ScrollToModule } from 'ng2-scroll-to-el';
+import { ReportsComponent } from './components/blog/reports/reports.component';
 
 
 
@@ -60,6 +61,7 @@ import { ScrollToModule } from 'ng2-scroll-to-el';
     PostWorksComponent,
     SearchFilterPipe,
     DisplayComponent,
+    ReportsComponent,
     
     
   ],
