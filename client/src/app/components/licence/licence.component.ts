@@ -194,6 +194,8 @@ export class LicenceComponent implements OnInit {
   newLicenceForm() {
     this.newPost = true; // Show new Licence form
     this.getEmailList()
+    this.upl=[]
+    this.filesToUpload=[]
     this.randomKey = Math.random().toString(36).substring(2, 10)
   }
 
