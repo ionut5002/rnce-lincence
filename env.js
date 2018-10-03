@@ -12,6 +12,6 @@ if (fs.existsSync('./public')) {
 
 
 process.env.Gmail = 'richardnolanapp@gmail.com';
-process.env.GPass = 'ionut5002';
+process.env.GPass = 'Claudiu5002-';
 // mongodb://rnce2018:ionut5002@ds219318.mlab.com:19318/rnce (official)
 // mongodb://rnce2018:ionut5002@ds219000.mlab.com:19000/test-rnce (test)
