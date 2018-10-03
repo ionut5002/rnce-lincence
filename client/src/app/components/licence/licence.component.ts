@@ -426,7 +426,7 @@ export class LicenceComponent implements OnInit {
       const files: Array<File> = this.filesToUpload;
   
       for(let i =0; i < files.length; i++){
-        if(files[i].type=='application/pdf' || files[i].type=='image/jpeg' || files[i].type=='image/jpg' || files[i].type=='image/png'){
+        if(files[i].type=='application/msword' || files[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || files[i].type=='application/pdf' || files[i].type=='image/jpeg' || files[i].type=='image/jpg' || files[i].type=='image/png'){
           const newfilename = this.randomKey + '-' + files[i]['name']
           formData.append("uploads[]", files[i], newfilename);}
           this.createAuthenticationHeaders();
@@ -440,7 +440,7 @@ fileChangeEvent(fileInput: any) {
   this.filesToUpload = <Array<File>>fileInput.target.files;
 this.upl=[];
   for(let i =0; i < this.filesToUpload.length; i++){
-    if(this.filesToUpload[i].type=='application/pdf' || this.filesToUpload[i].type=='image/jpeg' || this.filesToUpload[i].type=='image/jpg' || this.filesToUpload[i].type=='image/png'){
+    if(this.filesToUpload[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.filesToUpload[i].type=='application/msword' || this.filesToUpload[i].type=='application/pdf' || this.filesToUpload[i].type=='image/jpeg' || this.filesToUpload[i].type=='image/jpg' || this.filesToUpload[i].type=='image/png'){
 this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name'])
 }
   }
