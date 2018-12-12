@@ -812,25 +812,19 @@ module.exports = (router) => {
 
   router.post('/send', (req, res) => {
     
-      let transporter = nodemailer.createTransport({
-         
-        host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.Gmail, // Your email id
-        pass: process.env.GPass // Your password
-    },
-    tls: {
-        // do not fail on invalid certs
-        rejectUnauthorized: false
-    }
-//           service: 'gmail',
-//  auth: {
-//         user: process.env.Gmail,
-//         pass: process.env.GPass
-//     }
-      });
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+          type: 'OAuth2',
+          user: process.env.Gmail,
+          clientId: process.env.clientId,
+          clientSecret: process.env.clientSecret,
+          refreshToken: process.env.refreshToken
+          
+      }
+    });
   
       // setup email data with unicode symbols
       let mailOptions = {
