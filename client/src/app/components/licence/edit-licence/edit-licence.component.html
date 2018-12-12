@@ -17,6 +17,14 @@
     <input [disabled]="processing" type="text" name="title" placeholder="*Licence Title" class="form-control" [(ngModel)]="licence.title" #title="ngModel" />
   </div>
   </div>
+  <!-- RefNo Field -->
+  <div class="row">
+      <div class="form-group col-md-9">
+        <label for="RefNo">Ref No</label>
+        <!-- Title Input -->
+        <input [disabled]="processing" type="text" name="RefNo" placeholder="*Licence RefNo" class="form-control" [(ngModel)]="licence.RefNo" #RefNo="ngModel" />
+      </div>
+      </div>
   <div class="row">
   <div class="form-group col-md-9">
     <label for="Client">Client</label>
@@ -34,10 +42,10 @@
           <!-- Client Input -->
           <input [disabled]="processing" type="text" name="Address" placeholder="*Address" class="form-control" [(ngModel)]="licence.Address" #Address="ngModel" />
         </div>
-        
+
   </div>
   <div class="row">
-  
+
     <div class="form-group col-md-6">
       <label for="LicenceType">Licence Type</label>
         <!-- SpeedOfRoad Input -->
@@ -70,8 +78,8 @@
   </div>
 
   </div>
-  
-  
+
+
 
   <!-- Body Field -->
   <div class="form-group">
@@ -86,8 +94,8 @@
   <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
   <!-- Save Changes Button -->
   <button [disabled]="processing ||
-   (!title.dirty && !body.dirty && !LicenceType.dirty && !Client.dirty && !StartDate.dirty && !WorkLength.dirty 
-   && !WorkWidth.dirty && !Address.dirty && !TMType.dirty)" 
+   (!title.dirty && !body.dirty && !LicenceType.dirty && !Client.dirty && !StartDate.dirty && !WorkLength.dirty
+   && !WorkWidth.dirty && !Address.dirty && !TMType.dirty && !RefNo.dirty)"
    type="submit" name="save" class="btn btn-info">Save Changes</button>
 
 </form>

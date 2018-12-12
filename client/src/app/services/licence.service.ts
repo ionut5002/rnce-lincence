@@ -57,19 +57,19 @@ export class LicenceService {
   }
    // Function to close a licence
    closeLicence(id) {
-     
+
      const closedata= {id:id}
      // Create headers
     return this.http.put(this.domain + 'licences/closeLicence/', closedata, this.options).map(res => res.json());
   }
   uploadLicence(uploadData) {
-     
+
     const closedata= uploadData
     // Create headers
    return this.http.put(this.domain + 'licences/uploadLicence/', closedata, this.options).map(res => res.json());
  }
  uploadPostWorks(uploadData) {
-     
+
   const closedata= uploadData
   // Create headers
  return this.http.put(this.domain + 'licences/post-works/', closedata, this.options).map(res => res.json());
@@ -81,6 +81,12 @@ export class LicenceService {
 CompleteWorks(id) {
   const blogData = { id: id };
   return this.http.put(this.domain + 'licences/CompleteWorks', blogData, this.options).map(res => res.json());
+}
+
+AddRefNo(id, f) {
+  const blogData = { id: id,
+                      RefNo: f };
+  return this.http.put(this.domain + 'licences/AddRefNo', blogData, this.options).map(res => res.json());
 }
 
   // Function to edit/update licence post
@@ -95,11 +101,11 @@ CompleteWorks(id) {
 
   // Function to delete a licence
   deleteLicence(id) {
-    
+
     this.createAuthenticationHeaders(); // Create headers
     return this.http.delete(this.domain + 'licences/deleteLicence/' + id, this.options).map(res => res.json());
   }
- 
+
 
   // Function to like a licence post
   likeLicence(id) {
@@ -120,10 +126,10 @@ CompleteWorks(id) {
     const licenceData = {
       id: id,
       comment: comment,
-      attachements: attachements 
-      
+      attachements: attachements
+
     }
-    
+
     return this.http.post(this.domain + 'licences/comments', licenceData, this.options).map(res => res.json());
 
   }
@@ -144,6 +150,6 @@ CompleteWorks(id) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'licences/send', newEMail, this.options).map(res => res.json());
   }
- 
+
 
 }

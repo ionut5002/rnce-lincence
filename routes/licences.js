@@ -73,7 +73,8 @@ module.exports = (router) => {
             TMType:req.body.TMType,
             path: req.body.path,
             createdBy: req.body.createdBy,
-            RefundDate: dateRef
+            RefundDate: dateRef,
+            RefNo: ''
             
             
             
@@ -211,7 +212,8 @@ module.exports = (router) => {
                     licence.Client = req.body.Client,
                     licence.Address = req.body.Address,
                     licence.LicenceType = req.body.LicenceType,
-                    licence.TMType = req.body.TMType
+                    licence.TMType = req.body.TMType,
+                    licence.RefNo = req.body.RefNo
                     licence.save((err) => {
                       if (err) {
                         if (err.errors) {
@@ -549,6 +551,61 @@ module.exports = (router) => {
                         res.json({ success: false, message: err }); // Return error message
                       } else {
                         res.json({ success: true, message: 'Works  Complete!' }); // Return success message
+                      }
+                    });
+                    
+                  }
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+
+    /* ===============================================================
+     ADD REF NO LICENCE POST
+  =============================================================== */
+  
+  router.put('/AddRefNo/', (req, res) => {
+    // Check if ID was provided in parameters
+    if (!req.body.id) {
+      res.json({ success: false, message: 'No id provided' }); // Return error message
+    } else {
+      // Check if id is found in database
+      Licence.findOne({ _id: req.body.id }, (err, licence) => {
+        // Check if error was found
+        if (err) {
+          res.json({ success: false, message: 'Invalid id' }); // Return error message
+        } else {
+          // Check if licence was found in database
+          if (!licence) {
+            res.json({ success: false, messasge: 'Licence was not found' }); // Return error message
+          } else {
+            // Get info on user who is attempting to delete post
+            User.findOne({ _id: req.decoded.userId }, (err, user) => {
+              // Check if error was found
+              if (err) {
+                res.json({ success: false, message: err }); // Return error message
+              } else {
+                // Check if user's id was found in database
+                if (!user) {
+                  res.json({ success: false, message: 'Unable to authenticate user.' }); // Return error message
+                } else {
+                  // Check if user attempting to delete licence is the same user who originally posted the licence
+                  if (user.role !== 'TMP') {
+                    res.json({ success: false, message: 'You are not authorized to apply for this licence' }); // Return error message
+                  } else {
+                    licence.RefNo= req.body.RefNo;
+                   
+                    
+                    
+                    licence.save((err) => {
+                      if (err) {
+                        res.json({ success: false, message: err }); // Return error message
+                      } else {
+                        res.json({ success: true, message: 'Ref No Added!' }); // Return success message
                       }
                     });
                     

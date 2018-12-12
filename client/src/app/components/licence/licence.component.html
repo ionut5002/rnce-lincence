@@ -24,19 +24,22 @@
     <div  *ngFor="let notification of Notifications"><div *ngIf="(notification.author !== username) && (!notification.seen.includes(username)) "><tr>
         <td ><strong>{{notification.author}}</strong> {{notification.action}} <strong>{{notification.changesTo}}</strong> at <strong>{{notification.createdAt | date:'dd MMM yyyy hh:mm a'}}</strong>.</td>
       <td><span class="glyphicon glyphicon-remove " (click)="seenNotification(notification._id)"></span></td>
-      
+
     </tr>
     </div></div>
   </div>
-  
+
   </div>
   <a *ngIf="!newPost" [routerLink]="['/closed-licence/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Licences</button></a>
 </div>
-<div class="col-md-3">
-  
+<div class="col-md-2">
+
 </div>
-<div class="col-md-3">
+<div class="col-md-2">
     <input [hidden]="newPost" #box (keyup)="0" placeholder="Search By Title">
+  </div>
+<div class="col-md-2">
+    <input [hidden]="newPost" #refno (keyup)="0" placeholder="Search By Ref No">
   </div>
 </div>
 <br />
@@ -93,7 +96,7 @@
   </ul>
   </div>
   </div>
-  
+
 </div>
 <div class="row">
 
@@ -101,7 +104,7 @@
 <div class="form-group col-md-6 ">
   <label for="LicenceType">Select Licence Type</label>
     <!-- LicenceType Input -->
-    
+
 		<div class="radio licencetype" [ngClass]="t2class" (click)="classt2()">
 		  <label>
 			<input type="radio" name="LicenceType" formControlName="LicenceType" value="T2">
@@ -197,7 +200,7 @@
   <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul></div>
-  
+
 </div>
 
   <!-- Go Back Button -->
@@ -212,16 +215,17 @@
 <!-- Panel Start -->
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
-  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value">
+  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value | searchFilter: 'RefNo': refno.value">
 <div  [ngClass]="licence.LicenceType=='T4' ? 'panel panel-danger' : 'panel panel-primary'"  *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">
-      <h3 class="panel-title">{{ licence.title }}</h3>
+      <h3 class="panel-title">{{ licence.title }}     <span class="navbar-right" style="margin-right: 20px;" *ngIf="licence.RefNo"> Ref No: {{licence.RefNo}}</span></h3>
     </div>
 
     <!-- Panel Body -->
-    
+
     <div class="panel-body">
+      <div class="row">
       <div class="col-md-6">
           <h4 *ngIf="licence.phase1" class='text-danger'>Status: Request for Licence</h4>
         <h4 *ngIf="licence.phase2">Status: Applying for Licence</h4>
@@ -243,34 +247,54 @@
             <li *ngIf="licence.WorksStartDate"><strong>Works Starts:</strong> {{ licence.WorksStartDate | date:'dd MMM yyyy ' }} </li>
             <li *ngIf="licence.WorksStartDate"><strong>Works Ends:</strong> {{ licence.WorksEndDate | date:'dd MMM yyyy ' }} </li>
           </ul>
-      
-    </div><div class="col-md-6">
+
+    </div>
+    <div class="row">
+    <div class="col-md-6">
       <h3>Pre works photos</h3>
     <div *ngFor="let ph of licence.path">
       <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" alt="" width="200" height="100"></a>
       {{ph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
-    </div></div></div>
-    <div class="row">
+    </div></div>
     <div class="col-md-6" >
-        <h3>Licence Valid</h3>
-      <div *ngFor="let lph of licence.LicencePath">
-          <strong>Valid From: </strong>{{ licence.LvalidFrom| date:'dd MMM yyyy ' }} <strong>Valid To: </strong>{{ licence.LvalidTo| date:'dd MMM yyyy ' }} <br />
-        <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" alt="" width="200" height="100"></a>
-        {{lph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+        <h3>Post works photos</h3>
+      <div *ngFor="let pph of licence.pathPost">
+        <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" alt="" width="200" height="100"></a>
+        {{pph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
       </div></div>
 
-      <div class="col-md-6" >
-          <h3>Post works photos</h3>
-        <div *ngFor="let pph of licence.pathPost">
-          <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" alt="" width="200" height="100"></a>
-          {{pph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
-        </div></div></div>
-      
-      <button [disabled]="!licence.phase1" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="ApplyingForLicence(licence._id)">Applying</button>    
-      <a [routerLink]="['/upload-licence/', licence._id]" *ngIf="role === 'TMP'"><button  [disabled]="!licence.phase2" type="button" name="button" class="btn btn-lg btn-success">Upload</button></a>
-      <a [routerLink]="['/book-works/', licence._id]" *ngIf="username === licence.createdBy"><button  [disabled]="!licence.phase3" type="button" name="button" class="btn btn-lg btn-success">Book Work Date</button></a>
-      <a [routerLink]="['/post-works/', licence._id]" *ngIf="username === licence.createdBy"><button  [disabled]="!licence.phase4" type="button" name="button" class="btn btn-lg btn-success">Post Works Photos</button></a>
-      <button [disabled]="!licence.phase5" *ngIf="username === licence.createdBy" type="button" name="button" class="btn btn-lg btn-success" (click)="CompleteWorks(licence._id)">Job Complete</button>    
+    </div></div>
+    <div class="row">
+      <div class="col-md-12" >
+          <h3>Licence Valid</h3>
+        <div *ngFor="let lph of licence.LicencePath">
+            <strong>Valid From: </strong>{{ licence.LvalidFrom| date:'dd MMM yyyy ' }} <strong>Valid To: </strong>{{ licence.LvalidTo| date:'dd MMM yyyy ' }} <br />
+          <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" alt="" width="200" height="100"></a>
+          {{lph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+        </div></div>
+
+        </div>
+          <div class="row col-md-12" >
+            <button [disabled]="!licence.phase1" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="ApplyingForLicence(licence._id)">Applying</button>
+            <a [routerLink]="['/upload-licence/', licence._id]" *ngIf="role === 'TMP'"><button  [disabled]="!licence.phase2" type="button" name="button" class="btn btn-lg btn-success">Upload</button></a>
+            <a [routerLink]="['/book-works/', licence._id]" *ngIf="username === licence.createdBy"><button  [disabled]="!licence.phase3" type="button" name="button" class="btn btn-lg btn-success">Book Work Date</button></a>
+            <a [routerLink]="['/post-works/', licence._id]" *ngIf="username === licence.createdBy"><button  [disabled]="!licence.phase4" type="button" name="button" class="btn btn-lg btn-success">Post Works Photos</button></a>
+            <button [disabled]="!licence.phase5" *ngIf="username === licence.createdBy" type="button" name="button" class="btn btn-lg btn-success" (click)="CompleteWorks(licence._id)">Job Complete</button>
+          </div>
+        <div  style="margin-top: 10px;" *ngIf="licence.RefNo === ''" class="row col-md-6">
+          <button class="btn btn-primary" (click)="addRefNo(licence._id)">Add Ref No</button>
+          <form *ngIf="RefNo == licence._id" #f (ngSubmit)="onaddRefNo(licence._id, f.RefNo.value)" >
+            <input type="text" name="RefNo">
+            <button class="btn btn-danger" type="submit">Add</button>
+          </form>
+          <div class="row show-hide-message" *ngIf="message">
+              <div [ngClass]="messageClass">
+                {{ message }}
+              </div>
+            </div>
+        </div>
+  </div>
+
     <!-- Panel Footer Start -->
     <div class="panel-footer">
       <strong>Posted by: </strong>{{ licence.createdBy }}
@@ -368,11 +392,11 @@
         <div *ngIf="enabledComments.indexOf(licence._id) > -1">
           <li *ngFor="let comment of licence.comments" class="list-group-item">
             <strong>{{ comment.commentator }}:</strong>
-            <br /> {{ comment.comment }} 
+            <br /> {{ comment.comment }}
             <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  role="button" target="_blank">Download</a></li></ul>
             <strong>Created at:{{comment.createdTime | date:'dd MMM yyyy hh:mm a'}}</strong>
           </li>
-          
+
         </div>
       </ul>
     <!-- Post Comment Box: End -->
@@ -380,8 +404,8 @@
   </div>
   <br />
   <br />
-  
+
   <!-- Panel Outer Layer -->
 </div>
-<!-- Panel End --> 
+<!-- Panel End -->
 

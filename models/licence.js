@@ -253,6 +253,7 @@ const licenceSchema = new Schema({
   phase5: {type:Boolean, default:false},
   phase6: {type:Boolean, default:false},
   reminderIfValid:{type:String, default:''},
+  RefNo:{type: String},
 
   createdBy: { type: String },
   createdAt: { type: Date, default: Date.now },

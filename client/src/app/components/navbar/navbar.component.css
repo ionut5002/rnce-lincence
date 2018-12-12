@@ -1,0 +1,15 @@
+.navbar-default {
+  background-color: lightskyblue;
+
+}
+.navbar-default .navbar-nav>.active>a{
+  background-color: lightseagreen;
+  color: white;
+}
+
+.navbar-default .navbar-nav>li>a{
+  color: white;
+}
+.navbar-default .navbar-brand{
+  color: white;
+}
