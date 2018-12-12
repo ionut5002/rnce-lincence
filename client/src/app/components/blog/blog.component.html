@@ -24,21 +24,21 @@
   <div class="dropdown-content">
     <div  *ngFor="let notification of Notifications"><div *ngIf="(notification.author !== username) && (!notification.seen.includes(username)) "><tr>
         <td ><strong>{{notification.author}}</strong> {{notification.action}} <strong>{{notification.changesTo}}</strong> at <strong>{{notification.createdAt | date:'dd MMM yyyy hh:mm a'}}</strong>.</td>
-      <td><span class="glyphicon glyphicon-remove " (click)="seenNotification(notification._id)"></span></td>
-      
+      <td><span style="cursor: pointer" class="glyphicon glyphicon-remove " (click)="seenNotification(notification._id)"></span></td>
+
     </tr>
     </div></div>
   </div>
-  
+
   </div>
   <a *ngIf="!newPost" [routerLink]="['/closed-blog/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Jobs</button></a>
 </div>
 <div class="col-md-3">
-  
+
 </div>
 <div  class="col-md-3">
     <input [hidden]="newPost"  #box (keyup)="0" placeholder="Search By Job No">
-    
+
   </div>
 </div>
 <br />
@@ -164,14 +164,14 @@
         <img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/roadclasification.JPG?alt=media" alt="" width="400" height="200">
       </div>
     </div>
-    
+
     </div>
   <!-- RoadLevel Input -->
       <select class="form-control" name="RoadLevel" formControlName="RoadLevel">
         <option >1&amp;2</option>
         <option>3</option>
         <option>4</option>
-        <option>5&amp;6</option> 
+        <option>5&amp;6</option>
       </select>
 </div>
 
@@ -195,18 +195,18 @@
     &nbsp;&nbsp;Help<span class=" glyphicon glyphicon-info-sign "></span>
     <div class="dropdown-content">
       <div>
-        
+
         <p>Type A – Full-time roadworks that remain in operation in all traffic flows
           and all visibility conditions. This type of works typically includes
           temporary traffic measures that will remain in position for a duration in
           excess of 24hrs.
-          
+
           Type B – Part-time roadworks that remain in operation when the
           expected traffic flow is less than the available carriageway capacity. This
           type of works typically includes temporary traffic measures at off-peak
           times. With this type of works, the roadworks are such that they can be
           removed if necessary to minimise potential traffic delays.(8 hours shift)
-          
+
           Type C – Roadworks that are of a short duration and involve the use of
           one or two vehicles, typically maintenance to utilities or street furniture, in
           all visibility conditions, when the expected traffic flow is less than the
@@ -215,7 +215,7 @@
           </p>
       </div>
     </div>
-    
+
     </div>
   <!-- WorksType Input -->
       <select class="form-control" name="WorksType" formControlName="WorksType">
@@ -232,7 +232,7 @@
         <option >24Hrs</option>
         <option>Day</option>
         <option>Night</option>
-        <option>Short</option>  
+        <option>Short</option>
       </select>
 </div>
 <div class="form-group col-md-4">
@@ -242,9 +242,9 @@
           <option >Path</option>
           <option>H/S</option>
           <option>Bus Lane</option>
-          <option>Lane</option> 
-          <option>Lane&amp;Path</option> 
-          <option>Bus Lane&amp;Path</option> 
+          <option>Lane</option>
+          <option>Lane&amp;Path</option>
+          <option>Bus Lane&amp;Path</option>
         </select>
   </div></div>
 
@@ -268,7 +268,7 @@
         </label>
       <!-- CrewNeeded Input -->
         <select class="form-control" name="CrewNeeded" formControlName="CrewNeeded">
-            
+
           <option >Yes</option>
           <option>No</option>
         </select>
@@ -278,7 +278,7 @@
         </label>
       <!-- NightTime Input -->
         <select class="form-control" name="NightTime" formControlName="NightTime">
-            
+
           <option >Yes</option>
           <option>No</option>
         </select>
@@ -289,7 +289,7 @@
             </label>
           <!-- DeliveryOnSite Input -->
             <select class="form-control" name="DeliveryOnSite" formControlName="DeliveryOnSite">
-                
+
               <option >Yes</option>
               <option>No</option>
             </select>
@@ -325,7 +325,7 @@
         <input type="checkbox" name="emergency" formControlName="emergency">
       </div>
 
-      
+
 
 <div class="form-group col-md-4">
     <label for="SafetyFolder">Safety Folders is requested?</label>
@@ -341,10 +341,10 @@
           <select class="form-control" name="PSCS" formControlName="PSCS">
               <option >Yes</option>
               <option>No</option>
-            
+
           </select>
     </div>
-  
+
 </div>
 <div class="row">
     <div class="form-group col-md-6">
@@ -353,7 +353,7 @@
             </label>
           <!-- PSDP Input -->
             <select class="form-control" name="PSDP" formControlName="PSDP">
-                
+
               <option >Yes</option>
               <option>No</option>
             </select>
@@ -386,7 +386,7 @@
   <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul></div>
-  
+
 </div>
 
   <!-- Go Back Button -->
@@ -405,7 +405,7 @@
 <div class="panel panel-default" *ngIf="!blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div [ngClass]="(blog.Client=='Actavo' ? 'panel-heading panel-custom-actavo':'') ||
-     (blog.Client=='OBELISK' ? 'panel-heading panel-custom-obelisk':'') || 
+     (blog.Client=='OBELISK' ? 'panel-heading panel-custom-obelisk':'') ||
      (blog.Client=='Balfour Beatty' ? 'panel-heading panel-custom-balfour':'')||
      (blog.JobStatus=='TMP Done!' ? 'panel-heading panel-custom-done':'') ||
      (blog.emergency ? 'panel-heading panel-custom-emergency' : 'panel-heading panel-custom-normal')" >
@@ -413,13 +413,13 @@
     </div>
 
     <!-- Panel Body -->
-    
+
     <div class="panel-body">
       <div class="col-md-6">
           <h4 [ngClass]="blog.JobStatus=='TMP Requested!' ? 'text-danger':'text-success'">Status: {{blog.JobStatus}}</h4>
-          
-          
-          
+
+
+
       <ul class="list-unstyled">
         <li><strong>Client:</strong>  {{blog.Client}}</li>
         <li><strong>Address: </strong> {{blog.Address}}</li>
@@ -471,7 +471,7 @@
       <!-- Delete Button -->
       <a [routerLink]="['/delete-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-danger">Delete</button></a>
       <!-- Close Button -->
-      <a [routerLink]="['/closed-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-success">Close</button></a>
+      <a [routerLink]="['/closed-blog/', blog._id]" *ngIf="(username === blog.createdBy)||(role === 'TMP')"><button type="button" name="button" class="btn btn-sm btn-success">Close</button></a>
       <button [disabled]="blog.drawing" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="Drawing(blog._id)">Drawing</button>
       <button [disabled]="blog.done" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="Done(blog._id)">Done</button>
 
@@ -553,11 +553,11 @@
         <div *ngIf="enabledComments.indexOf(blog._id) > -1">
           <li *ngFor="let comment of blog.comments" class="list-group-item">
             <strong>{{ comment.commentator }}:</strong>
-            <br /> {{ comment.comment }} 
+            <br /> {{ comment.comment }}
             <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  role="button" target="_blank">Download</a></li></ul>
             <strong>Created at:{{comment.createdTime | date:'dd MMM yyyy hh:mm a'}}</strong>
           </li>
-          
+
         </div>
       </ul>
     <!-- Post Comment Box: End -->
@@ -565,8 +565,8 @@
   </div>
   <br />
   <br />
-  
+
   <!-- Panel Outer Layer -->
 </div>
-<!-- Panel End --> 
+<!-- Panel End -->
 

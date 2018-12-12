@@ -337,7 +337,33 @@ module.exports = (router) => {
                 } else {
                   // Check if user attempting to close job is the same user who originally posted the blog
                   if (user.username !== blog.createdBy) {
-                    res.json({ success: false, message: 'You are not authorized to delete this blog post' }); // Return error message
+                    if(user.role === 'TMP'){
+                      if(!blog.close){
+                        blog.close=true;
+                        blog.save((err) => {
+                          if (err) {
+                            res.json({ success: false, message: err }); // Return error message
+                          } else {
+                            res.json({ success: true, message: 'Job Closed!' }); // Return success message
+                          }
+                        });
+                        }else{
+                          blog.close=false;
+                          blog.drawing=false;
+                          blog.done=false;
+                          blog.JobStatus = 'TMP Requested!'
+                        blog.save((err) => {
+                          if (err) {
+                            res.json({ success: false, message: err }); // Return error message
+                          } else {
+                            res.json({ success: true, message: 'Job Reopened!' }); // Return success message
+                          }
+                        });
+    
+                        }
+                    }else{
+                      res.json({ success: false, message: 'You are not authorized to close/open this blog post' }); // Return error message
+                    }
                   } else {
                     if(!blog.close){
                     blog.close=true;
