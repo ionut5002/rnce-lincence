@@ -215,7 +215,8 @@
 <!-- Panel Start -->
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
-  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value | searchFilter: 'RefNo': refno.value">
+  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value">
+      <!-- | searchFilter: 'RefNo': refno.value -->
 <div  [ngClass]="licence.LicenceType=='T4' ? 'panel panel-danger' : 'panel panel-primary'"  *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
     <div class="panel-heading">
