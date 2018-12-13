@@ -640,10 +640,18 @@ getAllUsers() {
         this.RefNo = ''; // Return success message
         setTimeout(() => {
           this.getAllLicences();
+          this.messageClass = ''; // Return success class
+        this.message = '';
         }, 3000);
       }
     });
   }
+
+  // changeall(){
+  //   this.licenceService.changeAllLicences().subscribe( res =>{
+  //     console.log(res);
+  //   })
+  // }
   ngOnInit() {
     // Get profile username on page load
     this.authService.getProfile().subscribe(profile => {

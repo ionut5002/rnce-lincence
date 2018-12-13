@@ -1,5 +1,5 @@
 <h1 class="page-header">Licences Feed</h1>
-
+<!-- <button type="button" class="btn btn-danger" (click)="changeall()">Change All</button> -->
 <!-- Custom Success/Error Message -->
 <div class="row show-hide-message" *ngIf="message && newPost">
   <div [ngClass]="messageClass">
@@ -215,7 +215,7 @@
 <!-- Panel Start -->
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
-  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value">
+  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value | searchFilter: 'RefNo': refno.value">
       <!-- | searchFilter: 'RefNo': refno.value -->
 <div  [ngClass]="licence.LicenceType=='T4' ? 'panel panel-danger' : 'panel panel-primary'"  *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->

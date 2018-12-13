@@ -605,7 +605,7 @@ module.exports = (router) => {
                       if (err) {
                         res.json({ success: false, message: err }); // Return error message
                       } else {
-                        res.json({ success: true, message: 'Ref No Added!' }); // Return success message
+                        res.json({ success: true, message: 'Ref No. Added!' }); // Return success message
                       }
                     });
                     
@@ -1090,14 +1090,19 @@ module.exports = (router) => {
 
   router.post('/send', (req, res) => {
     
-      let transporter = nodemailer.createTransport({
-         
-          service: 'gmail',
- auth: {
-        user: process.env.Gmail,
-        pass: process.env.GPass
-    }
-      });
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+          type: 'OAuth2',
+          user: process.env.Gmail,
+          clientId: process.env.clientId,
+          clientSecret: process.env.clientSecret,
+          refreshToken: process.env.refreshToken
+          
+      }
+    });
   
       // setup email data with unicode symbols
       let mailOptions = {
@@ -1237,13 +1242,18 @@ module.exports = (router) => {
                       for(let i =0; i < users.length; i++){
                         if(users[i].role ==='TMP'){
                           let transporter = nodemailer.createTransport({
-         
-                            service: 'gmail',
-                   auth: {
-                          user: process.env.Gmail,
-                          pass: process.env.GPass
-                      }
-                        });
+                            host: 'smtp.gmail.com',
+                            port: 465,
+                            secure: true,
+                            auth: {
+                                type: 'OAuth2',
+                                user: process.env.Gmail,
+                                clientId: process.env.clientId,
+                                clientSecret: process.env.clientSecret,
+                                refreshToken: process.env.refreshToken
+                                
+                            }
+                          });
                     
                         // setup email data with unicode symbols
                         let mailOptions = {
@@ -1315,14 +1325,19 @@ ApplyReminder.start()
                     if (!user) {
                       console.log('no user found') // Return error of no licences found
                     } else {
-                          let transporter = nodemailer.createTransport({
-         
-                            service: 'gmail',
-                   auth: {
-                          user: process.env.Gmail,
-                          pass: process.env.GPass
-                      }
-                        });
+                      let transporter = nodemailer.createTransport({
+                        host: 'smtp.gmail.com',
+                        port: 465,
+                        secure: true,
+                        auth: {
+                            type: 'OAuth2',
+                            user: process.env.Gmail,
+                            clientId: process.env.clientId,
+                            clientSecret: process.env.clientSecret,
+                            refreshToken: process.env.refreshToken
+                            
+                        }
+                      });
                     
                         // setup email data with unicode symbols
                         let mailOptions = {
@@ -1412,14 +1427,19 @@ ApplyReminder.start()
                     } else {
                       for(let i =0; i < users.length; i++){
                         if((users[i].role ==='TMP')|| (users[i].username === licences[i].createdBy)){
-                          let transporter = nodemailer.createTransport({
-         
-                            service: 'gmail',
-                   auth: {
-                          user: process.env.Gmail,
-                          pass: process.env.GPass
-                      }
-                        });
+                           let transporter = nodemailer.createTransport({
+                            host: 'smtp.gmail.com',
+                            port: 465,
+                            secure: true,
+                            auth: {
+                                type: 'OAuth2',
+                                user: process.env.Gmail,
+                                clientId: process.env.clientId,
+                                clientSecret: process.env.clientSecret,
+                                refreshToken: process.env.refreshToken
+                                
+                            }
+                          });
                     
                         // setup email data with unicode symbols
                         let mailOptions = {
@@ -1495,14 +1515,18 @@ ApplyReminder.start()
                       for(let i =0; i < users.length; i++){
                         if(users[i].role ==='TMP'){
                           let transporter = nodemailer.createTransport({
-         
-                            service: 'gmail',
-                   auth: {
-                          user: process.env.Gmail,
-                          pass: process.env.GPass
-                      }
-                        });
-                    
+                            host: 'smtp.gmail.com',
+                            port: 465,
+                            secure: true,
+                            auth: {
+                                type: 'OAuth2',
+                                user: process.env.Gmail,
+                                clientId: process.env.clientId,
+                                clientSecret: process.env.clientSecret,
+                                refreshToken: process.env.refreshToken
+                                
+                            }
+                          });
                         // setup email data with unicode symbols
                         let mailOptions = {
                             from: '"RNCE Reminder" <NotificationsRNCE@gmail.com>', // sender address
@@ -1539,6 +1563,46 @@ ApplyReminder.start()
     timeZone: 'Europe/Dublin'
   });
   reminderIfValid.start()
+
+
+
+    /* ===============================================================
+     CHANGE IN ALL LICENCES
+  =============================================================== */
+  // router.put('/changeallLicences', (req, res) => {
+  //   // Search database for all licence posts
+  //   Licence.find({}, (err, licences) => {
+  //     // Check if error was found or not
+  //     if (err) {
+  //       res.json({ success: false, message: err }); // Return error message
+  //     } else {
+  //       // Check if licences were found in database
+  //       if (!licences) {
+  //         res.json({ success: false, message: 'No Licences found.' }); // Return error of no licences found
+  //       } else {
+  //         //res.json({ success: true, licences: licences }); 
+  //         for (let i =0; i < licences.length; i++){
+  //           if(licences[i].LicencePath.toString() !== ''){
+  //             const newRefNo = licences[i].LicencePath.toString().substring(5,15)
+  //             console.log(newRefNo)
+  //             licences[i].RefNo = newRefNo
+  //           } else {
+  //             licences[i].RefNo = '';
+  //           }
+  //           licences[i].save((err) => {
+  //             // Check if error was found
+  //             if (err) {
+  //               console.log(err) // Return error message
+  //             } else {
+  //               console.log('worked') // Return success message
+  //             }
+  //           });
+  //         }
+  //       }
+  //     }
+  //   })
+  // });
+
 
   return router;
 };

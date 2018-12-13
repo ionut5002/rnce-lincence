@@ -151,5 +151,11 @@ AddRefNo(id, f) {
     return this.http.post(this.domain + 'licences/send', newEMail, this.options).map(res => res.json());
   }
 
+  // changeAllLicences() {
+  //   const test = '';
+  //   this.createAuthenticationHeaders(); // Create headers
+  //   return this.http.put(this.domain + 'licences/changeallLicences', test ,  this.options).map(res => res.json());
+  // }
+
 
 }
