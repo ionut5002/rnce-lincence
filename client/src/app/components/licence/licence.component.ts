@@ -49,7 +49,7 @@ export class LicenceComponent implements OnInit {
    randomKey;
    links = [];
    RefNo = '';
-   RefNoF= false;
+   RefNoF = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -645,10 +645,10 @@ getAllUsers() {
   addRefNo(id) {
     if (this.RefNo !== id) {
       this.RefNo = id;
-      this.RefNoF = true
+      this.RefNoF = true;
     } else {
       this.RefNo = '';
-      this.RefNoF = false
+      this.RefNoF = false;
     }
 
 
@@ -666,7 +666,8 @@ getAllUsers() {
         setTimeout(() => {
           this.getAllLicences();
           this.messageClass = ''; // Return success class
-        this.message = '';
+          this.message = '';
+          this.RefNoF = false;
         }, 3000);
       }
     });
