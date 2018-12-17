@@ -1,8 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { BlogService } from '../../services/blog.service';
-import { Http ,RequestOptions, Headers} from '@angular/http';
+import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {LicenceComponent} from '../licence/licence.component';
 
@@ -10,13 +11,12 @@ import {LicenceComponent} from '../licence/licence.component';
   selector: 'app-blog',
   templateUrl: './blog.component.html',
   styleUrls: ['./blog.component.css']
-
 })
 
 export class BlogComponent implements OnInit {
-  
+
   messageClass;
-  status= 'TMP Requested!';
+  status = 'TMP Requested!';
   message;
   newPost = false;
   loadingBlogs = false;
@@ -27,18 +27,18 @@ export class BlogComponent implements OnInit {
   role;
   blogPosts;
   allusers;
-  emailList=[];
+  emailList = [];
   newComment = [];
   enabledComments = [];
   listing;
-  filesToUpload=[];
+  filesToUpload = [];
    upl = [];
    options;
    Notifications;
    blogT;
    blogJ;
    blogCr;
-   co=0;
+   co = 0;
    LocationMap;
    location;
    blogC;
@@ -46,16 +46,15 @@ export class BlogComponent implements OnInit {
    email;
    randomKey;
    links = [];
-   queue=0;
+   queue = 0;
 
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private blogService: BlogService,
-    private http: Http,
-    public router: Router,
-    
+    private http: HttpClient,
+    public router: Router
   ) {
 
     this.createNewBlogForm(); // Create new job form on start up
@@ -115,7 +114,7 @@ export class BlogComponent implements OnInit {
       // AfterCare field
       AfterCare: [],
       // Phases field
-      Phases: ['',Validators.compose([
+      Phases: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(3),
         Validators.minLength(1),
@@ -133,7 +132,7 @@ export class BlogComponent implements OnInit {
       // RoadLevel field
       RoadLevel: [],
       // Volume field
-      Volume : ['',Validators.compose([
+      Volume : ['', Validators.compose([
         Validators.required,
         Validators.maxLength(6),
         Validators.minLength(1),
@@ -148,18 +147,18 @@ export class BlogComponent implements OnInit {
       // TypeOfTrafficCR field
       TypeOfTrafficCR : [],
       // Address field
-      Address: ['',Validators.compose([
+      Address: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(200),
         Validators.minLength(10),
       ])],
       // LocationMap field
-      LocationMap:[],
+      LocationMap: [],
       // LicenceRequired field
-      LicenceRequired:['',Validators.compose([
+      LicenceRequired: ['', Validators.compose([
         Validators.required
       ])]
-    })
+    });
   }
 
   // Create form for posting comments
@@ -171,8 +170,7 @@ export class BlogComponent implements OnInit {
         Validators.maxLength(200)
       ])],
       attachements: []
-      
-    })
+    });
   }
 
   // Enable the comment form
@@ -187,7 +185,7 @@ export class BlogComponent implements OnInit {
 
   // Enable new job form
   enableFormNewBlogForm() {
-    this.form.get('title').enable(); 
+    this.form.get('title').enable();
     this.form.get('body').enable();
     this.form.get('JobNo').enable();
     this.form.get('Client').enable();
@@ -203,22 +201,20 @@ export class BlogComponent implements OnInit {
     this.form.get('TypeOfTrafficCR').enable();
     this.form.get('Address').enable();
     this.form.get('LicenceRequired').enable();
-    this.form.get('emergency').enable(),
-    this.form.get('SafetyFolder').enable(),
-    this.form.get('PSCS').enable(),
-    this.form.get('PSDP').enable(),
-    this.form.get('CrewNeeded').enable(),
-    this.form.get('NightTime').enable(),
-    this.form.get('DeliveryOnSite').enable(),
-    this.form.get('AfterCare').enable(),
-    this.form.get('Phases').enable()
-  
-
+    this.form.get('emergency').enable();
+    this.form.get('SafetyFolder').enable();
+    this.form.get('PSCS').enable();
+    this.form.get('PSDP').enable();
+    this.form.get('CrewNeeded').enable();
+    this.form.get('NightTime').enable();
+    this.form.get('DeliveryOnSite').enable();
+    this.form.get('AfterCare').enable();
+    this.form.get('Phases').enable();
   }
 
   // Disable new job form
   disableFormNewBlogForm() {
-    this.form.get('title').disable(); 
+    this.form.get('title').disable();
     this.form.get('body').disable();
     this.form.get('JobNo').disable();
     this.form.get('Client').disable();
@@ -234,15 +230,15 @@ export class BlogComponent implements OnInit {
     this.form.get('TypeOfTrafficCR').disable();
     this.form.get('Address').disable();
     this.form.get('LicenceRequired').disable();
-    this.form.get('emergency').disable(),
-    this.form.get('SafetyFolder').disable(),
-    this.form.get('PSCS').disable(),
-    this.form.get('PSDP').disable(),
-    this.form.get('CrewNeeded').disable(),
-    this.form.get('NightTime').disable(),
-    this.form.get('DeliveryOnSite').disable(),
-    this.form.get('AfterCare').disable(),
-    this.form.get('Phases').disable()
+    this.form.get('emergency').disable();
+    this.form.get('SafetyFolder').disable();
+    this.form.get('PSCS').disable();
+    this.form.get('PSDP').disable();
+    this.form.get('CrewNeeded').disable();
+    this.form.get('NightTime').disable();
+    this.form.get('DeliveryOnSite').disable();
+    this.form.get('AfterCare').disable();
+    this.form.get('Phases').disable();
   }
 
   // Validation for form
@@ -252,7 +248,7 @@ export class BlogComponent implements OnInit {
     if (regExp.test(controls.value)) {
       return null; // Return valid
     } else {
-      return { 'alphaNumericValidation': true } // Return error in validation
+      return { 'alphaNumericValidation': true }; // Return error in validation
     }
   }
   NumericValidation(controls) {
@@ -261,7 +257,7 @@ export class BlogComponent implements OnInit {
     if (regExp.test(controls.value)) {
       return null; // Return valid
     } else {
-      return { 'NumericValidation': true } // Return error in validation
+      return { 'NumericValidation': true }; // Return error in validation
     }
   }
   NumericValidation2(controls) {
@@ -270,16 +266,16 @@ export class BlogComponent implements OnInit {
     if (regExp.test(controls.value)) {
       return null; // Return valid
     } else {
-      return { 'NumericValidation2': true } // Return error in validation
+      return { 'NumericValidation2': true }; // Return error in validation
     }
   }
 
   // Function to display new job form
   newBlogForm() {
-    this.upl=[]
+    this.upl = [];
     this.newPost = true; // Show new job form
-    this.getEmailList()
-    this.randomKey = Math.random().toString(36).substring(2, 10)
+    this.getEmailList();
+    this.randomKey = Math.random().toString(36).substring(2, 10);
   }
 
   // Reload jobs on current page
@@ -294,37 +290,35 @@ export class BlogComponent implements OnInit {
 
   // Function to post a new comment on job post
   draftComment(id) {
-    this.randomKey = Math.random().toString(36).substring(2, 10)
-    this.upl=[]
+    this.randomKey = Math.random().toString(36).substring(2, 10);
+    this.upl = [];
     this.commentForm.reset(); // Reset the comment form each time users starts a new comment
     this.newComment = []; // Clear array so only one post can be commented on at a time
     this.newComment.push(id); // Add the post that is being commented on to the array
-    this.blogService.getSingleBlog(id).subscribe(data =>{
+    this.blogService.getSingleBlog(id).subscribe(data => {
       this.blogT = data.blog.title;
       this.blogC = data.blog.createdBy;
       this.blogJ = data.blog.JobNo;
-      this.blogService.getSingleUser(this.blogC).subscribe(data=>{
+      this.blogService.getSingleUser(this.blogC).subscribe(data => {
         if (!data.success) {
           this.messageClass = 'alert alert-danger'; // Return error class
           this.message = data.message; // Return error message
         } else {
           this.messageClass = 'alert alert-success'; // Return success class
           this.message = data.message; // Return success message
-        this.creatorEmail=data.user.email;
-        this.getEmailListComm()
+        this.creatorEmail = data.user.email;
+        this.getEmailListComm();
         }
-      })
-      
-      
+      });
    });
   }
 
- 
+
 
   // Function to cancel new post transaction
   cancelSubmission(id) {
-    this.filesToUpload=[]
-    this.upl=[]
+    this.filesToUpload = [];
+    this.upl = [];
     const index = this.newComment.indexOf(id); // Check the index of the blog post in the array
     this.newComment.splice(index, 1); // Remove the id from the array to cancel post submission
     this.commentForm.reset(); // Reset  the form after cancellation
@@ -341,36 +335,36 @@ export class BlogComponent implements OnInit {
     // Create job object from form fields
     const blog = {
       title: this.form.get('title').value,
-      JobNo: this.form.get('JobNo').value, 
+      JobNo: this.form.get('JobNo').value,
       body: this.form.get('body').value,
-      Client:this.form.get('Client').value,
-      StartDate:this.form.get('StartDate').value,
-      SpeedOfRoad:this.form.get('SpeedOfRoad').value,
-      RoadWidth:this.form.get('RoadWidth').value,
-      CarriagewayType:this.form.get('CarriagewayType').value,
-      RoadLevel:this.form.get('RoadLevel').value,
-      Volume:this.form.get('Volume').value,
-      WorksType:this.form.get('WorksType').value,
-      WorksHours:this.form.get('WorksHours').value,
-      LocationOnRoad:this.form.get('LocationOnRoad').value,
-      TypeOfTrafficCR:this.form.get('TypeOfTrafficCR').value,
-      Address:this.form.get('Address').value,
-      LocationMap:this.LocationMap,
-      LicenceRequired:this.form.get('LicenceRequired').value,
-      emergency:this.form.get('emergency').value,
-      SafetyFolder:this.form.get('SafetyFolder').value,
-      PSCS:this.form.get('PSCS').value,
-      PSDP:this.form.get('PSDP').value,
-      CrewNeeded:this.form.get('CrewNeeded').value,
-      NightTime:this.form.get('NightTime').value,
-      DeliveryOnSite:this.form.get('DeliveryOnSite').value,
-      AfterCare:this.form.get('AfterCare').value,
-      Phases:this.form.get('Phases').value,
+      Client: this.form.get('Client').value,
+      StartDate: this.form.get('StartDate').value,
+      SpeedOfRoad: this.form.get('SpeedOfRoad').value,
+      RoadWidth: this.form.get('RoadWidth').value,
+      CarriagewayType: this.form.get('CarriagewayType').value,
+      RoadLevel: this.form.get('RoadLevel').value,
+      Volume: this.form.get('Volume').value,
+      WorksType: this.form.get('WorksType').value,
+      WorksHours: this.form.get('WorksHours').value,
+      LocationOnRoad: this.form.get('LocationOnRoad').value,
+      TypeOfTrafficCR: this.form.get('TypeOfTrafficCR').value,
+      Address: this.form.get('Address').value,
+      LocationMap: this.LocationMap,
+      LicenceRequired: this.form.get('LicenceRequired').value,
+      emergency: this.form.get('emergency').value,
+      SafetyFolder: this.form.get('SafetyFolder').value,
+      PSCS: this.form.get('PSCS').value,
+      PSDP: this.form.get('PSDP').value,
+      CrewNeeded: this.form.get('CrewNeeded').value,
+      NightTime: this.form.get('NightTime').value,
+      DeliveryOnSite: this.form.get('DeliveryOnSite').value,
+      AfterCare: this.form.get('AfterCare').value,
+      Phases: this.form.get('Phases').value,
 
-      path:this.upl,
-      createdBy: this.username, 
-      
-    }
+      path: this.upl,
+      createdBy: this.username,
+
+    };
 
     // Function to save job into database
     this.blogService.newBlog(blog).subscribe(data => {
@@ -384,9 +378,9 @@ export class BlogComponent implements OnInit {
         this.messageClass = 'alert alert-success'; // Return success class
         this.message = data.message; // Return success message
         this.getNewNotification();
-        this.newEmailNote()
+        this.newEmailNote();
 
-        
+
 
         // Clear form data after two seconds
         setTimeout(() => {
@@ -396,14 +390,14 @@ export class BlogComponent implements OnInit {
           this.processing = false; // Enable submit button
           this.message = false; // Erase error/success message
            // Reset all form fields
-           
+
           this.enableFormNewBlogForm(); // Enable the form fields
-          if(blog.LicenceRequired ==='Yes'){
-            
-            this.newEmailNoteLicence()
-            alert('You have to make a request for Licence as well!')
+          if (blog.LicenceRequired === 'Yes') {
+
+            this.newEmailNoteLicence();
+            alert('You have to make a request for Licence as well!');
             this.router.navigate(['/licence']);
-            
+
           }
           this.form.reset();
         }, 4000);
@@ -411,24 +405,24 @@ export class BlogComponent implements OnInit {
     });
   }
 
-  getNewNotification(){
+  getNewNotification() {
     const notification = {
       title: this.form.get('title').value, // Title field
       createdBy: this.username, // CreatedBy field
       action: 'created a new Job Request for:'
-    }
-    
+    };
+
     this.blogService.newNotification(notification).subscribe(() => {
       // Check if blog was saved to database or not
     });
   }
 /*   getNewNotificationComment(){
-  
+
   } */
-  seenNotification(id){
+  seenNotification(id) {
     this.blogService.seenNotification(id).subscribe(() => {
       this.getAllNotifications();
-    })
+    });
   }
   // Function to go back to previous page
   goBack() {
@@ -440,11 +434,11 @@ export class BlogComponent implements OnInit {
     // Function to GET all blogs from database
     this.blogService.getAllBlogs().subscribe(data => {
       this.blogPosts = data.blogs;
-      this.queue=0
-      for(let i=0; i< this.blogPosts.length; i++){
-        if((!this.blogPosts[i].close)&&(this.blogPosts[i].JobStatus !='TMP Done!')){
-          this.queue= this.queue+1;
-          
+      this.queue = 0;
+      for (let i = 0; i < this.blogPosts.length; i++) {
+        if ((!this.blogPosts[i].close) && (this.blogPosts[i].JobStatus !== 'TMP Done!')) {
+          this.queue = this.queue + 1;
+
         }
       }
        // Assign array to use in HTML
@@ -454,23 +448,23 @@ export class BlogComponent implements OnInit {
     // Function to GET all blogs from database
     this.blogService.getAllNotifications().subscribe(data => {
       this.Notifications = data.notifications;
-      this.co=0;
-      for(var i=0; i < this.Notifications.length; i++) {
-        if(!this.Notifications[i].seen.includes(this.username) && !this.Notifications[i].author.includes(this.username)){
-          
+      this.co = 0;
+      for ( let i = 0; i < this.Notifications.length; i++) {
+        if (!this.Notifications[i].seen.includes(this.username) && !this.Notifications[i].author.includes(this.username)) {
+
             this.co++;
-            
-          
-          
+
+
+
         }
       }
 
-      
-    
+
+
     });
   }
 
-  
+
 
   // Function to like a blog post
   likeBlog(id) {
@@ -490,21 +484,21 @@ export class BlogComponent implements OnInit {
 
   // Function to post a new comment
   postComment(id) {
-    this.CommEmailNote()
+    this.CommEmailNote();
     const notification = {
       title: this.blogT, // Title field
       createdBy: this.username, // CreatedBy field
       action: 'added a comment on'
-    }
-    
+    };
+
     this.blogService.newNotification(notification).subscribe(() => {
     });
     this.upload();
     this.disableCommentForm(); // Disable form while saving comment to database
     this.processing = true; // Lock buttons while saving comment to database
     const comment = this.commentForm.get('comment').value; // Get the comment value to pass to service function
-    const attachements=this.upl;
-    
+    const attachements = this.upl;
+
     // Function to save the comment to the database
     this.blogService.postComment(id, comment, attachements).subscribe(() => {
       this.getAllBlogs(); // Refresh all blogs to reflect the new comment
@@ -513,8 +507,9 @@ export class BlogComponent implements OnInit {
       this.enableCommentForm(); // Re-enable the form
       this.commentForm.reset(); // Reset the comment form
       this.processing = false; // Unlock buttons on comment form
-      if (this.enabledComments.indexOf(id) < 0)
+      if (this.enabledComments.indexOf(id) < 0) {
         this.expand(id);
+      }
     });
   }
 
@@ -529,55 +524,54 @@ export class BlogComponent implements OnInit {
     this.enabledComments.splice(index, 1); // Remove id from array
   }
   createAuthenticationHeaders() {
-    this.authService.loadToken(); // Get token so it can be attached to headers
-    // Headers configuration options
-    this.options = new RequestOptions({
-      headers: new Headers({
-        //'Content-Type': 'application/json', // Format set to JSON
-        'authorization': this.authService.authToken // Attach token
-      })
-    });
+    this.blogService.createAuthenticationHeaders();
   }
-  
-  
+
+
   upload() {
-  
+
       const formData: any = new FormData();
       const files: Array<File> = this.filesToUpload;
-  
-      for(let i =0; i < files.length; i++){
-        if(files[i].type=='application/msword' || files[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document'|| files[i].type=='application/pdf' || files[i].type=='image/jpeg' || files[i].type=='image/jpg' || files[i].type=='image/png'){
-          const newfilename = this.randomKey + '-' + files[i]['name']
-          formData.append("uploads[]", files[i], newfilename);}
+
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].type === 'application/msword' ||
+        files[i].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+        files[i].type === 'application/pdf' || files[i].type === 'image/jpeg' ||
+        files[i].type === 'image/jpg' || files[i].type === 'image/png') {
+          const newfilename = this.randomKey + '-' + files[i]['name'];
+          formData.append( 'uploads[]', files[i], newfilename); }
           this.createAuthenticationHeaders();
-         this.http.post("https://us-central1-upload-rnce.cloudfunctions.net/uploadFile", formData,  this.options )
-          .map(files => files).subscribe()
-      } 
+         this.http.post('https://us-central1-upload-rnce.cloudfunctions.net/uploadFile', formData,  this.options )
+          .map( files => files).subscribe();
+      }
       }
 
- 
+
 fileChangeEvent(fileInput: any) {
   this.filesToUpload = <Array<File>>fileInput.target.files;
-  this.upl=[];
-  for(let i =0; i < this.filesToUpload.length; i++){
-    if(this.filesToUpload[i].type=='application/msword' || this.filesToUpload[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.filesToUpload[i].type=='application/pdf' || this.filesToUpload[i].type=='image/jpeg' || this.filesToUpload[i].type=='image/jpg' || this.filesToUpload[i].type=='image/png'){
-this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name'])
+  this.upl = [];
+  for (let i = 0; i < this.filesToUpload.length; i++) {
+    if (this.filesToUpload[i].type === 'application/msword' ||
+    this.filesToUpload[i].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+    this.filesToUpload[i].type === 'application/pdf' || this.filesToUpload[i].type === 'image/jpeg' ||
+    this.filesToUpload[i].type === 'image/jpg' || this.filesToUpload[i].type === 'image/png') {
+this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name']);
     }
    }
 }
-reloadAuto(){
-  setInterval(()=>{
+reloadAuto() {
+  setInterval(() => {
     this.getAllBlogs();
-    this.getAllNotifications(); },300000); 
+    this.getAllNotifications(); }, 300000);
   }
 
-  getGeolocation(){
-    if(navigator.geolocation){
+  getGeolocation() {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.location = position.coords;
-        this.LocationMap = this.location.latitude+', '+this.location.longitude;
-        
-         
+        this.LocationMap = this.location.latitude + ', ' + this.location.longitude;
+
+
       });
    }
   }
@@ -588,33 +582,33 @@ getAllUsers() {
   // Function to GET all blogs from database
   this.blogService.getAllUsers().subscribe(data => {
     this.allusers = data.users; // Assign array to use in HTML
-    
+
   });
 }
 
 Done(id) {
-  this.blogT='';
-  this.blogJ='';
-  this.blogService.getSingleBlog(id).subscribe(data =>{
+  this.blogT = '';
+  this.blogJ = '';
+  this.blogService.getSingleBlog(id).subscribe(data => {
     this.blogT = data.blog.title;
     this.blogJ = data.blog.JobNo;
     this.blogCr = data.blog.createdBy;
-    this.blogService.getSingleUser(this.blogCr).subscribe(data=>{
+    this.blogService.getSingleUser(this.blogCr).subscribe( data => {
       if (!data.success) {
         this.messageClass = 'alert alert-danger'; // Return error class
         this.message = data.message; // Return error message
       } else {
         this.messageClass = 'alert alert-success'; // Return success class
         this.message = data.message; // Return success message
-      this.creatorEmail=data.user.email;
-      this.getEmailListComm()
-      this.DoneEmailNote()
-      
+      this.creatorEmail = data.user.email;
+      this.getEmailListComm();
+      this.DoneEmailNote();
+
       }
-    })
-  
-    
-  })
+    });
+
+
+  });
   // Service to like a blog post
   this.blogService.Done(id).subscribe(() => {
     this.getAllBlogs();
@@ -627,87 +621,106 @@ Drawing(id) {
   });
 }
 
-  getEmailList(){
-    
-    this.emailList=[]
-    for(let i =0; i < this.allusers.length; i++){
-      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
-      this.emailList.push(this.allusers[i].email)}
+  getEmailList() {
+
+    this.emailList = [];
+    for (let i = 0; i < this.allusers.length; i++) {
+      if ((this.allusers[i].role === 'TMP' && this.allusers[i].email !== this.email) ||
+      (this.allusers[i].role === 'HS' && this.allusers[i].email !== this.email)) {
+      this.emailList.push(this.allusers[i].email);
+    }
       }
       /* console.log(this.emailList.toString()) */
   }
 
-  getEmailListComm(){
-    
-    this.emailList=[]
-    for(let i =0; i < this.allusers.length; i++){
-      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email) || (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
-      this.emailList.push(this.allusers[i].email)}
+  getEmailListComm() {
+
+    this.emailList = [];
+    for (let i = 0; i < this.allusers.length; i++) {
+      if ((this.allusers[i].role === 'TMP' && this.allusers[i].email !== this.email) ||
+      (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email) ||
+      (this.allusers[i].role === 'HS' && this.allusers[i].email !== this.email)) {
+      this.emailList.push(this.allusers[i].email);
+    }
       }
       /* console.log(this.emailList.toString()) */
   }
 
-  
-  
-  newEmailNoteLicence(){
-    
+
+
+  newEmailNoteLicence() {
+
     const newEmail = {
       to: this.email, // Title field
-      html:'<h2>You need to make a request for licence:</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Job No: ' +'<strong>' + this.form.get('JobNo').value+'</strong>'+'</strong><br />' +'Client: ' +'<strong>' + this.form.get('Client').value+'</strong>', // CreatedBy field
-    }
-    
-    this.blogService.newEmailNot(newEmail).subscribe(() => {
-      // Check if blog was saved to database or not
-    });
-  }
-  
-  newEmailNote(){
-    
-    const newEmail = {
-      to: this.emailList.toString(), // Title field
-      html:'<h2>New Job</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Job No: ' +'<strong>' + this.form.get('JobNo').value+'</strong>'+'</strong><br />' +'Client: ' +'<strong>' + this.form.get('Client').value+'</strong>', // CreatedBy field
-    }
-    
+      html: '<h2>You need to make a request for licence:</h2><br /> ' + ' Title: <strong>' +
+      this.form.get('title').value + '</strong><br />' + 'Job No: ' + '<strong>' +
+      this.form.get('JobNo').value + '</strong>' + '</strong><br />' + 'Client: ' + '<strong>' +
+      this.form.get('Client').value + '</strong>', // CreatedBy field
+    };
+
     this.blogService.newEmailNot(newEmail).subscribe(() => {
       // Check if blog was saved to database or not
     });
   }
 
-  CommEmailNote(){
-    if(this.upl.length>0){
-      this.links = [];
-      for(let i =0; i < this.upl.length; i++){
-        
-        this.links.push('<a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/'+this.upl[i]+'?alt=media">'+this.upl[i]+'</a><br />')
-      }
-      const newEmail = { 
-      to: this.emailList.toString(),// Title field
-      html:'<h2>New Files added on</h2><br /> '+ ' Title: <strong>' +this.blogT +'</strong><br />' +'Job No: ' +'<strong>' + this.blogJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username+'</strong><br />'+'Comment: '+ this.commentForm.get('comment').value +'</strong><br />' +'Files: ' +'<strong>' + 
-       this.links +'</strong>', // CreatedBy field
-    }
+  newEmailNote() {
+
+    const newEmail = {
+      to: this.emailList.toString(), // Title field
+      html: '<h2>New Job</h2><br /> ' + ' Title: <strong>' + this.form.get('title').value +
+      '</strong><br />' + 'Job No: ' + '<strong>' + this.form.get('JobNo').value +
+      '</strong>' + '</strong><br />' + 'Client: ' + '<strong>' + this.form.get('Client').value + '</strong>', // CreatedBy field
+    };
+
     this.blogService.newEmailNot(newEmail).subscribe(() => {
       // Check if blog was saved to database or not
     });
-  }else{
-      const newEmail = {
-        to: this.emailList.toString(),// Title field
-        html:'<h2>New Comments on</h2><br /> '+ ' Title: <strong>' +this.blogT +'</strong><br />' +'Job No: ' +'<strong>' + this.blogJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username +'</strong><br />'+'Comment: ' +'<strong>' + this.commentForm.get('comment').value +'</strong><br />', // CreatedBy field
+  }
+
+  CommEmailNote() {
+    if (this.upl.length > 0) {
+      this.links = [];
+      for (let i = 0; i < this.upl.length; i++) {
+
+        this.links.push('<a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/' +
+        this.upl[i] + '?alt=media">' + this.upl[i] + '</><br />');
       }
+      const newEmail = {
+      to: this.emailList.toString(), // Title field
+      html: '<h2>New Files added on</h2><br /> ' + ' Title: <strong>' + this.blogT +
+      '</strong><br />' + 'Job No: ' + '<strong>' + this.blogJ + '</strong>' +
+      '</strong><br />' + 'Added by: ' + '<strong>' + this.username + '</strong><br />' + 'Comment: ' +
+      this.commentForm.get('comment').value + '</strong><br />' + 'Files: ' + '<strong>' +
+       this.links + '</strong>', // CreatedBy field
+    };
+    this.blogService.newEmailNot(newEmail).subscribe(() => {
+      // Check if blog was saved to database or not
+    });
+  } else {
+      const newEmail = {
+        to: this.emailList.toString(), // Title field
+        html: '<h2>New Comments on</h2><br /> ' + ' Title: <strong>' + this.blogT +
+        '</strong><br />' + 'Job No: ' + '<strong>' + this.blogJ + '</strong>' +
+        '</strong><br />' + 'Added by: ' + '<strong>' + this.username + '</strong><br />' +
+         'Comment: ' + '<strong>' + this.commentForm.get('comment').value + '</strong><br />', // CreatedBy field
+      };
       this.blogService.newEmailNot(newEmail).subscribe(() => {
         // Check if blog was saved to database or not
       });
     }
-    
-    
-    
+
+
+
   }
 
-  DoneEmailNote(){
-    
+  DoneEmailNote() {
+
     const newEmail = {
-        to: this.emailList.toString(),// Title field
-        html:'<h2>Job Done</h2><br /> '+ ' Title: <strong>' +this.blogT +'</strong><br />' +'Job No: ' +'<strong>' + this.blogJ+'</strong>'+'</strong><br />' +'Done by: ' +'<strong>' + this.username +'</strong><br />', // CreatedBy field
-      }
+        to: this.emailList.toString(), // Title field
+        html: '<h2>Job Done</h2><br /> ' + ' Title: <strong>' +
+        this.blogT + '</strong><br />' + 'Job No: ' + '<strong>' +
+        this.blogJ + '</strong>' + '</strong><br />' + 'Done by: ' + '<strong>' + this.username + '</strong><br />', // CreatedBy field
+      };
       this.blogService.newEmailNot(newEmail).subscribe(() => {
         // Check if blog was saved to database or not
       });
@@ -717,17 +730,17 @@ Drawing(id) {
     // Get profile username on page load
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username;
-      this.role= profile.user.role;
-      this.email= profile.user.email // Used when creating new blog posts and comments
-      
+      this.role = profile.user.role;
+      this.email = profile.user.email; // Used when creating new blog posts and comments
+
     });
     this.reloadAuto();
     this.getAllBlogs(); // Get all blogs on component load
     this.getAllNotifications();
-    this.getAllUsers()
-    
-    
-    
+    this.getAllUsers();
+
+
+
 
   }
 

@@ -34,5 +34,5 @@
     </div>
   </div>
   <!-- Submit Button -->
-  <input [disabled]="!form.valid || processing" class="btn btn-primary" type="submit" value="Login" />
+  <button mat-raised-button [disabled]="!form.valid || processing" type="submit" color="primary">Login</button>
 </form>

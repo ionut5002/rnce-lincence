@@ -1,8 +1,10 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { LicenceService } from '../../services/licence.service';
-import { Http ,RequestOptions, Headers} from '@angular/http';
+import { map } from 'rxjs/operators';
+import { Http } from '@angular/http';
 
 
 @Component({
@@ -28,17 +30,17 @@ export class LicenceComponent implements OnInit {
   role;
   licencePosts;
   allusers;
-  emailList=[];
+  emailList = [];
   newComment = [];
   enabledComments = [];
   listing;
-  filesToUpload=[];
+  filesToUpload = [];
    upl = [];
    options;
    Notifications;
    licenceT;
    licenceJ;
-   co=0;
+   co = 0;
    LocationMap;
    location;
    licenceC;
@@ -47,6 +49,7 @@ export class LicenceComponent implements OnInit {
    randomKey;
    links = [];
    RefNo = '';
+   RefNoF= false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,18 +98,18 @@ export class LicenceComponent implements OnInit {
         Validators.minLength(1),
         this.NumericValidation
       ])],
-      Address: ['',Validators.compose([
+      Address: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(200),
         Validators.minLength(10),
       ])],
-      LicenceType:['',Validators.compose([
+      LicenceType: ['', Validators.compose([
         Validators.required
       ])],
-      TMType:['',Validators.compose([
+      TMType: ['', Validators.compose([
         Validators.required
       ])]
-    })
+    });
   }
 
   // Create form for posting comments
@@ -119,7 +122,7 @@ export class LicenceComponent implements OnInit {
       ])],
       attachements: []
 
-    })
+    });
   }
 
   // Enable the comment form
@@ -169,7 +172,7 @@ export class LicenceComponent implements OnInit {
     if (regExp.test(controls.value)) {
       return null; // Return valid
     } else {
-      return { 'alphaNumericValidation': true } // Return error in validation
+      return { 'alphaNumericValidation': true }; // Return error in validation
     }
   }
   NumericValidation(controls) {
@@ -178,7 +181,7 @@ export class LicenceComponent implements OnInit {
     if (regExp.test(controls.value)) {
       return null; // Return valid
     } else {
-      return { 'NumericValidation': true } // Return error in validation
+      return { 'NumericValidation': true }; // Return error in validation
     }
   }
   NumericValidation2(controls) {
@@ -187,17 +190,17 @@ export class LicenceComponent implements OnInit {
     if (regExp.test(controls.value)) {
       return null; // Return valid
     } else {
-      return { 'NumericValidation2': true } // Return error in validation
+      return { 'NumericValidation2': true }; // Return error in validation
     }
   }
 
   // Function to display new Licence form
   newLicenceForm() {
     this.newPost = true; // Show new Licence form
-    this.getEmailList()
-    this.upl=[]
-    this.filesToUpload=[]
-    this.randomKey = Math.random().toString(36).substring(2, 10)
+    this.getEmailList();
+    this.upl = [];
+    this.filesToUpload = [];
+    this.randomKey = Math.random().toString(36).substring(2, 10);
   }
 
   // Reload Licences on current page
@@ -212,26 +215,26 @@ export class LicenceComponent implements OnInit {
 
   // Function to post a new comment on Licence post
   draftComment(id) {
-    this.randomKey = Math.random().toString(36).substring(2, 10)
-    this.upl=[]
+    this.randomKey = Math.random().toString(36).substring(2, 10);
+    this.upl = [];
     this.commentForm.reset(); // Reset the comment form each time users starts a new comment
     this.newComment = []; // Clear array so only one post can be commented on at a time
     this.newComment.push(id); // Add the post that is being commented on to the array
-    this.licenceService.getSingleLicence(id).subscribe(data =>{
+    this.licenceService.getSingleLicence(id).subscribe(data => {
       this.licenceT = data.licence.title;
       this.licenceC = data.licence.createdBy;
       this.licenceJ = data.licence.LicenceType;
-      this.licenceService.getSingleUser(this.licenceC).subscribe(data=>{
+      this.licenceService.getSingleUser(this.licenceC).subscribe( data => {
         if (!data.success) {
           this.messageClass = 'alert alert-danger'; // Return error class
           this.message = data.message; // Return error message
         } else {
           this.messageClass = 'alert alert-success'; // Return success class
           this.message = data.message; // Return success message
-        this.creatorEmail=data.user.email;
-        this.getEmailListComm()
+        this.creatorEmail = data.user.email;
+        this.getEmailListComm();
         }
-      })
+      });
 
 
    });
@@ -241,8 +244,8 @@ export class LicenceComponent implements OnInit {
 
   // Function to cancel new post transaction
   cancelSubmission(id) {
-    this.filesToUpload=[]
-    this.upl=[]
+    this.filesToUpload = [];
+    this.upl = [];
     const index = this.newComment.indexOf(id); // Check the index of the licence post in the array
     this.newComment.splice(index, 1); // Remove the id from the array to cancel post submission
     this.commentForm.reset(); // Reset  the form after cancellation
@@ -260,16 +263,16 @@ export class LicenceComponent implements OnInit {
     const licence = {
       title: this.form.get('title').value,
       body: this.form.get('body').value,
-      Client:this.form.get('Client').value,
-      StartDate:this.form.get('StartDate').value,
-      Address:this.form.get('Address').value,
-      LicenceType:this.form.get('LicenceType').value,
-      WorkWidth:this.form.get('WorkWidth').value,
-      WorkLength:this.form.get('WorkLength').value,
+      Client: this.form.get('Client').value,
+      StartDate: this.form.get('StartDate').value,
+      Address: this.form.get('Address').value,
+      LicenceType: this.form.get('LicenceType').value,
+      WorkWidth: this.form.get('WorkWidth').value,
+      WorkLength: this.form.get('WorkLength').value,
       TMType: this.form.get('TMType').value,
-      path:this.upl,
+      path: this.upl,
       createdBy: this.username // CreatedBy field
-    }
+    };
 
 
     // Function to save licence into database
@@ -284,7 +287,7 @@ export class LicenceComponent implements OnInit {
         this.messageClass = 'alert alert-success'; // Return success class
         this.message = data.message; // Return success message
         this.getNewNotification();
-        this.newEmailNote()
+        this.newEmailNote();
 
 
 
@@ -302,12 +305,12 @@ export class LicenceComponent implements OnInit {
     });
   }
 
-  getNewNotification(){
+  getNewNotification() {
     const notification = {
       title: this.form.get('title').value, // Title field
       createdBy: this.username, // CreatedBy field
       action: 'created a new Licence Request for:'
-    }
+    };
     this.licenceService.newNotification(notification).subscribe(() => {
       // Check if licence was saved to database or not
     });
@@ -315,10 +318,10 @@ export class LicenceComponent implements OnInit {
 /*   getNewNotificationComment(){
 
   } */
-  seenNotification(id){
+  seenNotification(id) {
     this.licenceService.seenNotification(id).subscribe(() => {
       this.getAllNotifications();
-    })
+    });
   }
   // Function to go back to previous page
   goBack() {
@@ -336,9 +339,9 @@ export class LicenceComponent implements OnInit {
     // Function to GET all licences from database
     this.licenceService.getAllNotifications().subscribe(data => {
       this.Notifications = data.notifications;
-      this.co=0;
-      for(var i=0; i < this.Notifications.length; i++) {
-        if(!this.Notifications[i].seen.includes(this.username) && !this.Notifications[i].author.includes(this.username)){
+      this.co = 0;
+      for (let i = 0; i < this.Notifications.length; i++) {
+        if (!this.Notifications[i].seen.includes(this.username) && !this.Notifications[i].author.includes(this.username)) {
 
             this.co++;
 
@@ -371,12 +374,12 @@ export class LicenceComponent implements OnInit {
 
   // Function to post a new comment
   postComment(id) {
-    this.CommEmailNote()
+    this.CommEmailNote();
     const notification = {
       title: this.licenceT, // Title field
       createdBy: this.username, // CreatedBy field
       action: 'added a comment on'
-    }
+    };
 
     this.licenceService.newNotification(notification).subscribe(() => {
     });
@@ -384,7 +387,7 @@ export class LicenceComponent implements OnInit {
     this.disableCommentForm(); // Disable form while saving comment to database
     this.processing = true; // Lock buttons while saving comment to database
     const comment = this.commentForm.get('comment').value; // Get the comment value to pass to service function
-    const attachements=this.upl;
+    const attachements = this.upl;
 
     // Function to save the comment to the database
     this.licenceService.postComment(id, comment, attachements).subscribe(() => {
@@ -394,8 +397,9 @@ export class LicenceComponent implements OnInit {
       this.enableCommentForm(); // Re-enable the form
       this.commentForm.reset(); // Reset the comment form
       this.processing = false; // Unlock buttons on comment form
-      if (this.enabledComments.indexOf(id) < 0)
-        this.expand(id);
+      if (this.enabledComments.indexOf(id) < 0) {
+          this.expand(id);
+        }
     });
   }
 
@@ -410,14 +414,7 @@ export class LicenceComponent implements OnInit {
     this.enabledComments.splice(index, 1); // Remove id from array
   }
   createAuthenticationHeaders() {
-    this.authService.loadToken(); // Get token so it can be attached to headers
-    // Headers configuration options
-    this.options = new RequestOptions({
-      headers: new Headers({
-        //'Content-Type': 'application/json', // Format set to JSON
-        'authorization': this.authService.authToken // Attach token
-      })
-    });
+    this.licenceService.createAuthenticationHeaders();
   }
 
 
@@ -426,37 +423,44 @@ export class LicenceComponent implements OnInit {
       const formData: any = new FormData();
       const files: Array<File> = this.filesToUpload;
 
-      for(let i =0; i < files.length; i++){
-        if(files[i].type=='application/msword' || files[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || files[i].type=='application/pdf' || files[i].type=='image/jpeg' || files[i].type=='image/jpg' || files[i].type=='image/png'){
-          const newfilename = this.randomKey + '-' + files[i]['name']
-          formData.append("uploads[]", files[i], newfilename);}
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].type === 'application/msword' ||
+        files[i].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+        files[i].type === 'application/pdf' || files[i].type === 'image/jpeg' ||
+        files[i].type === 'image/jpg' || files[i].type === 'image/png') {
+          const newfilename = this.randomKey + '-' + files[i]['name'];
+          formData.append('uploads[]', files[i], newfilename);
+        }
           this.createAuthenticationHeaders();
-         this.http.post("https://us-central1-upload-rnce.cloudfunctions.net/uploadFile", formData,  this.options )
-          .map(files => files).subscribe()
+         this.http.post('https://us-central1-upload-rnce.cloudfunctions.net/uploadFile', formData,  this.options )
+          .pipe(map( files => files)).subscribe();
       }
       }
 
 
 fileChangeEvent(fileInput: any) {
   this.filesToUpload = <Array<File>>fileInput.target.files;
-this.upl=[];
-  for(let i =0; i < this.filesToUpload.length; i++){
-    if(this.filesToUpload[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.filesToUpload[i].type=='application/msword' || this.filesToUpload[i].type=='application/pdf' || this.filesToUpload[i].type=='image/jpeg' || this.filesToUpload[i].type=='image/jpg' || this.filesToUpload[i].type=='image/png'){
-this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name'])
+this.upl = [];
+  for (let i = 0; i < this.filesToUpload.length; i++) {
+    if (this.filesToUpload[i].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+    this.filesToUpload[i].type === 'application/msword' || this.filesToUpload[i].type === 'application/pdf' ||
+    this.filesToUpload[i].type === 'image/jpeg' || this.filesToUpload[i].type === 'image/jpg' ||
+    this.filesToUpload[i].type === 'image/png') {
+this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name']);
 }
   }
 }
-reloadAuto(){
-  setInterval(()=>{
+reloadAuto() {
+  setInterval(() => {
     this.getAllLicences();
-    this.getAllNotifications(); },300000);
+    this.getAllNotifications(); }, 300000);
   }
 
-  getGeolocation(){
-    if(navigator.geolocation){
+  getGeolocation() {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.location = position.coords;
-        this.LocationMap = this.location.latitude+', '+this.location.longitude;
+        this.LocationMap = this.location.latitude + ', ' + this.location.longitude;
 
 
       });
@@ -473,59 +477,74 @@ getAllUsers() {
   });
 }
 
-  getEmailList(){
+  getEmailList() {
 
-    this.emailList=[]
-    for(let i =0; i < this.allusers.length; i++){
-      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
-      this.emailList.push(this.allusers[i].email)}
+    this.emailList = [];
+    for (let i = 0; i < this.allusers.length; i++) {
+      if ((this.allusers[i].role === 'TMP' && this.allusers[i].email !== this.email) ||
+       (this.allusers[i].role === 'HS' && this.allusers[i].email !== this.email)) {
+      this.emailList.push(this.allusers[i].email);
+    }
       }
       /* console.log(this.emailList.toString()) */
   }
 
-  getEmailListComm(){
+  getEmailListComm() {
 
-    this.emailList=[]
-    for(let i =0; i < this.allusers.length; i++){
-      if((this.allusers[i].role === "TMP" && this.allusers[i].email !== this.email) || (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email) || (this.allusers[i].role === "HS" && this.allusers[i].email !== this.email)){
-      this.emailList.push(this.allusers[i].email)}
+    this.emailList = [];
+    for (let i = 0; i < this.allusers.length; i++) {
+      if ((this.allusers[i].role === 'TMP' && this.allusers[i].email !== this.email) ||
+      (this.allusers[i].email === this.creatorEmail && this.allusers[i].email !== this.email) ||
+      (this.allusers[i].role === 'HS' && this.allusers[i].email !== this.email)) {
+      this.emailList.push(this.allusers[i].email);
+    }
       }
 
   }
 
 
-  newEmailNote(){
+  newEmailNote() {
 
     const newEmail = {
       to: this.emailList.toString(), // Title field
-      html:'<h2>New Licence</h2><br /> '+ ' Title: <strong>' +this.form.get('title').value +'</strong><br />' +'Licence Type: ' +'<strong>' + this.form.get('LicenceType').value+'</strong>'+'</strong><br />' +'Start Date: ' +'<strong>' + this.form.get('StartDate').value+'</strong>', // CreatedBy field
-    }
+      html: '<h2>New Licence</h2><br /> ' + ' Title: <strong>' +
+      this.form.get('title').value + '</strong><br />' + 'Licence Type: ' +
+      '<strong>' + this.form.get('LicenceType').value + '</strong>' + '</strong><br />' +
+      'Start Date: ' + '<strong>' + this.form.get('StartDate').value + '</strong>', // CreatedBy field
+    };
 
     this.licenceService.newEmailNot(newEmail).subscribe(() => {
       // Check if licence was saved to database or not
     });
   }
 
-  CommEmailNote(){
-    if(this.upl.length>0){
+  CommEmailNote() {
+    if (this.upl.length > 0) {
 
-      for(let i =0; i < this.upl.length; i++){
+      for (let i = 0; i < this.upl.length; i++) {
 
-        this.links.push('<a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/'+this.upl[i]+'?alt=media">'+this.upl[i]+'</a><br />')
+        this.links.push('<a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/' +
+        this.upl[i] + '?alt=media">' + this.upl[i] + '</a><br />');
       }
       const newEmail = {
-      to: this.emailList.toString(),// Title field
-      html:'<h2>New Files added on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username+'</strong><br />'+'Comment: '+ this.commentForm.get('comment').value +'</strong><br />' +'Files: ' +'<strong>' +
-       this.links +'</strong>', // CreatedBy field
-    }
+      to: this.emailList.toString(), // Title field
+      html: '<h2>New Files added on</h2><br /> ' + ' Title: <strong>' +
+      this.licenceT + '</strong><br />' + 'Job No: ' + '<strong>' + this.licenceJ +
+      '</strong>' + '</strong><br />' + 'Added by: ' + '<strong>' + this.username +
+      '</strong><br />' + 'Comment: ' + this.commentForm.get('comment').value + '</strong><br />' + 'Files: ' + '<strong>' +
+       this.links + '</strong>', // CreatedBy field
+    };
     this.licenceService.newEmailNot(newEmail).subscribe(() => {
       // Check if licence was saved to database or not
     });
-  }else{
+  } else {
       const newEmail = {
-        to: this.emailList.toString(),// Title field
-        html:'<h2>New Comments on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Added by: ' +'<strong>' + this.username +'</strong><br />'+'Comment: ' +'<strong>' + this.commentForm.get('comment').value +'</strong><br />', // CreatedBy field
-      }
+        to: this.emailList.toString(), // Title field
+        html: '<h2>New Comments on</h2><br /> ' + ' Title: <strong>' +
+        this.licenceT + '</strong><br />' + 'Job No: ' + '<strong>' + this.licenceJ +
+        '</strong>' + '</strong><br />' + 'Added by: ' + '<strong>' + this.username +
+        '</strong><br />' + 'Comment: ' + '<strong>' + this.commentForm.get('comment').value + '</strong><br />', // CreatedBy field
+      };
       this.licenceService.newEmailNot(newEmail).subscribe(() => {
         // Check if licence was saved to database or not
       });
@@ -535,23 +554,27 @@ getAllUsers() {
 
   }
 
-  ApplyingEmailNote(){
+  ApplyingEmailNote() {
 
     const newEmail = {
-      to: this.emailList.toString(),// Title field
-      html:'<h2>Applying Process started on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
-    }
+      to: this.emailList.toString(), // Title field
+      html: '<h2>Applying Process started on</h2><br /> ' + ' Title: <strong>' +
+      this.licenceT + '</strong><br />' + 'Job No: ' + '<strong>' + this.licenceJ +
+       '</strong>' + '</strong><br />' + 'Process started by: ' + '<strong>' + this.username + '</strong>', // CreatedBy field
+    };
 
     this.licenceService.newEmailNot(newEmail).subscribe(() => {
       // Check if licence was saved to database or not
     });
   }
-  CompleteEmailNote(){
+  CompleteEmailNote() {
 
     const newEmail = {
-      to: this.emailList.toString(),// Title field
-      html:'<h2>Works completed on</h2><br /> '+ ' Title: <strong>' +this.licenceT +'</strong><br />' +'Job No: ' +'<strong>' + this.licenceJ+'</strong>'+'</strong><br />' +'Process started by: ' +'<strong>' + this.username+'</strong>', // CreatedBy field
-    }
+      to: this.emailList.toString(), // Title field
+      html: '<h2>Works completed on</h2><br /> ' + ' Title: <strong>' +
+      this.licenceT + '</strong><br />' + 'Job No: ' + '<strong>' + this.licenceJ +
+       '</strong>' + '</strong><br />' + 'Process started by: ' + '<strong>' + this.username + '</strong>', // CreatedBy field
+    };
 
     this.licenceService.newEmailNot(newEmail).subscribe(() => {
       // Check if licence was saved to database or not
@@ -559,78 +582,80 @@ getAllUsers() {
   }
 
   ApplyingForLicence(id) {
-    this.licenceT='';
-    this.licenceJ='';
-    this.licenceService.getSingleLicence(id).subscribe(data =>{
+    this.licenceT = '';
+    this.licenceJ = '';
+    this.licenceService.getSingleLicence(id).subscribe(data => {
       this.licenceT = data.licence.title;
       this.licenceJ = data.licence.LicenceType;
       this.licenceCr = data.licence.createdBy;
-      this.licenceService.getSingleUser(this.licenceCr).subscribe(data=>{
+      this.licenceService.getSingleUser(this.licenceCr).subscribe( data => {
         if (!data.success) {
           this.messageClass = 'alert alert-danger'; // Return error class
           this.message = data.message; // Return error message
         } else {
           this.messageClass = 'alert alert-success'; // Return success class
           this.message = data.message; // Return success message
-        this.creatorEmail=data.user.email;
-        this.getEmailListComm()
+        this.creatorEmail = data.user.email;
+        this.getEmailListComm();
         this.ApplyingEmailNote();
         }
-      })
+      });
 
 
-    })
+    });
     // Service to like a licence post
     this.licenceService.ApplyingForLicence(id).subscribe(() => {
       this.getAllLicences();
     });
   }
   CompleteWorks(id) {
-    this.licenceT='';
-    this.licenceJ='';
-    this.licenceService.getSingleLicence(id).subscribe(data =>{
+    this.licenceT = '';
+    this.licenceJ = '';
+    this.licenceService.getSingleLicence(id).subscribe(data => {
       this.licenceT = data.licence.title;
       this.licenceJ = data.licence.LicenceType;
-      this.getEmailListComm()
+      this.getEmailListComm();
       this.CompleteEmailNote();
-    })
+    });
     // Service to like a licence post
     this.licenceService.CompleteWorks(id).subscribe(() => {
       this.getAllLicences();
     });
   }
 
-  classt2(){
-    this.t2class='alert alert-success';
-    this.t3class='alert alert-info';
-    this.t4class='alert alert-info';
+  classt2() {
+    this.t2class = 'alert alert-success';
+    this.t3class = 'alert alert-info';
+    this.t4class = 'alert alert-info';
 
   }
-  classt3(){
-    this.t2class='alert alert-info';
-    this.t3class='alert alert-success';
-    this.t4class='alert alert-info';
+  classt3() {
+    this.t2class = 'alert alert-info';
+    this.t3class = 'alert alert-success';
+    this.t4class = 'alert alert-info';
 
   }
-  classt4(){
-    this.t2class='alert alert-info';
-    this.t3class='alert alert-info';
-    this.t4class='alert alert-danger';
+  classt4() {
+    this.t2class = 'alert alert-info';
+    this.t3class = 'alert alert-info';
+    this.t4class = 'alert alert-danger';
 
   }
 
   addRefNo(id) {
     if (this.RefNo !== id) {
       this.RefNo = id;
+      this.RefNoF = true
     } else {
       this.RefNo = '';
+      this.RefNoF = false
     }
 
 
   }
 
   onaddRefNo(id, f) {
-    this.licenceService.AddRefNo(id, f).subscribe(data=>{
+    this.licenceService.AddRefNo(id, f).subscribe(data => {
       if (!data.success) {
         this.messageClass = 'alert alert-danger'; // Return error class
         this.message = data.message; // Return error message
@@ -657,13 +682,13 @@ getAllUsers() {
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username;
       this.role = profile.user.role;
-      this.email = profile.user.email // Used when creating new licence posts and comments
+      this.email = profile.user.email; // Used when creating new licence posts and comments
 
     });
     this.reloadAuto();
     this.getAllLicences(); // Get all licences on component load
     this.getAllNotifications();
-    this.getAllUsers()
+    this.getAllUsers();
 
 
 

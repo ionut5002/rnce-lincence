@@ -12,16 +12,16 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-left">
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/">Home</a></li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a mat-button color="primary" routerLink="/">Home</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <!-- <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/dashboard">Dashboard</a></li> -->
         <!-- <li><a *ngIf="role==='Admin'&& authService.loggedIn()" routerLink="/register">Add User</a></li> -->
-        <li [routerLinkActive]="['active']"><a *ngIf="authService.loggedIn()" routerLink="/profile">Profile</a></li>
-        <li [routerLinkActive]="['active']"><a *ngIf="authService.loggedIn()" routerLink="/blog">Jobs</a></li>
-        <li [routerLinkActive]="['active']"><a *ngIf="authService.loggedIn()" routerLink="/licence">Licence <span *ngIf="this.role === 'TMP'" class="badge">{{this.licencequeue}}</span></a></li>
-        <li [routerLinkActive]="['active']"><a *ngIf="!authService.loggedIn()" routerLink="/login">Login</a></li>
-        <li><a *ngIf="authService.loggedIn()" style="cursor: pointer;"  (click)="onLogoutClick()">Logout</a></li>
+        <li [routerLinkActive]="['active']"><a mat-button color="primary" *ngIf="authService.loggedIn()" routerLink="/profile">Profile</a></li>
+        <li [routerLinkActive]="['active']"><a mat-button color="primary" *ngIf="authService.loggedIn()" routerLink="/blog">Jobs</a></li>
+        <li [routerLinkActive]="['active']"><a mat-button color="primary" *ngIf="authService.loggedIn()" routerLink="/licence">Licence <span *ngIf="this.role === 'TMP'" class="badge">{{this.licencequeue}}</span></a></li>
+        <li [routerLinkActive]="['active']"><a mat-button color="primary" *ngIf="!authService.loggedIn()" routerLink="/login">Login</a></li>
+        <li><a mat-button color="primary" *ngIf="authService.loggedIn()" style="cursor: pointer;"  (click)="onLogoutClick()">Logout</a></li>
 
       </ul>
     </div>

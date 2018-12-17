@@ -56,7 +56,7 @@ export class DeleteLicenceComponent implements OnInit {
           body: data.licence.body, // Set body
           createdBy: data.licence.createdBy, // Set created_by field
           createdAt: data.licence.createdAt // Set created_at field
-        }
+        };
         this.foundLicence = true; // Displaly licence window
       }
     });

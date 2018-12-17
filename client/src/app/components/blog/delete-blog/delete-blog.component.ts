@@ -56,7 +56,7 @@ export class DeleteBlogComponent implements OnInit {
           body: data.blog.body, // Set body
           createdBy: data.blog.createdBy, // Set created_by field
           createdAt: data.blog.createdAt // Set created_at field
-        }
+        };
         this.foundBlog = true; // Displaly blog window
       }
     });

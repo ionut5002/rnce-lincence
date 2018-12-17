@@ -6,9 +6,9 @@
 <div>
   <!-- Panel Outer Layer -->
   <div  *ngFor="let blog of blogPosts">
-<div class="panel panel-default" *ngIf="!blog.close && (role === 'Display') ">
+<div style="box-shadow: 0 0 10px grey;" class="panel panel-default" *ngIf="!blog.close && (role === 'Display') ">
     <!-- Panel Title -->
-    <div [ngClass]="(blog.Client=='Actavo' ? 'panel-heading panel-custom-actavo':'') ||
+    <div style="box-shadow: 0 0 3px grey;" [ngClass]="(blog.Client=='Actavo' ? 'panel-heading panel-custom-actavo':'') ||
      (blog.Client=='OBELISK' ? 'panel-heading panel-custom-obelisk':'') || 
      (blog.Client=='Balfour Beatty' ? 'panel-heading panel-custom-balfour':'')||
      (blog.JobStatus=='TMP Done!' ? 'panel-heading panel-custom-done':'') ||

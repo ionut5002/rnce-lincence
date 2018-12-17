@@ -21,19 +21,18 @@ export class EditBlogComponent implements OnInit {
   LocationMap;
    locations;
    allusers;
-   emailList=[]
+   emailList = [];
 
   constructor(
     private location: Location,
     private activatedRoute: ActivatedRoute,
     private blogService: BlogService,
     private router: Router,
-   
   ) { }
 
   // Function to Submit Update
   updateBlogSubmit() {
-    this.newEmailNote()
+    this.newEmailNote();
     this.processing = true; // Lock form fields
     // Function to send blog object to backend
     this.blogService.editBlog(this.blog).subscribe(data => {
@@ -53,14 +52,13 @@ export class EditBlogComponent implements OnInit {
       }
     });
   }
-  getNewNotification(){
+  getNewNotification() {
     const notification = {
       title: this.blog.title, // Title field
       createdBy: this.blog.createdBy, // CreatedBy field
       action: 'made some changes on'
-    }
-    
-    
+    };
+
     this.blogService.newNotification(notification).subscribe(data => {
     });
   }
@@ -69,8 +67,6 @@ export class EditBlogComponent implements OnInit {
   goBack() {
     this.location.back();
   }
- 
-
 
   /* email notification */
 
@@ -80,32 +76,32 @@ export class EditBlogComponent implements OnInit {
     // Function to GET all blogs from database
     this.blogService.getAllUsers().subscribe(data => {
       this.allusers = data.users; // Assign array to use in HTML
-      this.getEmailList()
+      this.getEmailList();
     });
   }
-  
-    getEmailList(){
-      for(let i =0; i < this.allusers.length; i++){
-        if((this.allusers[i].role === "TMP") || (this.allusers[i].role === "HS")){
-        this.emailList.push(this.allusers[i].email)}
+    getEmailList() {
+      for (let i = 0; i < this.allusers.length; i++) {
+        if ((this.allusers[i].role === 'TMP') || (this.allusers[i].role === 'HS')) {
+        this.emailList.push(this.allusers[i].email); }
         }
-        
+
     }
-    newEmailNote(){
-      
+    newEmailNote() {
       const newEmail = {
         to: this.emailList.toString(), // Title field
-        html:'<h2>New Edit on Job</h2><br /> '+ ' Title: <strong>' + this.blog.title +'</strong><br />' +'Job No: ' +'<strong>' + this.blog.JobNo+'</strong>'+'</strong><br />' +'By: ' +'<strong>' + this.blog.createdBy+'</strong>', // CreatedBy field
-      }
-      
+        html: '<h2>New Edit on Job</h2><br /> ' + ' Title: <strong>' +
+        this.blog.title + '</strong><br />' + 'Job No: ' + '<strong>' +
+        this.blog.JobNo + '</strong>' + '</strong><br />' + 'By: ' + '<strong>' + this.blog.createdBy + '</strong>', // CreatedBy field
+      };
+
       this.blogService.newEmailNot(newEmail).subscribe(data => {
         // Check if blog was saved to database or not
-        
+
       });
     }
 
   ngOnInit() {
-    this.getAllUsers()
+    this.getAllUsers();
     this.currentUrl = this.activatedRoute.snapshot.params; // When component loads, grab the id
     // Function to GET current blog with id in params
     this.blogService.getSingleBlog(this.currentUrl.id).subscribe(data => {

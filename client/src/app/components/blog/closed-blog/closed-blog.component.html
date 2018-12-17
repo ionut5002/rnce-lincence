@@ -32,9 +32,9 @@
     <!-- Modal Footer -->
     <div class="modal-footer">
       <!-- Yes Button -->
-      <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="closedBlog()">Yes</button>
+      <button mat-raised-button [disabled]="processing" type="button" (click)="closedBlog()" color="primary">Yes</button>
       <!-- No Button -->
-      <a routerLink="/blog"><button [disabled]="processing" type="button" name="button" class="btn btn-danger">No</button></a>
+      <button mat-raised-button routerLink="/blog" [disabled]="processing" type="button" color="warn">No</button>
     </div>
   </div>
 
@@ -64,16 +64,19 @@
 </div>
 
 
-<button *ngIf="!foundBlog" [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
-<input [hidden]="foundBlog" #box (keyup)="0" placeholder="Search By Job No">
+<button *ngIf="!foundBlog" [disabled]="processing" type="button" mat-raised-button color="accent" (click)="goBack()">Go Back</button>
+<mat-form-field [hidden]="foundBlog" appearance="outline" style="width: 135px;">
+    <input matInput  #box (keyup)="0" placeholder="Search By Job No">
+    </mat-form-field>
+
 <br />
 <br />
 <div *ngIf="!foundBlog">
   <!-- Panel Outer Layer -->
   <div  *ngFor="let blog of blogPosts | searchFilter: 'JobNo': box.value">
-<div class="panel panel-primary" *ngIf="blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
+<div style="box-shadow: 0 0 10px grey;" class="panel panel-primary" *ngIf="blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
-    <div class="panel-heading">
+    <div style="box-shadow: 0 0 3px grey;" class="panel-heading">
       <h3 class="panel-title">{{ blog.title }} {{ blog.JobNo }}</h3>
     </div>
 
@@ -96,13 +99,14 @@
         <li><strong>LocationOnRoad:</strong> {{blog.LocationOnRoad}}</li>
         <li><strong>Type Of Traffic Control Required:</strong> {{blog.TypeOfTrafficCR}}</li>
         <li><strong>Description:</strong> {{ blog.body }} </li>
-        <li><a *ngIf="blog.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ blog.LocationMap }}" target="_blank">See on Map by Coordonates</a>
-            <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ blog.Address }}" target="_blank">See on Map by Address</a></li>
+        <li><a *ngIf="blog.LocationMap" mat-fab color="accent" href="https://www.google.ie/maps/search/{{ blog.LocationMap }}" target="_blank"><mat-icon aria-label="location map">pin_drop</mat-icon></a>
+            <a mat-fab color="primary" href="https://www.google.ie/maps/search/{{ blog.Address }}" target="_blank"><mat-icon aria-label="location map">map</mat-icon></a></li>
       </ul>
     </div>
     <div class="col-md-6" *ngFor="let ph of blog.path">
       <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" alt="" width="200" height="100"></a>
-      {{ph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+      {{ph}}&nbsp;&nbsp;<a  mat-raised-button color="primary" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >
+        <i class="material-icons">backup</i> Download</a><br/><br/>
     </div></div>
 
     <!-- Panel Footer Start -->
@@ -113,12 +117,12 @@
       <br />
 
       <!-- Edit Button -->
-      <a [routerLink]="['/edit-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-info">Edit</button></a>
+      <button type="button" [routerLink]="['/edit-blog/', blog._id]" *ngIf="username === blog.createdBy" mat-raised-button color="primary">Edit</button>
       <!-- Delete Button -->
-      <a [routerLink]="['/delete-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-danger">Delete</button></a>
+      <button [routerLink]="['/delete-blog/', blog._id]" *ngIf="username === blog.createdBy" type="button" mat-raised-button color="warn">Delete</button>
       <!-- Close Button -->
-      <a [routerLink]="['/closed-blog/', blog._id]" *ngIf="((username === blog.createdBy)|| (role === 'TMP')) && !blog.close"><button type="button" name="button" class="btn btn-sm btn-danger">Close</button></a>
-      <a [routerLink]="['/closed-blog/', blog._id]" *ngIf="((username === blog.createdBy)|| (role === 'TMP')) &&  blog.close"><button type="button" name="button" class="btn btn-sm btn-success">Reopen</button></a>
+      <button type="button" [routerLink]="['/closed-blog/', blog._id]" *ngIf="((username === blog.createdBy)|| (role === 'TMP')) && !blog.close" mat-raised-button color="accent">Close</button>
+      <button type="button" [routerLink]="['/closed-blog/', blog._id]" *ngIf="((username === blog.createdBy)|| (role === 'TMP')) &&  blog.close" mat-raised-button color="accent">Reopen</button>
 
 
     </div>
@@ -130,7 +134,7 @@
 
         <!-- Show Comments -->
         <li *ngIf="enabledComments.indexOf(blog._id) === -1 && blog.comments.length > 0" class="list-group-item">
-          <button  class="btn btn-sm btn-info" (click)="expand(blog._id)">
+          <button  mat-raised-button color="primary" (click)="expand(blog._id)">
             Show comments&nbsp;&nbsp;
             <div class="glyphicon glyphicon-comment"></div>
           </button>
@@ -138,7 +142,7 @@
 
         <!-- Hide Comments -->
         <li *ngIf="enabledComments.indexOf(blog._id) > -1" class="list-group-item">
-          <button class="btn btn-sm btn-info" (click)="collapse(blog._id)">
+          <button mat-raised-button color="primary" (click)="collapse(blog._id)">
             Hide Comments&nbsp;&nbsp;
             <div class="glyphicon glyphicon-comment"></div>
           </button>
@@ -149,7 +153,8 @@
           <li *ngFor="let comment of blog.comments" class="list-group-item">
             <strong>{{ comment.commentator }}:</strong>
             <br /> {{ comment.comment }}
-            <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  role="button" target="_blank">Download</a></li></ul>
+            <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a mat-raised-button color="primary" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  role="button" target="_blank">
+              <i class="material-icons">backup</i> Download</a></li></ul>
             <strong>Created at:{{comment.createdTime | date:'dd MMM yyyy hh:mm a'}}</strong>
           </li>
 

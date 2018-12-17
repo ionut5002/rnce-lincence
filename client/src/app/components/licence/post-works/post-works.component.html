@@ -23,8 +23,10 @@
 
     <!-- Modal Body -->
     <div class="modal-body">
-      
-      <input type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+        <label for="fileToUploadPostWorks"><a mat-flat-button type="button"  color="accent">
+            Attach File <mat-icon>attach_file</mat-icon>
+          </a></label>
+      <input id="fileToUploadPostWorks" style="display:none;" type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
   <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul>
@@ -34,9 +36,10 @@
     <!-- Modal Footer -->
     <div class="modal-footer">
       <!-- Yes Button -->
-      <button [disabled]="processing || !this.uploadready" type="button" name="button" class="btn btn-success" (click)="uploadPostWorks()">Upload</button>
+      <button [disabled]="processing || !this.uploadready" type="button" mat-raised-button color="primary" (click)="uploadPostWorks()">Upload</button>
+      
       <!-- No Button -->
-      <a routerLink="/licence"><button [disabled]="processing" type="button" name="button" class="btn btn-danger">Back</button></a>
+      <button  routerLink="/licence" [disabled]="processing" type="button" mat-raised-button color="warn">Back</button>
     </div>
   </div>
   
@@ -66,7 +69,7 @@
 </div>
 
 
-<button *ngIf="!foundLicence" [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
+<button *ngIf="!foundLicence" [disabled]="processing" type="button" mat-raised-button color="accent" (click)="goBack()">Go Back</button>
 <br />
 <br />
 

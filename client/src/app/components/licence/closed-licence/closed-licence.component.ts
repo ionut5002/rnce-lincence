@@ -25,13 +25,13 @@ export class ClosedLicenceComponent implements OnInit {
     private licenceService: LicenceService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private authService:AuthService,
-    private location:Location
+    private authService: AuthService,
+    private location: Location
   ) { }
 
   // Function to delete licences
   closedLicence() {
-    this.processing=true;
+    this.processing = true;
     // Function for DELETE request
     this.licenceService.closeLicence(this.currentUrl.id).subscribe(data => {
       // Check if delete request worked
@@ -53,12 +53,13 @@ export class ClosedLicenceComponent implements OnInit {
     // Function to GET all licences from database
     this.licenceService.getAllLicences().subscribe(data => {
       this.licencePosts = data.licences; // Assign array to use in HTML
-      
-    });}
+
+    });
+  }
     expand(id) {
       this.enabledComments.push(id); // Add the current licence post id to array
     }
-  
+
     // Collapse the list of comments
     collapse(id) {
       const index = this.enabledComments.indexOf(id); // Get position of id in array
@@ -71,12 +72,12 @@ export class ClosedLicenceComponent implements OnInit {
   ngOnInit() {
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username;
-      this.role= profile.user.role;
+      this.role = profile.user.role;
     });
     this.getAllLicences();
     this.currentUrl = this.activatedRoute.snapshot.params; // Get URL paramaters on page load
     // Function for GET request to retrieve licence
-    if(this.currentUrl.id){
+    if (this.currentUrl.id) {
       this.licenceService.getSingleLicence(this.currentUrl.id).subscribe(data => {
         // Check if request was successfull
         if (!data.success) {
@@ -90,12 +91,12 @@ export class ClosedLicenceComponent implements OnInit {
             createdBy: data.licence.createdBy, // Set created_by field
             createdAt: data.licence.createdAt,
             close: data.licence.close // Set created_at field
-          }
+          };
           this.foundLicence = true; // Displaly licence window
         }
       });
     }
-    
-    
+
+
   }
 }

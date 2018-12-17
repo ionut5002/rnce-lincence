@@ -11,15 +11,16 @@
 <!-- New Post Button -->
 <div class="row">
   <div class="col-md-6">
-<button type="button" name="button" class="btn btn-warning" *ngIf="!newPost" (click)="newBlogForm()">New Job</button>
+<button mat-raised-button *ngIf="!newPost" (click)="newBlogForm()" color="primary">New Job</button>
 
 <!-- Reload Button -->
-<button [disabled]="loadingBlogs" type="button" name="button" class="btn btn-default" *ngIf="!newPost" (click)="reloadBlogs()"><span class="glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Reload</button>
+<button [disabled]="loadingBlogs" *ngIf="!newPost" mat-raised-button (click)="reloadBlogs()" ><span class="glyphicon glyphicon-repeat"></span> Reload</button>
+
 
 <!-- Notifications Button -->
 <div class="dropdown" *ngIf="!newPost">
   <!-- Dislike Button -->
-  <button type="button" name="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-bell">&nbsp;</span>Notifications  <span class="badge">{{this.co}}</span></button>
+  <button mat-raised-button color="accent">  Notifications <mat-icon >notification_important</mat-icon><span [matBadge]="this.co" matBadgeOverlap="false"></span></button>
   <!-- Dropdown Menu Items -->
   <div class="dropdown-content">
     <div  *ngFor="let notification of Notifications"><div *ngIf="(notification.author !== username) && (!notification.seen.includes(username)) "><tr>
@@ -31,13 +32,15 @@
   </div>
 
   </div>
-  <a *ngIf="!newPost" [routerLink]="['/closed-blog/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Jobs</button></a>
+  <button mat-raised-button *ngIf="!newPost" [routerLink]="['/closed-blog/']" color="warn">Closed Jobs</button>
 </div>
 <div class="col-md-3">
 
 </div>
-<div  class="col-md-3">
-    <input [hidden]="newPost"  #box (keyup)="0" placeholder="Search By Job No">
+<div [hidden]="newPost" class="col-md-3">
+    <mat-form-field  appearance="outline" style="width: 130px;">
+        <input matInput   #box (keyup)="0" placeholder="Search By Job No">
+      </mat-form-field>
 
   </div>
 </div>
@@ -107,7 +110,9 @@
   </ul>
   </div>
   </div>
-  <div class="form-group col-md-3"><a class="btn btn-success" (click)="getGeolocation()">Get my Location</a><div *ngIf="this.location">Latitude:{{location.latitude}} Longitude:{{location.longitude}}</div></div>
+  <div class="form-group col-md-3">
+    <button mat-raised-button (click)="getGeolocation()" type="button" color="accent">Get my Location</button>
+    <div *ngIf="this.location">Latitude:{{location.latitude}} Longitude:{{location.longitude}}</div></div>
 </div>
 <div class="row">
 <div class="form-group col-md-4">
@@ -382,7 +387,10 @@
       <br />
     </div>
     <div class="col-md-12"><h4>Please attach photos(Location map, Working area)</h4>
-  <input type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+      <label for="fileToUploadNew"><a mat-flat-button type="button"  color="accent">
+        Attach File <mat-icon>attach_file</mat-icon>
+      </a></label>
+  <input type="file" name="photo" id="fileToUploadNew" style="display:none;" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
   <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul></div>
@@ -391,9 +399,10 @@
 
   <!-- Go Back Button -->
   <div class="col-md-12"><br />
-    <br /><button [disabled]="processing" type="button" name="button" (click)="goBack()" class="btn btn-warning">Go Back</button>
+    <br />
+    <button [disabled]="processing" type="button" mat-raised-button (click)="goBack()" color="warn">Go Back</button>
   <!-- Submit Button -->
-  <button [disabled]="processing  || !form.valid" type="submit" name="button" class="btn btn-success" >Submit</button> <!-- (click)="upload()" -->
+  <button [disabled]="processing  || !form.valid" mat-raised-button type="submit" color="primary">Submit</button>
   </div>
 </form>
 <!-- New Blog Form -->
@@ -402,9 +411,9 @@
 <div *ngIf="!newPost">
   <!-- Panel Outer Layer -->
   <div  *ngFor="let blog of blogPosts | searchFilter: 'JobNo': box.value">
-<div class="panel panel-default" *ngIf="!blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
+<div style="box-shadow: 0 0 10px grey;" class="panel panel-default" *ngIf="!blog.close && (role === 'TMP' || blog.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
-    <div [ngClass]="(blog.Client=='Actavo' ? 'panel-heading panel-custom-actavo':'') ||
+    <div style="box-shadow: 0 0 3px grey;" [ngClass]="(blog.Client=='Actavo' ? 'panel-heading panel-custom-actavo':'') ||
      (blog.Client=='OBELISK' ? 'panel-heading panel-custom-obelisk':'') ||
      (blog.Client=='Balfour Beatty' ? 'panel-heading panel-custom-balfour':'')||
      (blog.JobStatus=='TMP Done!' ? 'panel-heading panel-custom-done':'') ||
@@ -445,13 +454,16 @@
         <li><strong>-Prelim plan received and issued to HSEQ Dept
           Af1 required/received from Client/PSDP? </strong> {{ blog.PSDP }} </li>
         <li><strong>-Are RNCE PSCS on the work? </strong> {{ blog.PSCS }} </li>
-        <li><a *ngIf="blog.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ blog.LocationMap }}" target="_blank">See on Map by Coordonates</a>
-            <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ blog.Address }}" target="_blank">See on Map by Address</a></li>
+        <li><a *ngIf="blog.LocationMap" mat-fab href="https://www.google.ie/maps/search/{{ blog.LocationMap }}" target="_blank"><mat-icon aria-label="location map">pin_drop</mat-icon></a>
+            <a mat-fab color="primary" href="https://www.google.ie/maps/search/{{ blog.Address }}" target="_blank"><mat-icon aria-label="location map">map</mat-icon></a></li>
       </ul>
     </div>
     <div class="col-md-6" *ngFor="let ph of blog.path">
       <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" alt="" width="200" height="100"></a>
-      {{ph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+      {{ph}}&nbsp;&nbsp;
+
+      <a type="button" mat-raised-button href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank" color="primary"><i class="material-icons">backup</i> Download</a>
+      <br/><br/>
     </div></div>
 
     <!-- Panel Footer Start -->
@@ -467,13 +479,14 @@
       </div> -->
 
       <!-- Edit Button -->
-      <a [routerLink]="['/edit-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-info">Edit</button></a>
+      <button mat-raised-button type="button" *ngIf="username === blog.createdBy" [routerLink]="['/edit-blog/', blog._id]" color="primary">Edit</button>
       <!-- Delete Button -->
-      <a [routerLink]="['/delete-blog/', blog._id]" *ngIf="username === blog.createdBy"><button type="button" name="button" class="btn btn-sm btn-danger">Delete</button></a>
+      <button mat-raised-button type="button" *ngIf="username === blog.createdBy" [routerLink]="['/delete-blog/', blog._id]" color="warn">Delete</button>
       <!-- Close Button -->
-      <a [routerLink]="['/closed-blog/', blog._id]" *ngIf="(username === blog.createdBy)||(role === 'TMP')"><button type="button" name="button" class="btn btn-sm btn-success">Close</button></a>
-      <button [disabled]="blog.drawing" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="Drawing(blog._id)">Drawing</button>
-      <button [disabled]="blog.done" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="Done(blog._id)">Done</button>
+      <button mat-raised-button type="button" *ngIf="(username === blog.createdBy)||(role === 'TMP')" [routerLink]="['/closed-blog/', blog._id]" color="accent">Close</button>
+      <button mat-fab [disabled]="blog.drawing" *ngIf="role === 'TMP'" type="button" (click)="Drawing(blog._id)" color="primary"><mat-icon aria-label="location map">create</mat-icon></button>
+      <button mat-fab [disabled]="blog.done" *ngIf="role === 'TMP'" type="button" (click)="Done(blog._id)" color="accent"><mat-icon aria-label="location map">done_outline</mat-icon></button>
+
 
       <!-- Likes Dropdown  -->
       <!-- <div class="dropdown"> -->
@@ -502,7 +515,7 @@
     <ul class="list-group">
       <li class="list-group-item">
         <!-- Post Comment Button -->
-        <button type="button" name="button" class="btn btn-sm btn-danger" (click)="draftComment(blog._id)" [disabled]="newComment.indexOf(blog._id) > -1">Post Comment</button>
+        <button mat-raised-button type="button" [disabled]="newComment.indexOf(blog._id) > -1" (click)="draftComment(blog._id)" color="warn">Post Comment</button>
         <br />
         <br />
         <div *ngIf="newComment.indexOf(blog._id) > -1">
@@ -513,7 +526,10 @@
             <label for="comment">Reply</label>
             <textarea name="comment" rows="10" cols="30" class="form-control" formControlName="comment"></textarea>
             <h5>Please attach files(Location map, Working area, TM plans)</h5>
-            <input type="file" name="attachement" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+            <label for="fileToUploadComm"><a mat-flat-button type="button"  color="accent">
+                Attach File <mat-icon>attach_file</mat-icon>
+              </a></label>
+            <input id="fileToUploadComm" style="display:none;" type="file" name="attachement" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
             <ul  class="list-unstyled" *ngFor="let names of this.upl">
               <li >{{names}}</li>
             </ul>
@@ -525,9 +541,9 @@
               </ul>
             </div>
             <!-- Post Button -->
-            <button [disabled]="!commentForm.valid || processing" type="submit" name="button" class="btn btn-sm btn-info" (click)="postComment(blog._id)">Post</button>
+            <button type="submit" [disabled]="!commentForm.valid || processing" mat-raised-button (click)="postComment(blog._id)" color="primary">Post</button>
             <!-- Cancel Button -->
-            <button [disabled]="processing" type="button" name="button" class="btn btn-sm btn-danger" (click)="cancelSubmission(blog._id)">Cancel</button>
+            <button [disabled]="processing" type="button" mat-raised-button (click)="cancelSubmission(blog._id)" color="warn">Cancel</button>
           </form>
           <!-- Form: Comment Form End -->
 
@@ -535,18 +551,12 @@
 
         <!-- Show Comments -->
         <li *ngIf="enabledComments.indexOf(blog._id) === -1 && blog.comments.length > 0" class="list-group-item">
-          <button  class="btn btn-sm btn-info" (click)="expand(blog._id)">
-            Show comments&nbsp;&nbsp;
-            <div class="glyphicon glyphicon-comment"></div>
-          </button>
+          <button mat-raised-button (click)="expand(blog._id)" color="primary">Show comments&nbsp;&nbsp;<div class="glyphicon glyphicon-comment"></div></button>
         </li>
 
         <!-- Hide Comments -->
         <li *ngIf="enabledComments.indexOf(blog._id) > -1" class="list-group-item">
-          <button class="btn btn-sm btn-info" (click)="collapse(blog._id)">
-            Hide Comments&nbsp;&nbsp;
-            <div class="glyphicon glyphicon-comment"></div>
-          </button>
+          <button mat-raised-button (click)="collapse(blog._id)" color="primary">Hide Comments&nbsp;&nbsp;<div class="glyphicon glyphicon-comment"></div></button>
         </li>
 
         <!-- Comment -->
@@ -554,7 +564,8 @@
           <li *ngFor="let comment of blog.comments" class="list-group-item">
             <strong>{{ comment.commentator }}:</strong>
             <br /> {{ comment.comment }}
-            <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  role="button" target="_blank">Download</a></li></ul>
+            <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a mat-raised-button type="button" color="primary" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  role="button" target="_blank">
+               <i class="material-icons">backup</i> Download</a></li></ul>
             <strong>Created at:{{comment.createdTime | date:'dd MMM yyyy hh:mm a'}}</strong>
           </li>
 

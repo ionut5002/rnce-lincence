@@ -25,13 +25,13 @@ export class ClosedBlogComponent implements OnInit {
     private blogService: BlogService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private authService:AuthService,
-    private location:Location
+    private authService: AuthService,
+    private location: Location
   ) { }
 
   // Function to close Jobs
   closedBlog() {
-    this.processing=true;
+    this.processing = true;
     // Function for close request
     this.blogService.closeBlog(this.currentUrl.id).subscribe(data => {
       // Check if close request worked
@@ -53,12 +53,13 @@ export class ClosedBlogComponent implements OnInit {
     // Function to GET all jobs from database
     this.blogService.getAllBlogs().subscribe(data => {
       this.blogPosts = data.blogs; // Assign array to use in HTML
-      
-    });}
+
+    });
+  }
     expand(id) {
       this.enabledComments.push(id); // Add the current job post id to array
     }
-  
+
     // Collapse the list of comments
     collapse(id) {
       const index = this.enabledComments.indexOf(id); // Get position of id in array
@@ -71,12 +72,12 @@ export class ClosedBlogComponent implements OnInit {
   ngOnInit() {
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username;
-      this.role= profile.user.role;
+      this.role = profile.user.role;
     });
     this.getAllBlogs();
     this.currentUrl = this.activatedRoute.snapshot.params; // Get URL paramaters on page load
     // Function for GET request to retrieve blog
-    if(this.currentUrl.id){
+    if (this.currentUrl.id) {
       this.blogService.getSingleBlog(this.currentUrl.id).subscribe(data => {
         // Check if request was successfull
         if (!data.success) {
@@ -90,12 +91,12 @@ export class ClosedBlogComponent implements OnInit {
             createdBy: data.blog.createdBy, // Set created_by field
             createdAt: data.blog.createdAt,  // Set created_at field
             close: data.blog.close // Set close field
-          }
+          };
           this.foundBlog = true; // Displaly job window
         }
       });
     }
-    
-    
+
+
   }
 }

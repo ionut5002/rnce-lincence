@@ -61,3 +61,10 @@ td {
     background: skyblue; color: #fff; }
 .panel-custom-done {
     background: #4BB543; color: #fff; }
+
+.mat-raised-button {
+   margin-right: 10px;
+  }
+.mat-fab{
+  margin-right: 8px;
+}

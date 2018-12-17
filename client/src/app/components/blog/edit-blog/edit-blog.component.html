@@ -91,7 +91,7 @@
           <option >1&amp;2</option>
           <option>3</option>
           <option>4</option>
-          <option>5&amp;6</option> 
+          <option>5&amp;6</option>
         </select>
   </div>
 
@@ -118,7 +118,7 @@
           <option selected>24Hrs</option>
           <option>Day</option>
           <option>Night</option>
-          <option>Short</option>  
+          <option>Short</option>
         </select>
   </div></div>
   <div class="row">
@@ -129,9 +129,9 @@
           <option selected>Path</option>
           <option>H/S</option>
           <option>Bus Lane</option>
-          <option>Lane</option> 
-          <option>Lane&amp;Path</option> 
-          <option>Bus Lane&amp;Path</option> 
+          <option>Lane</option>
+          <option>Lane&amp;Path</option>
+          <option>Bus Lane&amp;Path</option>
         </select>
   </div>
 
@@ -155,7 +155,7 @@
               </label>
             <!-- CrewNeeded Input -->
               <select class="form-control" name="CrewNeeded"  [(ngModel)]="blog.CrewNeeded" #CrewNeeded="ngModel">
-                  
+
                 <option >Yes</option>
                 <option>No</option>
               </select>
@@ -165,23 +165,23 @@
                 </label>
               <!-- NightTime Input -->
                 <select class="form-control" name="NightTime"  [(ngModel)]="blog.NightTime" #NightTime="ngModel">
-                    
+
                   <option >Yes</option>
                   <option>No</option>
                 </select>
           </div>
-  
+
         <div class="form-group col-md-3">
             <label for="DeliveryOnSite">DeliveryOnSite
                 </label>
               <!-- DeliveryOnSite Input -->
                 <select class="form-control" name="DeliveryOnSite"  [(ngModel)]="blog.DeliveryOnSite" #DeliveryOnSite="ngModel">
-                    
+
                   <option >Yes</option>
                   <option>No</option>
                 </select>
           </div>
-  
+
   <div class="form-group col-md-3">
       <label for="AfterCare">AfterCare</label>
         <!-- SafetyFolder Input -->
@@ -195,7 +195,7 @@
         <!-- Phases Input -->
         <input [disabled]="processing" type="text" name="Phases" placeholder="*Phases" class="form-control" [(ngModel)]="blog.Phases" #Phases="ngModel" />
       </div>
-    
+
   </div>
 
   <div class="row">
@@ -203,19 +203,19 @@
           <label for="emergency">Is an Emergency</label>
           <input type="checkbox"  name="emergency" [(ngModel)]="blog.emergency" #emergency="ngModel">
         </div>
-  
+
         <div class="form-group col-md-3">
             <label for="PSDP">Prelim plan received and issued to HSEQ Dept
                 Af1 required/received from Client/PSDP?
                 </label>
               <!-- PSDP Input -->
                 <select class="form-control" name="PSDP"  [(ngModel)]="blog.PSDP" #PSDP="ngModel">
-                    
+
                   <option >Yes</option>
                   <option>No</option>
                 </select>
           </div>
-  
+
   <div class="form-group col-md-3">
       <label for="SafetyFolder">Safety Folders is requested?</label>
         <!-- SafetyFolder Input -->
@@ -230,10 +230,10 @@
             <select class="form-control" name="PSCS"  [(ngModel)]="blog.PSCS" #PSCS="ngModel">
                 <option >Yes</option>
                 <option>No</option>
-              
+
             </select>
       </div>
-    
+
   </div>
 
 
@@ -245,17 +245,18 @@
   </div>
 
   <!-- Delete Button -->
-  <a [routerLink]="['/delete-blog/', blog._id]"><button  [disabled]="processing"  type="button" name="button" class="btn btn-danger">Delete</button></a>
+  <button mat-raised-button [routerLink]="['/delete-blog/', blog._id]" color="warn" [disabled]="processing" type="button">Delete</button>
   <!-- Go Back Button -->
-  <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
+  <button mat-raised-button [disabled]="processing" (click)="goBack()" type="button" color="accent">Go Back</button>
   <!-- Save Changes Button -->
-  <button [disabled]="processing ||
-   (!title.dirty && !body.dirty && !JobNo.dirty && !Client.dirty && !StartDate.dirty && !SpeedOfRoad.dirty 
-   && !RoadWidth.dirty && !CarriagewayType.dirty && !RoadLevel.dirty && !Volume.dirty && !WorksType.dirty 
-   && !WorksHours.dirty && !LocationOnRoad.dirty && !TypeOfTrafficCR.dirty && !Address.dirty 
-   && !LicenceRequired.dirty && !LocationMap.dirty && !emergency.dirty && !SafetyFolder.dirty && !PSDP.dirty && 
-   !PSCS.dirty && !CrewNeeded.dirty && !NightTime.dirty && !DeliveryOnSite.dirty && !AfterCare.dirty && !Phases.dirty)" 
-   type="submit" name="save" class="btn btn-info">Save Changes</button>
+
+   <button mat-raised-button [disabled]="processing ||
+   (!title.dirty && !body.dirty && !JobNo.dirty && !Client.dirty && !StartDate.dirty && !SpeedOfRoad.dirty
+   && !RoadWidth.dirty && !CarriagewayType.dirty && !RoadLevel.dirty && !Volume.dirty && !WorksType.dirty
+   && !WorksHours.dirty && !LocationOnRoad.dirty && !TypeOfTrafficCR.dirty && !Address.dirty
+   && !LicenceRequired.dirty && !LocationMap.dirty && !emergency.dirty && !SafetyFolder.dirty && !PSDP.dirty &&
+   !PSCS.dirty && !CrewNeeded.dirty && !NightTime.dirty && !DeliveryOnSite.dirty && !AfterCare.dirty && !Phases.dirty)"
+    name="save" type="submit" color="primary">Save Changes</button>
 
 </form>
 

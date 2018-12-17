@@ -89,14 +89,14 @@
   </div>
 
   <!-- Delete Button -->
-  <a [routerLink]="['/delete-licence/', licence._id]"><button  [disabled]="processing"  type="button" name="button" class="btn btn-danger">Delete</button></a>
+  <a [routerLink]="['/delete-licence/', licence._id]"><button  [disabled]="processing"  type="button" mat-raised-button color="warn">Delete</button></a>
   <!-- Go Back Button -->
-  <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
+  <button [disabled]="processing" type="button" mat-raised-button color="accent" (click)="goBack()">Cancel</button>
   <!-- Save Changes Button -->
   <button [disabled]="processing ||
    (!title.dirty && !body.dirty && !LicenceType.dirty && !Client.dirty && !StartDate.dirty && !WorkLength.dirty
    && !WorkWidth.dirty && !Address.dirty && !TMType.dirty && !RefNo.dirty)"
-   type="submit" name="save" class="btn btn-info">Save Changes</button>
+   type="submit" name="save" mat-raised-button color="primary">Save Changes</button>
 
 </form>
 

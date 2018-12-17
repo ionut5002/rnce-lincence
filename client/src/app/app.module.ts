@@ -1,40 +1,45 @@
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { AppRoutingModule } from './app-routing.module';
+import {MatButtonModule, 
+        MatIconModule, 
+        MatBadgeModule,
+        MatFormFieldModule,
+        MatInputModule} from '@angular/material';
+
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterComponent } from './components/register/register.component';
-import { AuthService } from './services/auth.service';
-import { BlogService } from './services/blog.service';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { FlashMessagesModule } from 'angular2-flash-messages';
-import { AuthGuard } from './guards/auth.guard';
-import { NotAuthGuard } from './guards/notAuth.guard';
 import { BlogComponent } from './components/blog/blog.component';
 import { EditBlogComponent } from './components/blog/edit-blog/edit-blog.component';
-import { ClosedBlogComponent } from './components/blog/closed-blog/closed-blog.component';
 import { DeleteBlogComponent } from './components/blog/delete-blog/delete-blog.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
-import { FileUploadModule } from 'ng2-file-upload';
-import { ClosedLicenceComponent } from './components/licence/closed-licence/closed-licence.component';
+import { ClosedBlogComponent } from './components/blog/closed-blog/closed-blog.component';
 import { LicenceComponent } from './components/licence/licence.component';
 import { EditLicenceComponent } from './components/licence/edit-licence/edit-licence.component';
 import { DeleteLicenceComponent } from './components/licence/delete-licence/delete-licence.component';
-import { LicenceService } from './services/licence.service';
+import { ClosedLicenceComponent } from './components/licence/closed-licence/closed-licence.component';
 import { UploadLicenceComponent } from './components/licence/upload-licence/upload-licence.component';
 import { BookingComponent } from './components/licence/booking/booking.component';
 import { PostWorksComponent } from './components/licence/post-works/post-works.component';
 import { SearchFilterPipe } from './search-filter.pipe';
 import { DisplayComponent } from './components/display/display.component';
-import { ScrollToModule } from 'ng2-scroll-to-el';
 import { ReportsComponent } from './components/blog/reports/reports.component';
-
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+import { AuthService } from './services/auth.service';
+import { AuthGuard } from './guards/auth.guard';
+import { NotAuthGuard } from './guards/notAuth.guard';
+import { BlogService } from './services/blog.service';
+import { LicenceService } from './services/licence.service';
+import { ScrollToModule } from 'ng2-scroll-to-el';
+import { FlashMessagesModule } from 'angular2-flash-messages';
 
 
 
@@ -62,20 +67,23 @@ import { ReportsComponent } from './components/blog/reports/reports.component';
     SearchFilterPipe,
     DisplayComponent,
     ReportsComponent,
-    
-    
   ],
   imports: [
     BrowserModule,
     HttpModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
-    FlashMessagesModule,
-    FileUploadModule,
-    ScrollToModule.forRoot()
+    FlashMessagesModule.forRoot(),
+    ScrollToModule.forRoot(),
+    MatButtonModule,
+    MatIconModule,
+    MatBadgeModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
-  
   providers: [AuthService, AuthGuard, NotAuthGuard, BlogService, LicenceService],
   bootstrap: [AppComponent]
 })

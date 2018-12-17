@@ -4,7 +4,7 @@
   <li class="list-group-item">Email: {{ email }}</li>
   <li class="list-group-item">Role: {{ role }}</li>
 </ul>
-<a class="btn btn-success" (click)="changePasswordBtn()">Change Password</a>
+<button mat-raised-button (click)="changePasswordBtn()" color="warn">Change Password</button>
 
 
 
@@ -45,7 +45,7 @@
     </div>
   </div>
   <!-- Submit Button -->
-  <input [disabled]="!ChangePassform.valid || processing" class="btn btn-primary" type="submit" value="Change" />
-  <a class="btn btn-success" (click)="changePasswordBtn()">Cancel</a>
+  <button [disabled]="!ChangePassform.valid || processing" mat-raised-button type="submit" color="primary">Change</button>
+  <button mat-raised-button (click)="changePasswordBtn()" color="accent">Cancel</button>
 </form>
 </div>

@@ -10,36 +10,41 @@
 <!-- New Post Button -->
 <div class="row">
     <div class="col-md-6">
-<button type="button" name="button" class="btn btn-warning" *ngIf="!newPost" (click)="newLicenceForm()">New Licence</button>
+<button mat-raised-button *ngIf="!newPost" (click)="newLicenceForm()" color="primary">New Licence</button>
+
 
 <!-- Reload Button -->
-<button [disabled]="loadingLicences" type="button" name="button" class="btn btn-default" *ngIf="!newPost" (click)="reloadLicences()"><span class="glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Reload</button>
-
+<button [disabled]="loadingLicences" *ngIf="!newPost" mat-raised-button (click)="reloadLicences()" ><span class="glyphicon glyphicon-repeat"></span> Reload</button>
 <!-- Notifications Button -->
 <div class="dropdown" *ngIf="!newPost">
   <!-- Dislike Button -->
-  <button type="button" name="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-bell">&nbsp;</span>Notifications  <span class="badge">{{this.co}}</span></button>
+  <button mat-raised-button color="accent">  Notifications <mat-icon >notification_important</mat-icon><span [matBadge]="this.co" matBadgeOverlap="false"></span></button>
   <!-- Dropdown Menu Items -->
   <div class="dropdown-content">
     <div  *ngFor="let notification of Notifications"><div *ngIf="(notification.author !== username) && (!notification.seen.includes(username)) "><tr>
         <td ><strong>{{notification.author}}</strong> {{notification.action}} <strong>{{notification.changesTo}}</strong> at <strong>{{notification.createdAt | date:'dd MMM yyyy hh:mm a'}}</strong>.</td>
-      <td><span class="glyphicon glyphicon-remove " (click)="seenNotification(notification._id)"></span></td>
+      <td><span style="cursor: pointer" class="glyphicon glyphicon-remove " (click)="seenNotification(notification._id)"></span></td>
 
     </tr>
     </div></div>
   </div>
 
   </div>
-  <a *ngIf="!newPost" [routerLink]="['/closed-licence/']"><button type="button" name="button" class="btn btn-sm btn-danger">Closed Licences</button></a>
+  <button mat-raised-button *ngIf="!newPost" [routerLink]="['/closed-licence/']" color="warn">Closed Licences</button>
 </div>
 <div class="col-md-2">
 
 </div>
-<div class="col-md-2">
-    <input [hidden]="newPost" #box (keyup)="0" placeholder="Search By Title">
+<div [hidden]="newPost" class="col-md-2" >
+    <mat-form-field appearance="outline" style="width: 120px;">
+        <input  matInput  #box (keyup)="0" placeholder="Search By Title">
+      </mat-form-field>
+    
   </div>
-<div class="col-md-2">
-    <input [hidden]="newPost" #refno (keyup)="0" placeholder="Search By Ref No">
+<div [hidden]="newPost" class="col-md-2">
+    <mat-form-field appearance="outline" style="width: 130px;">
+    <input matInput #refno (keyup)="0" placeholder="Search By Ref No">
+  </mat-form-field>
   </div>
 </div>
 <br />
@@ -196,7 +201,10 @@
       <br />
     </div>
     <div class="col-md-12"><h4>Please attach photos(Location map, Working area)</h4>
-  <input type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+      <label for="fileToUploadNew"><a mat-flat-button type="button"  color="accent">
+        Attach File <mat-icon>attach_file</mat-icon>
+      </a></label>
+  <input type="file" name="photo" id="fileToUploadNew" style="display:none;" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
   <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul></div>
@@ -205,9 +213,11 @@
 
   <!-- Go Back Button -->
   <div class="col-md-12"><br />
-    <br /><button [disabled]="processing" type="button" name="button" (click)="goBack()" class="btn btn-warning">Go Back</button>
+
+    <button [disabled]="processing" type="button" mat-raised-button (click)="goBack()" color="warn">Go Back</button>
   <!-- Submit Button -->
-  <button [disabled]="processing  || !form.valid" type="submit" name="button" class="btn btn-success" >Submit</button> <!-- (click)="upload()" -->
+  
+  <button [disabled]="processing  || !form.valid" mat-raised-button type="submit" color="primary">Submit</button>
   </div>
 </form>
 <!-- New Licence Form -->
@@ -217,9 +227,9 @@
   <!-- Panel Outer Layer -->
   <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value | searchFilter: 'RefNo': refno.value">
       <!-- | searchFilter: 'RefNo': refno.value -->
-<div  [ngClass]="licence.LicenceType=='T4' ? 'panel panel-danger' : 'panel panel-primary'"  *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
+<div style="box-shadow: 0 0 10px grey;"  [ngClass]="licence.LicenceType=='T4' ? 'panel panel-danger' : 'panel panel-primary'"  *ngIf="!licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
-    <div class="panel-heading">
+    <div class="panel-heading" style="box-shadow: 0 0 3px grey;">
       <h3 class="panel-title">{{ licence.title }}     <span class="navbar-right" style="margin-right: 20px;" *ngIf="licence.RefNo"> Ref No: {{licence.RefNo}}</span></h3>
     </div>
 
@@ -243,8 +253,7 @@
         <li><strong>WorkWidth:</strong> {{licence.WorkWidth}} m</li>
         <li><strong>TMType:</strong> {{licence.TMType}}</li>
         <li><strong>Description:</strong> {{ licence.body }} </li>
-        <li><a *ngIf="licence.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ licence.LocationMap }}" target="_blank">See on Map by Coordonates</a>
-            <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ licence.Address }}" target="_blank">See on Map by Address</a></li>
+        <li> <a mat-fab color="primary" href="https://www.google.ie/maps/search/{{ licence.Address }}" target="_blank"><mat-icon aria-label="location map">map</mat-icon></a></li>
             <li *ngIf="licence.WorksStartDate"><strong>Works Starts:</strong> {{ licence.WorksStartDate | date:'dd MMM yyyy ' }} </li>
             <li *ngIf="licence.WorksStartDate"><strong>Works Ends:</strong> {{ licence.WorksEndDate | date:'dd MMM yyyy ' }} </li>
           </ul>
@@ -255,13 +264,13 @@
       <h3>Pre works photos</h3>
     <div *ngFor="let ph of licence.path">
       <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" alt="" width="200" height="100"></a>
-      {{ph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+      {{ph}}&nbsp;&nbsp;<a  type="button" mat-raised-button href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank" color="primary"><i class="material-icons">backup</i> Download</a><br/><br/>
     </div></div>
     <div class="col-md-6" >
         <h3>Post works photos</h3>
       <div *ngFor="let pph of licence.pathPost">
         <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" alt="" width="200" height="100"></a>
-        {{pph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+        {{pph}}&nbsp;&nbsp;<a  type="button" mat-raised-button href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" target="_blank" color="primary"><i class="material-icons">backup</i> Download</a><br/><br/>
       </div></div>
 
     </div></div>
@@ -271,22 +280,27 @@
         <div *ngFor="let lph of licence.LicencePath">
             <strong>Valid From: </strong>{{ licence.LvalidFrom| date:'dd MMM yyyy ' }} <strong>Valid To: </strong>{{ licence.LvalidTo| date:'dd MMM yyyy ' }} <br />
           <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" alt="" width="200" height="100"></a>
-          {{lph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+          {{lph}}&nbsp;&nbsp;<a  type="button" mat-raised-button href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" target="_blank" color="primary"><i class="material-icons">backup</i> Download</a><br/><br/>
         </div></div>
 
         </div>
           <div class="row col-md-12" >
-            <button [disabled]="!licence.phase1" *ngIf="role === 'TMP'" type="button" name="button" class="btn btn-lg btn-success" (click)="ApplyingForLicence(licence._id)">Applying</button>
-            <a [routerLink]="['/upload-licence/', licence._id]" *ngIf="role === 'TMP'"><button  [disabled]="!licence.phase2" type="button" name="button" class="btn btn-lg btn-success">Upload</button></a>
-            <a [routerLink]="['/book-works/', licence._id]" *ngIf="username === licence.createdBy"><button  [disabled]="!licence.phase3" type="button" name="button" class="btn btn-lg btn-success">Book Work Date</button></a>
-            <a [routerLink]="['/post-works/', licence._id]" *ngIf="username === licence.createdBy"><button  [disabled]="!licence.phase4" type="button" name="button" class="btn btn-lg btn-success">Post Works Photos</button></a>
-            <button [disabled]="!licence.phase5" *ngIf="username === licence.createdBy" type="button" name="button" class="btn btn-lg btn-success" (click)="CompleteWorks(licence._id)">Job Complete</button>
+            <button mat-fab [disabled]="!licence.phase1" *ngIf="role === 'TMP'" type="button" (click)="ApplyingForLicence(licence._id)" color="primary"><mat-icon >touch_app</mat-icon></button>
+            <button mat-fab [routerLink]="['/upload-licence/', licence._id]" [disabled]="!licence.phase2" *ngIf="role === 'TMP'" type="button" color="primary"><mat-icon >file_copy</mat-icon></button>
+            <button mat-fab [routerLink]="['/book-works/', licence._id]" [disabled]="!licence.phase3" *ngIf="username === licence.createdBy" type="button" color="primary"><mat-icon >date_range</mat-icon></button>
+            <button mat-fab [routerLink]="['/post-works/', licence._id]" [disabled]="!licence.phase4" *ngIf="username === licence.createdBy" type="button" color="primary"><mat-icon >add_photo_alternate</mat-icon></button>
+            <button mat-fab (click)="CompleteWorks(licence._id)" [disabled]="!licence.phase5" *ngIf="username === licence.createdBy" type="button" color="primary"><mat-icon >done_outline</mat-icon></button>
           </div>
         <div  style="margin-top: 10px;" *ngIf="licence.RefNo === ''" class="row col-md-6">
-          <button class="btn btn-primary" (click)="addRefNo(licence._id)">Add Ref No</button>
+          <button mat-raised-button color="primary" (click)="addRefNo(licence._id)">{{!RefNoF? 'Add Ref No': 'Cancel'}}</button>
           <form *ngIf="RefNo == licence._id" #f (ngSubmit)="onaddRefNo(licence._id, f.RefNo.value)" >
-            <input type="text" name="RefNo">
-            <button class="btn btn-danger" type="submit">Add</button>
+              <mat-form-field style="margin-right:10px;" class="example-form-field">
+                  <input name="RefNo" matInput type="text" placeholder="Insert Ref No" [(ngModel)]="value">
+                  <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+            <button mat-raised-button color="primary" type="submit">Add</button>
           </form>
           <div class="row show-hide-message" *ngIf="message">
               <div [ngClass]="messageClass">
@@ -309,12 +323,11 @@
       </div> -->
 
       <!-- Edit Button -->
-      <a [routerLink]="['/edit-licence/', licence._id]" *ngIf="username === licence.createdBy"><button type="button" name="button" class="btn btn-sm btn-info">Edit</button></a>
+      <button mat-raised-button type="button" *ngIf="username === licence.createdBy" [routerLink]="['/edit-licence/', licence._id]" color="primary">Edit</button>
       <!-- Delete Button -->
-      <a [routerLink]="['/delete-licence/', licence._id]" *ngIf="username === licence.createdBy"><button type="button" name="button" class="btn btn-sm btn-danger">Delete</button></a>
+      <button mat-raised-button type="button" [routerLink]="['/delete-licence/', licence._id]" *ngIf="username === licence.createdBy" color="warn">Delete</button>
       <!-- Close Button -->
-      <a [routerLink]="['/closed-licence/', licence._id]" *ngIf="username === licence.createdBy"><button type="button" name="button" class="btn btn-sm btn-success">Close</button></a>
-
+      <button mat-raised-button type="button" [routerLink]="['/closed-licence/', licence._id]" *ngIf="username === licence.createdBy" color="accent">Close</button>
       <!-- Likes Dropdown  -->
       <!-- <div class="dropdown"> -->
         <!-- Like Button -->
@@ -342,7 +355,7 @@
     <ul class="list-group">
       <li class="list-group-item">
         <!-- Post Comment Button -->
-        <button type="button" name="button" class="btn btn-sm btn-danger" (click)="draftComment(licence._id)" [disabled]="newComment.indexOf(licence._id) > -1">Post Comment</button>
+        <button mat-raised-button type="button" (click)="draftComment(licence._id)" [disabled]="newComment.indexOf(licence._id) > -1" color="warn">Post Comment</button>
         <br />
         <br />
         <div *ngIf="newComment.indexOf(licence._id) > -1">
@@ -353,7 +366,10 @@
             <label for="comment">Reply</label>
             <textarea name="comment" rows="10" cols="30" class="form-control" formControlName="comment"></textarea>
             <h5>Please attach files(Location map, Working area, TM plans)</h5>
-            <input type="file" name="attachement" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+            <label for="fileToUploadComm"><a mat-flat-button type="button"  color="accent">
+              Attach File <mat-icon>attach_file</mat-icon>
+            </a></label>
+            <input id="fileToUploadComm" style="display:none;" type="file" name="attachement" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
             <ul  class="list-unstyled" *ngFor="let names of this.upl">
               <li >{{names}}</li>
             </ul>
@@ -365,9 +381,9 @@
               </ul>
             </div>
             <!-- Post Button -->
-            <button [disabled]="!commentForm.valid || processing" type="submit" name="button" class="btn btn-sm btn-info" (click)="postComment(licence._id)">Post</button>
+            <button type="submit" [disabled]="!commentForm.valid || processing" mat-raised-button (click)="postComment(licence._id)" color="primary">Post</button>
             <!-- Cancel Button -->
-            <button [disabled]="processing" type="button" name="button" class="btn btn-sm btn-danger" (click)="cancelSubmission(licence._id)">Cancel</button>
+            <button [disabled]="processing" type="button" mat-raised-button (click)="cancelSubmission(licence._id)" color="warn">Cancel</button>
           </form>
           <!-- Form: Comment Form End -->
 
@@ -375,18 +391,12 @@
 
         <!-- Show Comments -->
         <li *ngIf="enabledComments.indexOf(licence._id) === -1 && licence.comments.length > 0" class="list-group-item">
-          <button  class="btn btn-sm btn-info" (click)="expand(licence._id)">
-            Show comments&nbsp;&nbsp;
-            <div class="glyphicon glyphicon-comment"></div>
-          </button>
+          <button mat-raised-button (click)="expand(licence._id)" color="primary">Show comments&nbsp;&nbsp;<div class="glyphicon glyphicon-comment"></div></button>
         </li>
 
         <!-- Hide Comments -->
         <li *ngIf="enabledComments.indexOf(licence._id) > -1" class="list-group-item">
-          <button class="btn btn-sm btn-info" (click)="collapse(licence._id)">
-            Hide Comments&nbsp;&nbsp;
-            <div class="glyphicon glyphicon-comment"></div>
-          </button>
+          <button mat-raised-button (click)="collapse(licence._id)" color="primary">Hide Comments&nbsp;&nbsp;<div class="glyphicon glyphicon-comment"></div></button>
         </li>
 
         <!-- Comment -->
@@ -394,7 +404,8 @@
           <li *ngFor="let comment of licence.comments" class="list-group-item">
             <strong>{{ comment.commentator }}:</strong>
             <br /> {{ comment.comment }}
-            <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  role="button" target="_blank">Download</a></li></ul>
+            <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a mat-raised-button type="button" color="primary" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  target="_blank">
+              <i class="material-icons">backup</i> Download</a></li></ul>
             <strong>Created at:{{comment.createdTime | date:'dd MMM yyyy hh:mm a'}}</strong>
           </li>
 

@@ -27,9 +27,9 @@
     <!-- Modal Footer -->
     <div class="modal-footer">
       <!-- Yes Button -->
-      <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="deleteLicence()">Yes</button>
+      <button [disabled]="processing" type="button" mat-raised-button color="primary" (click)="deleteLicence()">Yes</button>
       <!-- No Button -->
-      <a routerLink="/licence"><button [disabled]="processing" type="button" name="button" class="btn btn-danger">No</button></a>
+      <button routerLink="/licence"[disabled]="processing" type="button" mat-raised-button color="warn">No</button>
     </div>
   </div>
 

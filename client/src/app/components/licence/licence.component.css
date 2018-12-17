@@ -53,3 +53,10 @@ td {
 .licencetype {
     border: 1px solid black;
 }
+
+.mat-raised-button {
+  margin-right: 10px;
+ }
+.mat-fab{
+ margin-right: 8px;
+}

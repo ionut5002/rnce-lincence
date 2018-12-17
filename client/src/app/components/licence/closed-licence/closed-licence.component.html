@@ -32,9 +32,9 @@
     <!-- Modal Footer -->
     <div class="modal-footer">
       <!-- Yes Button -->
-      <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="closedLicence()">Yes</button>
+      <button [disabled]="processing" type="button" mat-raised-button color="primary" (click)="closedLicence()">Yes</button>
       <!-- No Button -->
-      <a routerLink="/licence"><button [disabled]="processing" type="button" name="button" class="btn btn-danger">No</button></a>
+      <a routerLink="/licence"><button [disabled]="processing" type="button" mat-raised-button color="warn">No</button></a>
     </div>
   </div>
 
@@ -64,21 +64,26 @@
 </div>
 
 
-<button *ngIf="!foundLicence" [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>
-<input [hidden]="foundLicence" #box (keyup)="0" placeholder="Search By Title">
+<button *ngIf="!foundLicence" [disabled]="processing" type="button" mat-raised-button color="accent" (click)="goBack()">Go Back</button>
+<mat-form-field [hidden]="foundLicence" appearance="outline" style="width: 130px;">
+<input matInput  #box (keyup)="0" placeholder="Search By Title">
+</mat-form-field>&nbsp;&nbsp;
+<mat-form-field [hidden]="foundLicence" appearance="outline" style="width: 130px;">
+    <input matInput  #refno (keyup)="0" placeholder="Search By Ref No">
+    </mat-form-field>
 <br />
 <br />
 <div *ngIf="!foundLicence">
   <!-- Panel Outer Layer -->
-  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value">
-<div class="panel panel-primary" *ngIf="licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
+  <div  *ngFor="let licence of licencePosts | searchFilter: 'title': box.value | searchFilter: 'RefNo': refno.value ">
+<div style="box-shadow: 0 0 10px grey;" class="panel panel-primary" *ngIf="licence.close && (role === 'TMP' || licence.createdBy === username || role === 'HS') ">
     <!-- Panel Title -->
-    <div class="panel-heading">
-      <h3 class="panel-title">{{ licence.title }} {{ licence.LicenceNo }}</h3>
+    <div style="box-shadow: 0 0 3px grey;" class="panel-heading">
+      <h3 class="panel-title">{{ licence.title }} <span class="navbar-right" style="margin-right: 20px;" *ngIf="licence.RefNo"> Ref No: {{licence.RefNo}}</span></h3>
     </div>
 
     <!-- Panel Body -->
-    
+
     <div class="panel-body">
       <div class="col-md-6">
           <h4 *ngIf="licence.phase1" class='text-danger'>Status: Request for Licence</h4>
@@ -97,16 +102,17 @@
         <li><strong>TMType:</strong> {{licence.TMType}}</li>
         <li><strong>Description:</strong> {{ licence.body }} </li>
         <li><a *ngIf="licence.LocationMap" class="btn btn-sm btn-info" href="https://www.google.ie/maps/search/{{ licence.LocationMap }}" target="_blank">See on Map by Coordonates</a>
-            <a class="btn btn-sm btn-success" href="https://www.google.ie/maps/search/{{ licence.Address }}" target="_blank">See on Map by Address</a></li>
+            <a mat-fab color="primary" href="https://www.google.ie/maps/search/{{ licence.Address }}" target="_blank"><mat-icon aria-label="location map">map</mat-icon></a></li>
             <li *ngIf="licence.WorksStartDate"><strong>Works Starts:</strong> {{ licence.WorksStartDate | date:'dd MMM yyyy ' }} </li>
             <li *ngIf="licence.WorksStartDate"><strong>Works Ends:</strong> {{ licence.WorksEndDate | date:'dd MMM yyyy ' }} </li>
           </ul>
-      
+
     </div><div class="col-md-6">
       <h3>Pre works photos</h3>
     <div *ngFor="let ph of licence.path">
       <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media" alt="" width="200" height="100"></a>
-      {{ph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+      {{ph}}&nbsp;&nbsp;<a  mat-raised-button color="primary" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{ph}}?alt=media"  role="button" target="_blank" >
+        <i class="material-icons">backup</i> Download</a><br/><br/>
     </div></div></div>
     <div class="row">
     <div class="col-md-6" >
@@ -114,14 +120,16 @@
       <div *ngFor="let lph of licence.LicencePath">
           <strong>Valid From: </strong>{{ licence.LvalidFrom| date:'dd MMM yyyy ' }} <strong>Valid To: </strong>{{ licence.LvalidTo| date:'dd MMM yyyy ' }} <br />
         <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media" alt="" width="200" height="100"></a>
-        {{lph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+        {{lph}}&nbsp;&nbsp;<a  mat-raised-button color="primary" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{lph}}?alt=media"  role="button" target="_blank" >
+          <i class="material-icons">backup</i> Download</a><br/><br/>
       </div></div>
 
       <div class="col-md-6" >
           <h3>Post works photos</h3>
         <div *ngFor="let pph of licence.pathPost">
           <a  href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" target="_blank"><img src="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media" alt="" width="200" height="100"></a>
-          {{pph}}&nbsp;&nbsp;<a  class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media"  role="button" target="_blank" >Download</a><br/><br/>
+          {{pph}}&nbsp;&nbsp;<a  mat-raised-button color="primary" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{pph}}?alt=media"  role="button" target="_blank" >
+            <i class="material-icons">backup</i> Download</a><br/><br/>
         </div></div></div>
 
     <!-- Panel Footer Start -->
@@ -137,12 +145,12 @@
       </div> -->
 
       <!-- Edit Button -->
-      <a [routerLink]="['/edit-licence/', licence._id]" *ngIf="username === licence.createdBy"><button type="button" name="button" class="btn btn-sm btn-info">Edit</button></a>
+      <button type="button" [routerLink]="['/edit-licence/', licence._id]" *ngIf="username === licence.createdBy" mat-raised-button color="primary">Edit</button>
       <!-- Delete Button -->
-      <a [routerLink]="['/delete-licence/', licence._id]" *ngIf="username === licence.createdBy"><button type="button" name="button" class="btn btn-sm btn-danger">Delete</button></a>
+      <button [routerLink]="['/delete-licence/', licence._id]" *ngIf="username === licence.createdBy" type="button" mat-raised-button color="warn">Delete</button>
       <!-- Close Button -->
-      <a [routerLink]="['/closed-licence/', licence._id]" *ngIf="username === licence.createdBy && !licence.close"><button type="button" name="button" class="btn btn-sm btn-danger">Close</button></a>
-      <a [routerLink]="['/closed-licence/', licence._id]" *ngIf="username === licence.createdBy &&  licence.close"><button type="button" name="button" class="btn btn-sm btn-success">Reopen</button></a>
+      <button type="button" mat-raised-button color="accent" [routerLink]="['/closed-licence/', licence._id]" *ngIf="username === licence.createdBy && !licence.close">Close</button>
+      <button type="button" mat-raised-button color="accent" [routerLink]="['/closed-licence/', licence._id]" *ngIf="username === licence.createdBy &&  licence.close">Reopen</button>
 
       <!-- Likes Dropdown  -->
       <!-- <div class="dropdown"> -->
@@ -172,11 +180,11 @@
       <li class="list-group-item">
         <!-- Post Comment Button -->
         <!-- <button type="button" name="button" class="btn btn-sm btn-danger" (click)="draftComment(licence._id)" [disabled]="newComment.indexOf(licence._id) > -1">Post Comment</button> -->
-        
+
 
         <!-- Show Comments -->
         <li *ngIf="enabledComments.indexOf(licence._id) === -1 && licence.comments.length > 0" class="list-group-item">
-          <button  class="btn btn-sm btn-info" (click)="expand(licence._id)">
+          <button  mat-raised-button color="warn" (click)="expand(licence._id)">
             Show comments&nbsp;&nbsp;
             <div class="glyphicon glyphicon-comment"></div>
           </button>
@@ -184,7 +192,7 @@
 
         <!-- Hide Comments -->
         <li *ngIf="enabledComments.indexOf(licence._id) > -1" class="list-group-item">
-          <button class="btn btn-sm btn-info" (click)="collapse(licence._id)">
+          <button mat-raised-button color="warn" (click)="collapse(licence._id)">
             Hide Comments&nbsp;&nbsp;
             <div class="glyphicon glyphicon-comment"></div>
           </button>
@@ -194,11 +202,11 @@
         <div *ngIf="enabledComments.indexOf(licence._id) > -1">
           <li *ngFor="let comment of licence.comments" class="list-group-item">
             <strong>{{ comment.commentator }}:</strong>
-            <br /> {{ comment.comment }} 
+            <br /> {{ comment.comment }}
             <ul><li *ngFor="let attachement of comment.attachements">{{attachement}}&nbsp;&nbsp;<a class="btn btn-sm btn-success" href="https://firebasestorage.googleapis.com/v0/b/upload-rnce.appspot.com/o/{{attachement}}?alt=media"  role="button" target="_blank">Download</a></li></ul>
             <strong>Created at:{{comment.createdTime | date:'dd MMM yyyy hh:mm a'}}</strong>
           </li>
-          
+
         </div>
       </ul>
     <!-- Post Comment Box: End -->
@@ -206,7 +214,7 @@
   </div>
   <br />
   <br />
-  
+
   <!-- Panel Outer Layer -->
 </div>
-<!-- Panel End --> 
+<!-- Panel End -->

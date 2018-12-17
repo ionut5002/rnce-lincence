@@ -21,19 +21,19 @@ export class EditLicenceComponent implements OnInit {
   LocationMap;
    locations;
    allusers;
-   emailList=[]
+   emailList = [];
 
   constructor(
     private location: Location,
     private activatedRoute: ActivatedRoute,
     private licenceService: LicenceService,
     private router: Router,
-   
+
   ) { }
 
   // Function to Submit Update
   updateLicenceSubmit() {
-    this.newEmailNote()
+    this.newEmailNote();
     this.processing = true; // Lock form fields
     // Function to send licence object to backend
     this.licenceService.editLicence(this.licence).subscribe(data => {
@@ -53,17 +53,16 @@ export class EditLicenceComponent implements OnInit {
       }
     });
   }
-  getNewNotification(){
+  getNewNotification() {
     const notification = {
       title: this.licence.title, // Title field
       createdBy: this.licence.createdBy, // CreatedBy field
       action: 'made some changes on:'
-    }
-    
-    
+    };
+
     this.licenceService.newNotification(notification).subscribe(data => {
       // Check if licence was saved to database or not
-      
+
     });
   }
 
@@ -71,7 +70,7 @@ export class EditLicenceComponent implements OnInit {
   goBack() {
     this.location.back();
   }
- 
+
 
 
   /* email notification */
@@ -82,32 +81,36 @@ export class EditLicenceComponent implements OnInit {
     // Function to GET all licences from database
     this.licenceService.getAllUsers().subscribe(data => {
       this.allusers = data.users; // Assign array to use in HTML
-      this.getEmailList()
+      this.getEmailList();
     });
   }
-  
-    getEmailList(){
-      for(let i =0; i < this.allusers.length; i++){
-        if((this.allusers[i].role === "TMP") || (this.allusers[i].role === "HS")){
-        this.emailList.push(this.allusers[i].email)}
+
+    getEmailList() {
+      for (let i = 0; i < this.allusers.length; i++) {
+        if ((this.allusers[i].role === 'TMP') || (this.allusers[i].role === 'HS')) {
+        this.emailList.push(this.allusers[i].email);
+      }
         }
-        
+
     }
-    newEmailNote(){
-      
+    newEmailNote() {
+
       const newEmail = {
         to: this.emailList.toString(), // Title field
-        html:'<h2>New Edit on Job</h2><br /> '+ ' Title: <strong>' + this.licence.title +'</strong><br />' +'Job No: ' +'<strong>' + this.licence.JobNo+'</strong>'+'</strong><br />' +'By: ' +'<strong>' + this.licence.createdBy+'</strong>', // CreatedBy field
-      }
-      
+        html: '<h2>New Edit on Job</h2><br /> ' + ' Title: <strong>' +
+        this.licence.title + '</strong><br />' + 'Job No: ' + '<strong>' +
+        this.licence.JobNo + '</strong>' + '</strong><br />' + 'By: ' + '<strong>' +
+        this.licence.createdBy + '</strong>', // CreatedBy field
+      };
+
       this.licenceService.newEmailNot(newEmail).subscribe(data => {
         // Check if licence was saved to database or not
-        
+
       });
     }
 
   ngOnInit() {
-    this.getAllUsers()
+    this.getAllUsers();
     this.currentUrl = this.activatedRoute.snapshot.params; // When component loads, grab the id
     // Function to GET current licence with id in params
     this.licenceService.getSingleLicence(this.currentUrl.id).subscribe(data => {

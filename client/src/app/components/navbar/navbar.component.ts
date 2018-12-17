@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
     private flashMessagesService: FlashMessagesService,
     private licenceService: LicenceService
   ) {
-    
+
    }
 
   // Function to logout user
@@ -28,45 +28,45 @@ export class NavbarComponent implements OnInit {
     this.authService.logout(); // Logout user
     this.flashMessagesService.show('You are logged out!', { cssClass: 'alert-info' }); // Set custom flash message
     this.router.navigate(['/']); // Navigate back to home page
-    
+
   }
   getAllLicences() {
-    if(this.authService.loggedIn()){
+    if (this.authService.loggedIn()) {
       this.licenceService.getAllLicences().subscribe(data => {
         this.licencePosts = data.licences;
-        this.licencequeue=0
-        for(let i=0; i<this.licencePosts.length; i++){
-          if(this.licencePosts[i].phase1){
-            this.licencequeue++
-            
+        this.licencequeue = 0;
+        for (let i = 0; i < this.licencePosts.length; i++) {
+          if (this.licencePosts[i].phase1) {
+            this.licencequeue++;
+
           }
         }
          // Assign array to use in HTML
-      })
+      });
     }
     // Function to GET all licences from database
-    
+
   }
-  getProfile(){
-    if(this.authService.loggedIn()){
+  getProfile() {
+    if (this.authService.loggedIn()) {
       this.authService.getProfile().subscribe(profile => {
-        this.role= profile.user.role;
-        
+        this.role = profile.user.role;
+
       });
     }
   }
-  
-  reloadAuto(){
-    setInterval(()=>{
+
+  reloadAuto() {
+    setInterval(() => {
       this.getAllLicences();
-      this.getProfile()
-       },30000); 
+      this.getProfile();
+       }, 30000);
     }
 
   ngOnInit() {
-    this.getProfile()
-    this.getAllLicences()
-    this.reloadAuto()
+    this.getProfile();
+    this.getAllLicences();
+    this.reloadAuto();
   }
 
 }

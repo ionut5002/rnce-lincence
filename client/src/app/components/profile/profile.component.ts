@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { AuthGuard } from 'app/guards/auth.guard';
+import {  FormBuilder, Validators } from '@angular/forms';
+
 import { Router } from '@angular/router';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 @Component({
   selector: 'app-profile',
@@ -11,16 +12,16 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  username= '';
+  username = '';
   email = '';
-  role= '';
+  role = '';
   messageClass;
   message;
   processing = false;
   ChangePassform;
   previousUrl;
-  ChangePassOpen= false;
-  
+  ChangePassOpen = false;
+
 
   constructor(
   private formBuilder: FormBuilder,
@@ -32,7 +33,7 @@ export class ProfileComponent implements OnInit {
    }
 
   ngOnInit() {
-    
+
     // Once component loads, get user's data to display on profile
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username; // Set username
@@ -65,9 +66,9 @@ enableForm() {
     const CPass = {
       newPassword: this.ChangePassform.get('newPassword').value, // Username input field
       password: this.ChangePassform.get('password').value // Password input field
-      
-    }
-  
+
+    };
+
     // Function to send login data to API
     this.authService.ChangePassword(CPass).subscribe(data => {
       // Check if response was a success or error
@@ -81,20 +82,26 @@ enableForm() {
         this.message = data.message; // Set success message
         setTimeout(() => {
             this.processing = false;
-            this.ChangePassOpen= false;
+            this.ChangePassOpen = false;
             this.ChangePassform.reset();
             this.enableForm();
-            window.location.reload()
+            window.location.reload();
+            this.messageClass = ''; // Set bootstrap error class
+            this.message = '';
         }, 2000);
       }
     });
   }
-  
-changePasswordBtn(){
-  if(this.ChangePassOpen){
-    this.ChangePassOpen = false
-  }else{
-    this.ChangePassOpen = true
+
+changePasswordBtn() {
+  if (this.ChangePassOpen) {
+    this.ChangePassOpen = false;
+    this.ChangePassform.reset();
+    this.messageClass = ''; // Set bootstrap error class
+    this.message = '';
+  } else {
+    this.ChangePassOpen = true;
+    this.ChangePassform.reset();
   }
 }
 }
