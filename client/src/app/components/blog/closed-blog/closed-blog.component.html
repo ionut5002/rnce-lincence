@@ -65,9 +65,10 @@
 
 
 <button *ngIf="!foundBlog" [disabled]="processing" type="button" mat-raised-button color="accent" (click)="goBack()">Go Back</button>
-<mat-form-field [hidden]="foundBlog" appearance="outline" style="width: 135px;">
-    <input matInput  #box (keyup)="0" placeholder="Search By Job No">
-    </mat-form-field>
+<span [hidden]="foundBlog">
+<mat-form-field appearance="outline" style="width: 135px;">
+    <input  matInput  #box (keyup)="0" placeholder="Search By Job No">
+    </mat-form-field></span>
 
 <br />
 <br />

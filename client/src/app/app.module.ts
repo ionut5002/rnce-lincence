@@ -6,7 +6,12 @@ import {MatButtonModule,
         MatIconModule, 
         MatBadgeModule,
         MatFormFieldModule,
-        MatInputModule} from '@angular/material';
+        MatInputModule,
+        MatDialogModule,
+        MatProgressBarModule} from '@angular/material';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -40,6 +45,8 @@ import { BlogService } from './services/blog.service';
 import { LicenceService } from './services/licence.service';
 import { ScrollToModule } from 'ng2-scroll-to-el';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { configFB } from 'src/environments/environment.prod';
+import { UploadFilesComponent } from './services/upload.component';
 
 
 
@@ -67,6 +74,7 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     SearchFilterPipe,
     DisplayComponent,
     ReportsComponent,
+    UploadFilesComponent
   ],
   imports: [
     BrowserModule,
@@ -82,9 +90,15 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     MatIconModule,
     MatBadgeModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    AngularFireModule.initializeApp(configFB),
+    AngularFireStorageModule,
+    MatDialogModule,
+    MatProgressBarModule
+    
   ],
   providers: [AuthService, AuthGuard, NotAuthGuard, BlogService, LicenceService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [UploadFilesComponent]
 })
 export class AppModule { }

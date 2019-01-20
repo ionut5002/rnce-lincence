@@ -201,11 +201,8 @@
       <br />
     </div>
     <div class="col-md-12"><h4>Please attach photos(Location map, Working area)</h4>
-      <label for="fileToUploadNew"><a mat-flat-button type="button"  color="accent">
-        Attach File <mat-icon>attach_file</mat-icon>
-      </a></label>
-  <input type="file" name="photo" id="fileToUploadNew" style="display:none;" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
-  <ul  class="list-unstyled" *ngFor="let names of this.upl">
+      <button mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
+      <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul></div>
 
@@ -328,25 +325,7 @@
       <button mat-raised-button type="button" [routerLink]="['/delete-licence/', licence._id]" *ngIf="username === licence.createdBy" color="warn">Delete</button>
       <!-- Close Button -->
       <button mat-raised-button type="button" [routerLink]="['/closed-licence/', licence._id]" *ngIf="username === licence.createdBy" color="accent">Close</button>
-      <!-- Likes Dropdown  -->
-      <!-- <div class="dropdown"> -->
-        <!-- Like Button -->
-        <!-- <button [disabled]="licence.likedBy.indexOf(username) > -1" type="button" name="button" class="btn btn-sm btn-success" *ngIf="username !== licence.createdBy" (click)="likeLicence(licence._id)"><span class="glyphicon glyphicon-thumbs-up">&nbsp;</span>Likes: {{ licence.likes }}</button>
-        --> <!-- Dropdown Menu Items -->
-       <!--  <div class="dropdown-content">
-          <a [routerLink]="['/user/', liker]" *ngFor="let liker of licence.likedBy">{{ liker }}</a>
-        </div>
-      </div> -->
-
-      <!-- Dislikes Dropdown  -->
-      <!-- <div class="dropdown"> -->
-        <!-- Dislike Button -->
-<!--         <button [disabled]="licence.dislikedBy.indexOf(username) > -1" type="button" name="button" class="btn btn-sm btn-warning" *ngIf="username !== licence.createdBy" (click)="dislikeLicence(licence._id)"><span class="glyphicon glyphicon-thumbs-down">&nbsp;</span>Dislikes: {{ licence.dislikes }}</button>
-         --><!-- Dropdown Menu Items -->
-        <!-- <div class="dropdown-content">
-          <a [routerLink]="['/user/', disliker]" *ngFor="let disliker of licence.dislikedBy">{{ disliker }}</a>
-        </div>
-      </div> -->
+     
 
     </div>
     <!-- Panel Footer End -->
@@ -366,10 +345,7 @@
             <label for="comment">Reply</label>
             <textarea name="comment" rows="10" cols="30" class="form-control" formControlName="comment"></textarea>
             <h5>Please attach files(Location map, Working area, TM plans)</h5>
-            <label for="fileToUploadComm"><a mat-flat-button type="button"  color="accent">
-              Attach File <mat-icon>attach_file</mat-icon>
-            </a></label>
-            <input id="fileToUploadComm" style="display:none;" type="file" name="attachement" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+            <button mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
             <ul  class="list-unstyled" *ngFor="let names of this.upl">
               <li >{{names}}</li>
             </ul>

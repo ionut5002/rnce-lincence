@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import * as firebase from 'firebase';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { BlogService } from '../../services/blog.service';
-import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import {LicenceComponent} from '../licence/licence.component';
+import { MatDialog } from '@angular/material';
+import { UploadFilesComponent } from 'src/app/services/upload.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-blog',
@@ -13,8 +15,8 @@ import {LicenceComponent} from '../licence/licence.component';
   styleUrls: ['./blog.component.css']
 })
 
-export class BlogComponent implements OnInit {
-
+export class BlogComponent implements OnInit, OnDestroy {
+  filesSubcription: Subscription;
   messageClass;
   status = 'TMP Requested!';
   message;
@@ -44,7 +46,6 @@ export class BlogComponent implements OnInit {
    blogC;
    creatorEmail;
    email;
-   randomKey;
    links = [];
    queue = 0;
 
@@ -54,7 +55,8 @@ export class BlogComponent implements OnInit {
     private authService: AuthService,
     private blogService: BlogService,
     private http: HttpClient,
-    public router: Router
+    public router: Router,
+    private dialog: MatDialog,
   ) {
 
     this.createNewBlogForm(); // Create new job form on start up
@@ -272,10 +274,8 @@ export class BlogComponent implements OnInit {
 
   // Function to display new job form
   newBlogForm() {
-    this.upl = [];
     this.newPost = true; // Show new job form
     this.getEmailList();
-    this.randomKey = Math.random().toString(36).substring(2, 10);
   }
 
   // Reload jobs on current page
@@ -288,10 +288,26 @@ export class BlogComponent implements OnInit {
     }, 4000);
   }
 
+  onUpload() {
+    const dialogRef = this.dialog.open(UploadFilesComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(this.upl);
+      } else {
+        const deleteFiles = this.upl
+        
+        for(const delfile of deleteFiles){
+          const ref = firebase.storage().ref()
+          ref.child(`${delfile}`).delete();
+        }
+        this.upl =[]
+      }
+    });
+  }
+
   // Function to post a new comment on job post
   draftComment(id) {
-    this.randomKey = Math.random().toString(36).substring(2, 10);
-    this.upl = [];
     this.commentForm.reset(); // Reset the comment form each time users starts a new comment
     this.newComment = []; // Clear array so only one post can be commented on at a time
     this.newComment.push(id); // Add the post that is being commented on to the array
@@ -317,8 +333,6 @@ export class BlogComponent implements OnInit {
 
   // Function to cancel new post transaction
   cancelSubmission(id) {
-    this.filesToUpload = [];
-    this.upl = [];
     const index = this.newComment.indexOf(id); // Check the index of the blog post in the array
     this.newComment.splice(index, 1); // Remove the id from the array to cancel post submission
     this.commentForm.reset(); // Reset  the form after cancellation
@@ -328,7 +342,6 @@ export class BlogComponent implements OnInit {
 
   // Function to submit a new job post
   onBlogSubmit() {
-    this.upload();
     this.processing = true; // Disable submit button
     this.disableFormNewBlogForm(); // Lock form
 
@@ -451,34 +464,9 @@ export class BlogComponent implements OnInit {
       this.co = 0;
       for ( let i = 0; i < this.Notifications.length; i++) {
         if (!this.Notifications[i].seen.includes(this.username) && !this.Notifications[i].author.includes(this.username)) {
-
             this.co++;
-
-
-
         }
       }
-
-
-
-    });
-  }
-
-
-
-  // Function to like a blog post
-  likeBlog(id) {
-    // Service to like a blog post
-    this.blogService.likeBlog(id).subscribe(() => {
-      this.getAllBlogs();
-    });
-  }
-
-  // Function to disliked a blog post
-  dislikeBlog(id) {
-    // Service to dislike a blog post
-    this.blogService.dislikeBlog(id).subscribe(() => {
-      this.getAllBlogs();
     });
   }
 
@@ -493,7 +481,7 @@ export class BlogComponent implements OnInit {
 
     this.blogService.newNotification(notification).subscribe(() => {
     });
-    this.upload();
+    // this.upload();
     this.disableCommentForm(); // Disable form while saving comment to database
     this.processing = true; // Lock buttons while saving comment to database
     const comment = this.commentForm.get('comment').value; // Get the comment value to pass to service function
@@ -528,37 +516,7 @@ export class BlogComponent implements OnInit {
   }
 
 
-  upload() {
 
-      const formData: any = new FormData();
-      const files: Array<File> = this.filesToUpload;
-
-      for (let i = 0; i < files.length; i++) {
-        if (files[i].type === 'application/msword' ||
-        files[i].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-        files[i].type === 'application/pdf' || files[i].type === 'image/jpeg' ||
-        files[i].type === 'image/jpg' || files[i].type === 'image/png') {
-          const newfilename = this.randomKey + '-' + files[i]['name'];
-          formData.append( 'uploads[]', files[i], newfilename); }
-          this.createAuthenticationHeaders();
-         this.http.post('https://us-central1-upload-rnce.cloudfunctions.net/uploadFile', formData,  this.options )
-          .map( files => files).subscribe();
-      }
-      }
-
-
-fileChangeEvent(fileInput: any) {
-  this.filesToUpload = <Array<File>>fileInput.target.files;
-  this.upl = [];
-  for (let i = 0; i < this.filesToUpload.length; i++) {
-    if (this.filesToUpload[i].type === 'application/msword' ||
-    this.filesToUpload[i].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-    this.filesToUpload[i].type === 'application/pdf' || this.filesToUpload[i].type === 'image/jpeg' ||
-    this.filesToUpload[i].type === 'image/jpg' || this.filesToUpload[i].type === 'image/png') {
-this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name']);
-    }
-   }
-}
 reloadAuto() {
   setInterval(() => {
     this.getAllBlogs();
@@ -570,8 +528,6 @@ reloadAuto() {
       navigator.geolocation.getCurrentPosition(position => {
         this.location = position.coords;
         this.LocationMap = this.location.latitude + ', ' + this.location.longitude;
-
-
       });
    }
   }
@@ -709,8 +665,6 @@ Drawing(id) {
       });
     }
 
-
-
   }
 
   DoneEmailNote() {
@@ -727,6 +681,9 @@ Drawing(id) {
   }
 
   ngOnInit() {
+    this.filesSubcription = this.blogService.filenames.subscribe(uploads =>{
+      this.upl = uploads;
+    })
     // Get profile username on page load
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username;
@@ -742,6 +699,10 @@ Drawing(id) {
 
 
 
+  }
+
+  ngOnDestroy (){
+    this.filesSubcription.unsubscribe();
   }
 
 

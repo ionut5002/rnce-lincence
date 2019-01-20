@@ -1,0 +1,26 @@
+
+
+<h1 mat-dialog-title>Upload Files</h1>
+            <mat-dialog-content>
+                <!-- <div *ngFor="let upload of uploads">
+                    <h3>Upload of {{upload.fileName}}</h3>
+                    <p> Progress: {{upload.percentage | async}}</p>
+                </div>
+                
+                <br>
+                <br> -->
+                <div *ngIf="(allPercentage | async)>=1">
+                    <h4>Progress {{allPercentage | async}}%</h4>
+                <mat-progress-bar mode="determinate" value="{{allPercentage | async}}"></mat-progress-bar>
+                <br>
+                </div>
+                
+                <label *ngIf="(allPercentage | async)!=100" for="fileToUploadNew"><a mat-flat-button type="button"  color="primary">
+                    Choose File <mat-icon>attach_file</mat-icon>
+                  </a></label>
+                <input type="file" id="fileToUploadNew" style="display:none;" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf" multiple=true (change)="importImages($event)">
+            </mat-dialog-content>
+            <mat-dialog-actions>
+              <button mat-button [disabled]="(allPercentage | async )!=100" [mat-dialog-close]="true" type="button">OK</button>
+              <button mat-button [mat-dialog-close]="false" type="button">Cancel</button>
+            </mat-dialog-actions>

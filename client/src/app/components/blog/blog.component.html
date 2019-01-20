@@ -387,13 +387,11 @@
       <br />
     </div>
     <div class="col-md-12"><h4>Please attach photos(Location map, Working area)</h4>
-      <label for="fileToUploadNew"><a mat-flat-button type="button"  color="accent">
-        Attach File <mat-icon>attach_file</mat-icon>
-      </a></label>
-  <input type="file" name="photo" id="fileToUploadNew" style="display:none;" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
-  <ul  class="list-unstyled" *ngFor="let names of this.upl">
+      <button mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
+      <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
-  </ul></div>
+  </ul>
+</div>
 
 </div>
 
@@ -472,11 +470,6 @@
       <br />
       <strong>Date: </strong>{{ blog.createdAt | date:'dd MMM yyyy hh:mm a' }}
       <br />
-     <!--  <div *ngIf="username === blog.createdBy">
-        <strong>Likes: </strong>{{ blog.likes }}
-        <br />
-        <strong>Dislikes: </strong>{{ blog.dislikes }}
-      </div> -->
 
       <!-- Edit Button -->
       <button mat-raised-button type="button" *ngIf="username === blog.createdBy" [routerLink]="['/edit-blog/', blog._id]" color="primary">Edit</button>
@@ -488,25 +481,7 @@
       <button mat-fab [disabled]="blog.done" *ngIf="role === 'TMP'" type="button" (click)="Done(blog._id)" color="accent"><mat-icon aria-label="location map">done_outline</mat-icon></button>
 
 
-      <!-- Likes Dropdown  -->
-      <!-- <div class="dropdown"> -->
-        <!-- Like Button -->
-        <!-- <button [disabled]="blog.likedBy.indexOf(username) > -1" type="button" name="button" class="btn btn-sm btn-success" *ngIf="username !== blog.createdBy" (click)="likeBlog(blog._id)"><span class="glyphicon glyphicon-thumbs-up">&nbsp;</span>Likes: {{ blog.likes }}</button>
-        --> <!-- Dropdown Menu Items -->
-       <!--  <div class="dropdown-content">
-          <a [routerLink]="['/user/', liker]" *ngFor="let liker of blog.likedBy">{{ liker }}</a>
-        </div>
-      </div> -->
-
-      <!-- Dislikes Dropdown  -->
-      <!-- <div class="dropdown"> -->
-        <!-- Dislike Button -->
-<!--         <button [disabled]="blog.dislikedBy.indexOf(username) > -1" type="button" name="button" class="btn btn-sm btn-warning" *ngIf="username !== blog.createdBy" (click)="dislikeBlog(blog._id)"><span class="glyphicon glyphicon-thumbs-down">&nbsp;</span>Dislikes: {{ blog.dislikes }}</button>
-         --><!-- Dropdown Menu Items -->
-        <!-- <div class="dropdown-content">
-          <a [routerLink]="['/user/', disliker]" *ngFor="let disliker of blog.dislikedBy">{{ disliker }}</a>
-        </div>
-      </div> -->
+      
 
     </div>
     <!-- Panel Footer End -->
@@ -526,10 +501,7 @@
             <label for="comment">Reply</label>
             <textarea name="comment" rows="10" cols="30" class="form-control" formControlName="comment"></textarea>
             <h5>Please attach files(Location map, Working area, TM plans)</h5>
-            <label for="fileToUploadComm"><a mat-flat-button type="button"  color="accent">
-                Attach File <mat-icon>attach_file</mat-icon>
-              </a></label>
-            <input id="fileToUploadComm" style="display:none;" type="file" name="attachement" placeholder="upload files" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword, image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
+            <button mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
             <ul  class="list-unstyled" *ngFor="let names of this.upl">
               <li >{{names}}</li>
             </ul>

@@ -1,10 +1,14 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { LicenceService } from '../../services/licence.service';
-import { map } from 'rxjs/operators';
 import { Http } from '@angular/http';
+import { UploadFilesComponent } from 'src/app/services/upload.component';
+import { MatDialog } from '@angular/material';
+import * as firebase from 'firebase';
+import { Subscription } from 'rxjs';
+import { BlogService } from 'src/app/services/blog.service';
 
 
 @Component({
@@ -13,8 +17,8 @@ import { Http } from '@angular/http';
   styleUrls: ['./licence.component.css']
 })
 
-export class LicenceComponent implements OnInit {
-
+export class LicenceComponent implements OnInit, OnDestroy {
+  filesSubcription: Subscription;
   licenceCr;
   t2class = 'alert alert-info';
   t3class = 'alert alert-info';
@@ -34,7 +38,6 @@ export class LicenceComponent implements OnInit {
   newComment = [];
   enabledComments = [];
   listing;
-  filesToUpload = [];
    upl = [];
    options;
    Notifications;
@@ -55,7 +58,9 @@ export class LicenceComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private licenceService: LicenceService,
-    private http: Http
+    private http: Http,
+    private dialog: MatDialog,
+    private blogService: BlogService
   ) {
 
     this.createNewLicenceForm(); // Create new licence form on start up
@@ -199,8 +204,6 @@ export class LicenceComponent implements OnInit {
     this.newPost = true; // Show new Licence form
     this.getEmailList();
     this.upl = [];
-    this.filesToUpload = [];
-    this.randomKey = Math.random().toString(36).substring(2, 10);
   }
 
   // Reload Licences on current page
@@ -213,9 +216,25 @@ export class LicenceComponent implements OnInit {
     }, 4000);
   }
 
+  onUpload() {
+    const dialogRef = this.dialog.open(UploadFilesComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(this.upl);
+      } else {
+        const deleteFiles = this.upl
+        for(const delfile of deleteFiles){
+          const ref = firebase.storage().ref()
+          ref.child(`${delfile}`).delete();
+        }
+        this.upl =[]
+      }
+    });
+  }
+
   // Function to post a new comment on Licence post
   draftComment(id) {
-    this.randomKey = Math.random().toString(36).substring(2, 10);
     this.upl = [];
     this.commentForm.reset(); // Reset the comment form each time users starts a new comment
     this.newComment = []; // Clear array so only one post can be commented on at a time
@@ -244,7 +263,6 @@ export class LicenceComponent implements OnInit {
 
   // Function to cancel new post transaction
   cancelSubmission(id) {
-    this.filesToUpload = [];
     this.upl = [];
     const index = this.newComment.indexOf(id); // Check the index of the licence post in the array
     this.newComment.splice(index, 1); // Remove the id from the array to cancel post submission
@@ -255,7 +273,6 @@ export class LicenceComponent implements OnInit {
 
   // Function to submit a new licence post
   onLicenceSubmit() {
-    this.upload();
     this.processing = true; // Disable submit button
     this.disableFormNewLicenceForm(); // Lock form
 
@@ -356,22 +373,6 @@ export class LicenceComponent implements OnInit {
   }
 
 
-  // Function to like a licence post
-  likeLicence(id) {
-    // Service to like a licence post
-    this.licenceService.likeLicence(id).subscribe(() => {
-      this.getAllLicences();
-    });
-  }
-
-  // Function to disliked a licence post
-  dislikeLicence(id) {
-    // Service to dislike a licence post
-    this.licenceService.dislikeLicence(id).subscribe(() => {
-      this.getAllLicences();
-    });
-  }
-
   // Function to post a new comment
   postComment(id) {
     this.CommEmailNote();
@@ -383,7 +384,6 @@ export class LicenceComponent implements OnInit {
 
     this.licenceService.newNotification(notification).subscribe(() => {
     });
-    this.upload();
     this.disableCommentForm(); // Disable form while saving comment to database
     this.processing = true; // Lock buttons while saving comment to database
     const comment = this.commentForm.get('comment').value; // Get the comment value to pass to service function
@@ -418,38 +418,7 @@ export class LicenceComponent implements OnInit {
   }
 
 
-  upload() {
 
-      const formData: any = new FormData();
-      const files: Array<File> = this.filesToUpload;
-
-      for (let i = 0; i < files.length; i++) {
-        if (files[i].type === 'application/msword' ||
-        files[i].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-        files[i].type === 'application/pdf' || files[i].type === 'image/jpeg' ||
-        files[i].type === 'image/jpg' || files[i].type === 'image/png') {
-          const newfilename = this.randomKey + '-' + files[i]['name'];
-          formData.append('uploads[]', files[i], newfilename);
-        }
-          this.createAuthenticationHeaders();
-         this.http.post('https://us-central1-upload-rnce.cloudfunctions.net/uploadFile', formData,  this.options )
-          .pipe(map( files => files)).subscribe();
-      }
-      }
-
-
-fileChangeEvent(fileInput: any) {
-  this.filesToUpload = <Array<File>>fileInput.target.files;
-this.upl = [];
-  for (let i = 0; i < this.filesToUpload.length; i++) {
-    if (this.filesToUpload[i].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-    this.filesToUpload[i].type === 'application/msword' || this.filesToUpload[i].type === 'application/pdf' ||
-    this.filesToUpload[i].type === 'image/jpeg' || this.filesToUpload[i].type === 'image/jpg' ||
-    this.filesToUpload[i].type === 'image/png') {
-this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name']);
-}
-  }
-}
 reloadAuto() {
   setInterval(() => {
     this.getAllLicences();
@@ -673,12 +642,11 @@ getAllUsers() {
     });
   }
 
-  // changeall(){
-  //   this.licenceService.changeAllLicences().subscribe( res =>{
-  //     console.log(res);
-  //   })
-  // }
+  
   ngOnInit() {
+    this.filesSubcription = this.blogService.filenames.subscribe(uploads =>{
+      this.upl = uploads;
+    })
     // Get profile username on page load
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username;
@@ -695,6 +663,11 @@ getAllUsers() {
 
 
   }
+  
+  ngOnDestroy (){
+    this.filesSubcription.unsubscribe();
+  }
+
 
 
 }

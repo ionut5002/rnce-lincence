@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { map } from 'rxjs/operators';
 import { RequestOptions, Http , Headers } from '@angular/http';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class BlogService {
@@ -10,7 +11,7 @@ export class BlogService {
   options;
   domain = this.authService.domain;
   filesToUpload = [];
-
+  filenames = new Subject<any>();
   constructor(
     private authService: AuthService,
     private http: Http
@@ -59,7 +60,7 @@ export class BlogService {
   }
    // Function to close a blog
    closeBlog(id) {
-     console.log(id);
+     
      const closedata = {id: id };
      // Create headers
     return this.http.put(this.domain + 'blogs/closeBlog/', closedata, this.options).pipe(map((res: any ) => res.json()));
@@ -79,18 +80,6 @@ export class BlogService {
   }
 
 
-  // Function to like a blog post
-  likeBlog(id) {
-    const blogData = { id: id };
-    return this.http.put(this.domain + 'blogs/likeBlog/', blogData, this.options).pipe(map((res: any ) => res.json()));
-  }
-
-  // Function to dislike a blog post
-  dislikeBlog(id) {
-    const blogData = { id: id };
-    return this.http.put(this.domain + 'blogs/dislikeBlog/', blogData, this.options).pipe(map((res: any ) => res.json()));
-  }
-
   // Function to post a comment on a blog post
   postComment(id, comment, attachements) {
     this.createAuthenticationHeaders(); // Create headers
@@ -99,12 +88,10 @@ export class BlogService {
       id: id,
       comment: comment,
       attachements: attachements
-
     };
-
     return this.http.post(this.domain + 'blogs/comment', blogData, this.options).pipe(map((res: any ) => res.json()));
-
   }
+
   newNotification(notification) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'blogs/notifications', notification, this.options).pipe(map((res: any ) => res.json()));

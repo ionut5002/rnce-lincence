@@ -1,25 +1,27 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LicenceService } from '../../../services/licence.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { Location } from '@angular/common';
-import { map } from 'rxjs/operators';
-import { Http } from '@angular/http';
+import { MatDialog } from '@angular/material';
+import { UploadFilesComponent } from 'src/app/services/upload.component';
+import * as firebase from 'firebase';
+import { Subscription } from 'rxjs';
+import { BlogService } from 'src/app/services/blog.service';
 
 @Component({
   selector: 'app-post-works',
   templateUrl: './post-works.component.html',
   styleUrls: ['./post-works.component.css']
 })
-export class PostWorksComponent implements OnInit {
-
+export class PostWorksComponent implements OnInit, OnDestroy {
+  filesSubcription: Subscription;
   emailList;
   uploadready = false;
   email;
   allusers;
   upl = [];
-  filesToUpload = [];
   options;
   message;
   messageClass;
@@ -39,14 +41,33 @@ export class PostWorksComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private location: Location,
-    private http: Http
+    private dialog: MatDialog,
+    private blogService : BlogService
   ) { }
 
+  onUpload() {
+    const dialogRef = this.dialog.open(UploadFilesComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(this.upl);
+        this.uploadready = true;
+      } else {
+        const deleteFiles = this.upl
+        this.uploadready = false;
+        for(const delfile of deleteFiles){
+          const ref = firebase.storage().ref()
+          ref.child(`${delfile}`).delete();
+        }
+        this.upl =[]
+      }
+    });
+  }
   // Function to delete licences
   uploadPostWorks() {
     this.getNewNotification();
     this.UploadEmailNote();
-    this.upload();
+    
     this.processing = true;
     const uploadData = {
       id: this.currentUrl.id,
@@ -105,36 +126,7 @@ export class PostWorksComponent implements OnInit {
     }
 
 
-    upload() {
 
-        const formData: any = new FormData();
-        const files: Array<File> = this.filesToUpload;
-
-        for (let i = 0; i < files.length; i++) {
-          if (files[i].type === 'application/pdf' || files[i].type === 'image/jpeg' ||
-          files[i].type === 'image/jpg' || files[i].type === 'image/png') {
-            const newfilename = this.randomKey + '-' + files[i]['name'];
-            formData.append('uploads[]', files[i], newfilename);
-          }
-            this.createAuthenticationHeaders();
-           this.http.post('https://us-central1-upload-rnce.cloudfunctions.net/uploadFile', formData,  this.options )
-            .map(files => files).subscribe();
-        }
-        }
-
-
-  fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-  this.upl = [];
-  this.uploadready = true;
-    for (let i = 0; i < this.filesToUpload.length; i++) {
-      if (this.filesToUpload[i].type === 'application/pdf' ||
-      this.filesToUpload[i].type === 'image/jpeg' || this.filesToUpload[i].type === 'image/jpg' ||
-       this.filesToUpload[i].type === 'image/png') {
-        this.upl.push(this.randomKey + '-' + this.filesToUpload[i]['name']);
-  }
-    }
-  }
   getEmailListComm() {
 
     this.emailList = [];
@@ -179,7 +171,9 @@ export class PostWorksComponent implements OnInit {
 
 
   ngOnInit() {
-    this.randomKey = Math.random().toString(36).substring(2, 10);
+    this.filesSubcription = this.blogService.filenames.subscribe(uploads =>{
+      this.upl = uploads;
+    })
     this.getAllUsers();
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username;
@@ -212,5 +206,9 @@ export class PostWorksComponent implements OnInit {
 
 
   }
+  ngOnDestroy (){
+    this.filesSubcription.unsubscribe();
+  }
+
 
 }

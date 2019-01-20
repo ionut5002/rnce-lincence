@@ -23,11 +23,8 @@
 
     <!-- Modal Body -->
     <div class="modal-body">
-        <label for="fileToUploadPostWorks"><a mat-flat-button type="button"  color="accent">
-            Attach File <mat-icon>attach_file</mat-icon>
-          </a></label>
-      <input id="fileToUploadPostWorks" style="display:none;" type="file" name="photo" placeholder="upload files" (change)="fileChangeEvent($event)" accept="image/jpg, image/jpeg, image/png, application/pdf"  multiple  />
-  <ul  class="list-unstyled" *ngFor="let names of this.upl">
+      <button mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
+      <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul>
     </div>

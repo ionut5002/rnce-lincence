@@ -65,12 +65,12 @@
 
 
 <button *ngIf="!foundLicence" [disabled]="processing" type="button" mat-raised-button color="accent" (click)="goBack()">Go Back</button>
-<mat-form-field [hidden]="foundLicence" appearance="outline" style="width: 130px;">
+<span [hidden]="foundLicence"><mat-form-field  appearance="outline" style="width: 130px;">
 <input matInput  #box (keyup)="0" placeholder="Search By Title">
-</mat-form-field>&nbsp;&nbsp;
-<mat-form-field [hidden]="foundLicence" appearance="outline" style="width: 130px;">
+</mat-form-field>&nbsp;&nbsp;</span>
+<span [hidden]="foundLicence"><mat-form-field  appearance="outline" style="width: 130px;">
     <input matInput  #refno (keyup)="0" placeholder="Search By Ref No">
-    </mat-form-field>
+    </mat-form-field></span>
 <br />
 <br />
 <div *ngIf="!foundLicence">
