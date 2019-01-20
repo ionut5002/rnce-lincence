@@ -23,7 +23,7 @@
 
     <!-- Modal Body -->
     <div class="modal-body">
-      <button mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
+      <button type="button" mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
       <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul>

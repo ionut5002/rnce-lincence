@@ -201,7 +201,7 @@
       <br />
     </div>
     <div class="col-md-12"><h4>Please attach photos(Location map, Working area)</h4>
-      <button mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
+      <button type="button" mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
       <ul  class="list-unstyled" *ngFor="let names of this.upl">
     <li >{{names}}</li>
   </ul></div>
@@ -345,7 +345,7 @@
             <label for="comment">Reply</label>
             <textarea name="comment" rows="10" cols="30" class="form-control" formControlName="comment"></textarea>
             <h5>Please attach files(Location map, Working area, TM plans)</h5>
-            <button mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
+            <button type="button" mat-raised-button color="accent" (click)="onUpload()">Attach files <mat-icon>attach_file</mat-icon></button>
             <ul  class="list-unstyled" *ngFor="let names of this.upl">
               <li >{{names}}</li>
             </ul>
