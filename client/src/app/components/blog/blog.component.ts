@@ -274,6 +274,7 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   // Function to display new job form
   newBlogForm() {
+    this.upl =[]
     this.newPost = true; // Show new job form
     this.getEmailList();
   }
@@ -308,6 +309,7 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   // Function to post a new comment on job post
   draftComment(id) {
+    this.upl =[]
     this.commentForm.reset(); // Reset the comment form each time users starts a new comment
     this.newComment = []; // Clear array so only one post can be commented on at a time
     this.newComment.push(id); // Add the post that is being commented on to the array
