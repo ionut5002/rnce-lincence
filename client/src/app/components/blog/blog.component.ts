@@ -290,7 +290,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   }
 
   onUpload() {
-    const dialogRef = this.dialog.open(UploadFilesComponent);
+    const dialogRef = this.dialog.open(UploadFilesComponent, {disableClose: true});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
